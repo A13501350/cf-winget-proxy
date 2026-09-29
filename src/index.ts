@@ -530,6 +530,15 @@ async function handlePackageManifest(
     if (!out.NestedInstallerType && installerDoc.NestedInstallerType) {
       out.NestedInstallerType = installerDoc.NestedInstallerType;
     }
+    // Canonicalize portable installers. A portable package is a zip that is
+    // extracted and registered; the top-level InstallerType must be "portable"
+    // and the nested type the archive ("zip"). Some manifests store the
+    // inverted pair (InstallerType: zip / NestedInstallerType: portable), which
+    // is an inconsistent combination winget's REST deserializer rejects.
+    if (out.NestedInstallerType === "portable") {
+      out.NestedInstallerType = "zip";
+      if (out.InstallerType !== "portable") out.InstallerType = "portable";
+    }
     if (out.InstallerUrl) {
       out.InstallerUrl = rewriteInstallerUrl(out.InstallerUrl, mirror);
     }
@@ -539,6 +548,17 @@ async function handlePackageManifest(
   return Response.json({
     Data: {
       PackageIdentifier: id,
+      // winget's Microsoft.Rest packageManifest contract requires PackageName
+      // and Publisher at the top-level Data object (not only inside
+      // DefaultLocale). Omitting them makes winget reject the whole manifest
+      // with 0x8a150039 "REST source returned invalid data".
+      PackageName:
+        localeDoc?.PackageName ??
+        installerDoc?.PackageName ??
+        `${publisher} ${packageRest}`,
+      Publisher: localeDoc?.Publisher ?? installerDoc?.Publisher ?? publisher,
+      ShortDescription:
+        localeDoc?.ShortDescription ?? installerDoc?.Description ?? "",
       Versions: [
         {
           PackageVersion: version,
