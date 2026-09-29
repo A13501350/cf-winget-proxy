@@ -390,12 +390,23 @@ async function handlePackageManifest(
     ? installerDoc.Installers
     : [];
 
-  const installers = rawInstallers.map((inst) => ({
-    ...inst,
-    InstallerUrl: inst.InstallerUrl
-      ? rewriteInstallerUrl(inst.InstallerUrl, mirror)
-      : inst.InstallerUrl,
-  }));
+  // Package-level InstallerType / NestedInstallerType must be propagated to each
+  // installer. Modern manifests (esp. portable/nested "zip" installers) omit them
+  // per-installer and rely on the package-level value; winget's REST deserializer
+  // requires InstallerType on every installer ("Missing installer type").
+  const installers = rawInstallers.map((inst) => {
+    const out: any = { ...inst };
+    if (!out.InstallerType && installerDoc.InstallerType) {
+      out.InstallerType = installerDoc.InstallerType;
+    }
+    if (!out.NestedInstallerType && installerDoc.NestedInstallerType) {
+      out.NestedInstallerType = installerDoc.NestedInstallerType;
+    }
+    if (out.InstallerUrl) {
+      out.InstallerUrl = rewriteInstallerUrl(out.InstallerUrl, mirror);
+    }
+    return out;
+  });
 
   return Response.json({
     Data: {
@@ -633,7 +644,13 @@ export default {
     );
     if (mfMatch && request.method === "GET") {
       const id = decodeURIComponent(mfMatch[1]);
-      const version = mfMatch[2] ? decodeURIComponent(mfMatch[2]) : null;
+      // winget passes the version as a query param (?Version=...), not a path
+      // segment; honor it so we fetch the exact requested version directly
+      // instead of falling back to a rate-limited GitHub API version listing.
+      const version =
+        (mfMatch[2]
+          ? decodeURIComponent(mfMatch[2])
+          : url.searchParams.get("Version")) ?? null;
       return handlePackageManifest(id, version, mirror, env);
     }
 
