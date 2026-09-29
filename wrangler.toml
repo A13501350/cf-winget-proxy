@@ -1,6 +1,6 @@
 name = "cf-winget-proxy"
 main = "src/index.ts"
-compatibility_date = "2024-07-25"
+compatibility_date = "2026-09-29"
 
 [vars]
 # Mirror used for GitHub-hosted installers. Must accept the path form:
@@ -11,7 +11,6 @@ MIRROR = "https://gh-proxy.org"
 #   wrangler secret put GITHUB_TOKEN
 # (do NOT put the token here in plaintext; use the secret store above)
 
-[[cache_namespaces]]
-binding = "WINGET_CACHE"
-# Edge cache for the worker's outbound GitHub requests (directory listings,
-# version enumerations, manifest YAML). Cuts GitHub API rate-limit pressure.
+
+[cache]
+enabled = true
