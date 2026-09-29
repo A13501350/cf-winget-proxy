@@ -1,0 +1,36 @@
+name: Build winget index
+
+# Rebuild the full package index daily and on demand. The resulting index.json
+# is committed back to the default branch; Cloudflare Workers Builds is
+# configured to watch only `src/**` (and wrangler.toml), so this push does NOT
+# trigger a Worker redeploy.
+on:
+  schedule:
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build index
+        run: bash scripts/build-index.sh
+
+      - name: Commit index.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.json
+          if git diff --cached --quiet; then
+            echo "index.json unchanged"
+          else
+            git commit -m "chore: update winget index [skip ci]"
+            git push
+          fi
