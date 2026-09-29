@@ -144,8 +144,14 @@ async function ghFetch(url: string, env: Env): Promise<Response> {
   if (env.GITHUB_TOKEN) headers["Authorization"] = `token ${env.GITHUB_TOKEN}`;
   return fetch(url, {
     headers,
-    // @ts-ignore: CF Workers cf option for edge-level caching
-    cf: { cacheEverything: true, cacheTtl: 1800 },
+    // @ts-ignore: CF Workers cf option for edge-level caching.
+    // Do NOT cache error responses (e.g. a 403 rate-limit). Caching a failed
+    // code-search result for 30 min would make every later search for the same
+    // term silently fail until the cache expires.
+    cf: {
+      cacheEverything: true,
+      cacheTtlByStatus: { "200-299": 1800, "300-399": 1800, "400-599": 0 },
+    },
   });
 }
 
@@ -291,8 +297,10 @@ async function handleManifestSearch(
     const resp = await ghFetch(searchUrl, env);
     if (resp.ok) {
       const data = (await resp.json()) as any;
+      const items = data.items ?? [];
+      console.log(`manifestSearch (code): ok, ${items.length} raw hits for "${keyword}"`);
       const seen = new Map<string, string>();
-      for (const item of data.items ?? []) {
+      for (const item of items) {
         // path: manifests/{l}/{Publisher}/{Package}/{version}/...
         const m = item.path?.match(
           /^manifests\/[a-z]\/([^/]+)\/([^/]+)\/([^/]+)\//
@@ -311,9 +319,15 @@ async function handleManifestSearch(
           Versions: [{ PackageVersion: version }],
         }));
       return Response.json({ Data: results });
+    } else {
+      console.log(
+        `manifestSearch (code): FAILED status ${resp.status} for "${keyword}" ` +
+          `(likely GitHub rate limit — set GITHUB_TOKEN via "wrangler secret put")`
+      );
     }
   }
 
+  console.log("manifestSearch: no results (empty Data)");
   return Response.json({ Data: [] });
 }
 
