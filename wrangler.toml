@@ -6,7 +6,7 @@ compatibility_date = "2024-07-25"
 # Mirror used for GitHub-hosted installers. Must accept the path form:
 #   <MIRROR>/https://github.com/owner/repo/...
 # Installers are downloaded by the client directly from here (not via the worker).
-MIRROR = "https://ghproxy.net"
+MIRROR = "https://gh-proxy.com"
 # For higher GitHub API rate limits (search / version listing), set a token:
 #   wrangler secret put GITHUB_TOKEN
 # (do NOT put the token here in plaintext; use the secret store above)

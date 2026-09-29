@@ -44,7 +44,7 @@ const HOP_BY_HOP = new Set([
 
 interface Env {
   GITHUB_TOKEN?: string;
-  // Mirror used for GitHub-hosted installers, e.g. https://ghproxy.net
+  // Mirror used for GitHub-hosted installers, e.g. https://gh-proxy.com
   // Must accept the path form: <MIRROR>/https://github.com/owner/repo/...
   MIRROR?: string;
 }
@@ -619,7 +619,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const { pathname, search } = url;
-    const mirror = (env.MIRROR || "https://ghproxy.net").replace(/\/+$/, "");
+    const mirror = (env.MIRROR || "https://gh-proxy.com").replace(/\/+$/, "");
 
     // Landing page
     if (pathname === "/" || pathname === "") {
