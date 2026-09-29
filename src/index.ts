@@ -518,10 +518,11 @@ async function handlePackageManifest(
     ? installerDoc.Installers
     : [];
 
-  // Package-level InstallerType / NestedInstallerType must be propagated to each
-  // installer. Modern manifests (esp. portable/nested "zip" installers) omit them
-  // per-installer and rely on the package-level value; winget's REST deserializer
-  // requires InstallerType on every installer ("Missing installer type").
+  // Package-level InstallerType / NestedInstallerType / Dependencies must be
+  // propagated to each installer. winget-pkgs stores these at the package level
+  // (root of the installer YAML), while each installer entry often omits them;
+  // winget's REST deserializer requires InstallerType on every installer and
+  // surfaces Dependencies (e.g. "依赖项") from the installer object.
   const installers = rawInstallers.map((inst) => {
     const out: any = { ...inst };
     if (!out.InstallerType && installerDoc.InstallerType) {
@@ -529,6 +530,9 @@ async function handlePackageManifest(
     }
     if (!out.NestedInstallerType && installerDoc.NestedInstallerType) {
       out.NestedInstallerType = installerDoc.NestedInstallerType;
+    }
+    if (!out.Dependencies && installerDoc.Dependencies) {
+      out.Dependencies = installerDoc.Dependencies;
     }
     // Canonicalize portable installers. A portable package is a zip that is
     // extracted and registered; the top-level InstallerType must be "portable"
@@ -544,6 +548,39 @@ async function handlePackageManifest(
     }
     return out;
   });
+
+  // Build DefaultLocale by transparently passing through every field from the
+  // manifest's locale YAML (Moniker, Author, PublisherSupportUrl, PrivacyUrl,
+  // PackageUrl, Tags, ReleaseNotes, ReleaseNotesUrl, Documentations, Agreements,
+  // Description, ...). The winget REST DefaultLocale schema accepts these as
+  // optional members; only a hardcoded subset was mapped before, which is why
+  // `winget show` looked sparse next to the official source. Drop the
+  // YAML-only wrapper keys that have no place in the REST DefaultLocale object.
+  const LOCALE_OMIT = new Set([
+    "PackageIdentifier",
+    "PackageVersion",
+    "ManifestType",
+    "ManifestVersion",
+  ]);
+  const defaultLocale: any = {};
+  if (localeDoc && Object.keys(localeDoc).length) {
+    defaultLocale.PackageLocale = localeDoc.PackageLocale ?? "en-US";
+    for (const [k, v] of Object.entries(localeDoc)) {
+      if (!LOCALE_OMIT.has(k)) defaultLocale[k] = v;
+    }
+  } else {
+    // Fallback when the locale yaml is unavailable: only the required fields.
+    defaultLocale.PackageLocale = "en-US";
+    defaultLocale.Publisher = installerDoc?.Publisher ?? publisher;
+    defaultLocale.PublisherUrl = installerDoc?.PublisherUrl ?? "";
+    defaultLocale.PackageName =
+      installerDoc?.PackageName ?? `${publisher} ${packageRest}`;
+    defaultLocale.ShortDescription =
+      installerDoc?.ShortDescription ?? installerDoc?.Description ?? "";
+    defaultLocale.License = installerDoc?.License ?? "";
+    defaultLocale.LicenseUrl = installerDoc?.LicenseUrl ?? "";
+    defaultLocale.Copyright = installerDoc?.Copyright ?? "";
+  }
 
   return Response.json({
     Data: {
@@ -562,20 +599,7 @@ async function handlePackageManifest(
       Versions: [
         {
           PackageVersion: version,
-          DefaultLocale: {
-            PackageLocale: "en-US",
-            Publisher: localeDoc?.Publisher ?? installerDoc?.Publisher ?? publisher,
-            PublisherUrl: localeDoc?.PublisherUrl ?? "",
-            PackageName:
-              localeDoc?.PackageName ??
-              installerDoc?.PackageName ??
-              `${publisher} ${packageRest}`,
-            ShortDescription:
-              localeDoc?.ShortDescription ?? localeDoc?.Description ?? "",
-            License: localeDoc?.License ?? "",
-            LicenseUrl: localeDoc?.LicenseUrl ?? "",
-            Copyright: localeDoc?.Copyright ?? "",
-          },
+          DefaultLocale: defaultLocale,
           Installers: installers,
           Locales: [],
         },
