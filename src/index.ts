@@ -44,6 +44,9 @@ const HOP_BY_HOP = new Set([
 
 interface Env {
   GITHUB_TOKEN?: string;
+  // Mirror used for GitHub-hosted installers, e.g. https://ghproxy.net
+  // Must accept the path form: <MIRROR>/https://github.com/owner/repo/...
+  MIRROR?: string;
 }
 
 // ─── HTTP helpers ────────────────────────────────────────────────────────────
@@ -56,12 +59,19 @@ function stripHopByHop(headers: Headers): Headers {
   return out;
 }
 
-function rewriteInstallerUrl(url: string, proxyBase: string): string {
+// Rewrite only GitHub-hosted installer URLs to go through a ghproxy-style
+// mirror. Non-GitHub installers keep their original URL (winget downloads them
+// directly). The mirror is expected to accept the path form:
+//   <MIRROR>/https://github.com/owner/repo/...
+// so the client fetches the installer from the mirror, NOT through this worker.
+function rewriteInstallerUrl(url: string, mirror: string): string {
   if (!url) return url;
   try {
     const u = new URL(url);
-    if (u.protocol === "https:" || u.protocol === "http:") {
-      return `${proxyBase}/${u.host}${u.pathname}${u.search}`;
+    const isGitHub =
+      /github\.com$/.test(u.host) || /githubusercontent\.com$/.test(u.host);
+    if (isGitHub) {
+      return `${mirror.replace(/\/+$/, "")}/${u.protocol}//${u.host}${u.pathname}${u.search}`;
     }
   } catch { /* leave as-is */ }
   return url;
@@ -298,7 +308,7 @@ async function handleManifestSearch(
 async function handlePackageManifest(
   id: string,
   requestedVersion: string | null,
-  proxyBase: string,
+  mirror: string,
   env: Env
 ): Promise<Response> {
   const { publisher, packageRest, basePath } = parsePackageId(id);
@@ -383,7 +393,7 @@ async function handlePackageManifest(
   const installers = rawInstallers.map((inst) => ({
     ...inst,
     InstallerUrl: inst.InstallerUrl
-      ? rewriteInstallerUrl(inst.InstallerUrl, proxyBase)
+      ? rewriteInstallerUrl(inst.InstallerUrl, mirror)
       : inst.InstallerUrl,
   }));
 
@@ -569,7 +579,7 @@ winget upgrade --all</pre>
         <tr><td><code>GET /information</code></td><td>源元数据（Microsoft.Rest 协议）</td></tr>
         <tr><td><code>POST /manifestSearch</code></td><td>包搜索，后端为 microsoft/winget-pkgs</td></tr>
         <tr><td><code>GET /packageManifests/{id}</code></td><td>包清单，InstallerUrl 自动重写为代理地址</td></tr>
-        <tr><td><code>GET /&lt;hostname&gt;/**</code></td><td>通用安装器透明代理（支持任意域名）</td></tr>
+        <tr><td><code>InstallerUrl</code></td><td>GitHub 链接被改写为 <code>MIRROR/https://github.com/...</code>，由客户端直连镜像下载（不经本 Worker）</td></tr>
         <tr><td><code>GET /cache/**</code></td><td>CDN 索引透明代理（legacy）</td></tr>
       </tbody>
     </table>
@@ -598,7 +608,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const { pathname, search } = url;
-    const proxyBase = `${url.protocol}//${url.host}`;
+    const mirror = (env.MIRROR || "https://ghproxy.net").replace(/\/+$/, "");
 
     // Landing page
     if (pathname === "/" || pathname === "") {
@@ -624,19 +634,12 @@ export default {
     if (mfMatch && request.method === "GET") {
       const id = decodeURIComponent(mfMatch[1]);
       const version = mfMatch[2] ? decodeURIComponent(mfMatch[2]) : null;
-      return handlePackageManifest(id, version, proxyBase, env);
+      return handlePackageManifest(id, version, mirror, env);
     }
 
-    // ── Generic installer download proxy ────────────────────────────────────
-    // Matches /<hostname>/path  (hostname must contain a dot)
-    const domainMatch = DOMAIN_PREFIX_RE.exec(pathname);
-    if (domainMatch) {
-      const host = domainMatch[1];
-      const rest = domainMatch[2] ?? "/";
-      return proxyRequest(request, `https://${host}${rest}${search}`, proxyBase);
-    }
-
-    // ── Legacy: proxy everything else to winget CDN ──────────────────────────
-    return proxyRequest(request, `${UPSTREAM_CDN}${pathname}${search}`, proxyBase);
+    // ── This worker is manifest-only. Installer downloads are rewritten to the
+    //    mirror (ghproxy) inside handlePackageManifest, so the client fetches
+    //    them directly from the mirror. No download-proxy branch is needed. ──
+    return new Response("Not found", { status: 404 });
   },
 };

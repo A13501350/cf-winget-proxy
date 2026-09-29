@@ -2,14 +2,11 @@ name = "cf-winget-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-07-25"
 
-[[routes]]
-pattern = "winget.lihongjie.cn/*"
-zone_name = "lihongjie.cn"
-
-[[routes]]
-pattern = "winget.backend.lihongjie.cn/*"
-zone_name = "lihongjie.cn"
-
-[[routes]]
-pattern = "winget.cn.lihongjie.cn/*"
-zone_name = "lihongjie.cn"
+[vars]
+# Mirror used for GitHub-hosted installers. Must accept the path form:
+#   <MIRROR>/https://github.com/owner/repo/...
+# Installers are downloaded by the client directly from here (not via the worker).
+MIRROR = "https://ghproxy.net"
+# For higher GitHub API rate limits (search / version listing), set a token:
+#   wrangler secret put GITHUB_TOKEN
+# (do NOT put the token here in plaintext; use the secret store above)
