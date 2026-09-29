@@ -237,13 +237,19 @@ async function handleManifestSearch(
     };
   }
 
-  // ── Case 1: PackageIdentifier filter/inclusion (winget install sends Filters+CaseInsensitive)
+  // ── Case 1: PackageIdentifier filter/inclusion ───────────────────────────
+  // Only treat as a real id lookup when the value contains a dot. winget
+  // sometimes sends a bare keyword (e.g. "HandBrake") under the
+  // PackageIdentifier match field; parsing that as an id yields an empty
+  // PackageName and a bogus basePath, making winget reject the whole search
+  // (0x8a150039 "Missing required package fields").
   const allCriteria = [...filters, ...inclusions];
   const idFilter = allCriteria.find(
     (f) =>
       f.PackageMatchField === "PackageIdentifier" &&
       (f.RequestMatch?.MatchType === "Exact" ||
-        f.RequestMatch?.MatchType === "CaseInsensitive")
+        f.RequestMatch?.MatchType === "CaseInsensitive") &&
+      (f.RequestMatch?.KeyWord ?? "").includes(".")
   );
   if (idFilter) {
     const id: string = idFilter.RequestMatch.KeyWord;
@@ -254,12 +260,20 @@ async function handleManifestSearch(
       console.log("manifestSearch response:", JSON.stringify(result));
       return Response.json(result);
     }
-    console.log("manifestSearch: package not found for id:", id);
-    return Response.json({ Data: [] });
+    // Not found (or rate-limited) -> fall through to keyword search below.
   }
 
-  // ── Case 2: keyword search via Query ─────────────────────────────────────
-  const keyword: string | undefined = query?.KeyWord;
+  // ── Case 2: keyword search ───────────────────────────────────────────────
+  // winget's `upgrade <word>` sends the term as name-like Inclusions
+  // (PackageName / Moniker / Publisher / PackageIdentifier) rather than a Query.
+  const keyword: string | undefined =
+    query?.KeyWord ??
+    allCriteria.find(
+      (c) =>
+        ["PackageName", "Moniker", "Publisher", "PackageIdentifier"].includes(
+          c.PackageMatchField
+        ) && c.RequestMatch?.KeyWord
+    )?.RequestMatch?.KeyWord;
   if (keyword) {
     // If keyword looks like a PackageIdentifier (Publisher.Package), try direct lookup first
     if (/^[A-Za-z0-9_-]+\.[A-Za-z0-9._-]+$/.test(keyword)) {
@@ -296,23 +310,7 @@ async function handleManifestSearch(
           Publisher: id.split(".")[0],
           Versions: [{ PackageVersion: version }],
         }));
-      // DEBUG: surface the raw keyword-search payload so we can see which
-      // field is empty when winget reports "Missing required package fields".
-      console.log(
-        "manifestSearch keyword response:",
-        JSON.stringify({ items: data.items?.length, results })
-      );
-      // Defensive: drop any result missing a required non-empty field so the
-      // whole search doesn't get rejected by the client.
-      const clean = results.filter(
-        (r) =>
-          r.PackageIdentifier &&
-          r.PackageName &&
-          r.Publisher &&
-          r.Versions?.length &&
-          r.Versions[0]?.PackageVersion
-      );
-      return Response.json({ Data: clean });
+      return Response.json({ Data: results });
     }
   }
 
