@@ -319,8 +319,11 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   const index = await getIndex(env);
   if (index && index.length) {
     const matched = new Map<string, string>();
+    const nkw = normalizeTerm(kw); // for NormalizedPackageNameAndPublisher-style queries
     for (const e of index) {
-      if (e.id.toLowerCase().includes(kw) && !matched.has(e.id)) {
+      const rawHit = e.id.toLowerCase().includes(kw);
+      const normHit = nkw.length > 1 && normalizeTerm(e.id).includes(nkw);
+      if ((rawHit || normHit) && !matched.has(e.id)) {
         matched.set(e.id, e.v ?? "");
       }
     }
@@ -394,6 +397,27 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   }));
 }
 
+// winget's ProductCode is "<PackageIdentifier>_<sourceId>", e.g.
+// "yt-dlp.yt-dlp_microsoft.winget.source_8wekyb3d8bbwe". The source id is the
+// source that *declared* the dependency (the official one), so for dependency
+// resolution it is meaningless to us. Strip it to recover the bare
+// PackageIdentifier we can look up directly.
+function stripProductCodeSuffix(kw: string): string {
+  const known = kw.lastIndexOf("_microsoft.winget.source_");
+  if (known > 0) return kw.slice(0, known);
+  // Generic fallback: "<id.with.dot>_<sourceToken>"
+  const m = kw.match(/^([A-Za-z0-9.-]+\.[A-Za-z0-9.-]+?)_[A-Za-z0-9._-]+$/);
+  if (m) return m[1];
+  return kw;
+}
+
+// Normalize a search term the way winget normalizes PackageName/Publisher for
+// the NormalizedPackageNameAndPublisher match field: lowercase, drop every
+// non-alphanumeric char ("yt-dlp" -> "ytdlp").
+function normalizeTerm(s: string): string {
+  return (s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
 // ─── REST API: POST /manifestSearch ──────────────────────────────────────────
 
 async function handleManifestSearch(
@@ -413,6 +437,35 @@ async function handleManifestSearch(
   const filters: any[] = body?.Filters ?? [];
   const inclusions: any[] = body?.Inclusions ?? [];
   const query = body?.Query;
+
+  // ── Case 0: dependency resolution (ProductCode) ────────────────────────────
+  // When winget resolves a package's dependencies it queries every source by
+  // ProductCode ("<id>_microsoft.winget.source_8wekyb3d8bbwe") and by
+  // NormalizedPackageNameAndPublisher. Our index is keyed by PackageIdentifier,
+  // so strip the ProductCode source suffix to recover the exact id and look it
+  // up directly. This makes dependency search hit instead of returning empty.
+  const productCode = inclusions.find(
+    (f) => f.PackageMatchField === "ProductCode"
+  )?.RequestMatch?.KeyWord;
+  if (productCode) {
+    const rawId = stripProductCodeSuffix(productCode);
+    // winget LOWERCASES the PackageIdentifier inside a ProductCode, but the
+    // GitHub directory path is case-sensitive ("yt-dlp.FFmpeg" not "...ffmpeg").
+    // Resolve the canonical casing from the index before looking it up.
+    const index = await getIndex(env);
+    const canonical =
+      index?.find((e) => e.id.toLowerCase() === rawId.toLowerCase())?.id ??
+      rawId;
+    console.log("manifestSearch: productCode -> id:", productCode, "->", canonical);
+    if (canonical && canonical.includes(".")) {
+      const entry = await lookupPackageId(canonical, env);
+      if (entry) {
+        const result = { Data: [entry] };
+        console.log("manifestSearch response (productCode):", JSON.stringify(result));
+        return Response.json(result);
+      }
+    }
+  }
 
   // ── Case 1: PackageIdentifier filter/inclusion ───────────────────────────
   // Only treat as a real id lookup when the value contains a dot. winget
@@ -447,9 +500,13 @@ async function handleManifestSearch(
     query?.KeyWord ??
     allCriteria.find(
       (c) =>
-        ["PackageName", "Moniker", "Publisher", "PackageIdentifier"].includes(
-          c.PackageMatchField
-        ) && c.RequestMatch?.KeyWord
+        [
+          "PackageName",
+          "Moniker",
+          "Publisher",
+          "PackageIdentifier",
+          "NormalizedPackageNameAndPublisher",
+        ].includes(c.PackageMatchField) && c.RequestMatch?.KeyWord
     )?.RequestMatch?.KeyWord;
   if (keyword) {
     // If keyword looks like a PackageIdentifier (Publisher.Package), try direct lookup first
