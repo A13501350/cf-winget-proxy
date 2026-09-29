@@ -248,6 +248,28 @@ async function getIndex(env: Env): Promise<{ id: string; v: string }[] | null> {
   }
 }
 
+// Look up a PackageIdentifier in winget-pkgs and return a search Data entry.
+// Reconstructs the GitHub directory path from the id: the package portion's
+// dots map to directory slashes (e.g. OpenJS.Electron.33 →
+// manifests/o/OpenJS/Electron/33).
+async function lookupPackageId(id: string, env: Env): Promise<object | null> {
+  const { basePath, publisher, packageRest } = parsePackageId(id);
+  const resp = await ghFetch(`${WINGET_PKGS_API}/contents/${basePath}`, env);
+  if (!resp.ok) return null;
+  const entries = (await resp.json()) as any[];
+  const versions = entries
+    .filter((e) => e.type === "dir")
+    .map((e) => e.name)
+    .sort((a, b) => compareVersions(b, a));
+  if (versions.length === 0) return null;
+  return {
+    PackageIdentifier: id,
+    PackageName: packageRest.replace(/\./g, " "),
+    Publisher: publisher,
+    Versions: versions.slice(0, 10).map((v) => ({ PackageVersion: v })),
+  };
+}
+
 async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   const seen = new Map<string, string>();
   const kw = keyword.toLowerCase();
@@ -262,13 +284,28 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
       }
     }
     if (matched.size) {
-      console.log(`keywordSearch: index hit, matched=${matched.size} for "${keyword}"`);
-      return [...matched.entries()].map(([id, version]) => ({
-        PackageIdentifier: id,
-        PackageName: id.split(".").slice(1).join(" "),
-        Publisher: id.split(".")[0],
-        Versions: version ? [{ PackageVersion: version }] : [],
-      }));
+      const results: object[] = [];
+      for (const [id, version] of matched) {
+        if (!version) {
+          // Light index entry with no version (shouldn't happen) — fetch the
+          // real version from GitHub so we never emit empty Versions (which
+          // winget rejects with 0x8a150039 "invalid data").
+          const entry = await lookupPackageId(id, env);
+          if (entry) results.push(entry);
+          continue;
+        }
+        results.push({
+          PackageIdentifier: id,
+          PackageName: id.split(".").slice(1).join(" "),
+          Publisher: id.split(".")[0],
+          Versions: [{ PackageVersion: version }],
+        });
+      }
+      if (results.length) {
+        console.log(`keywordSearch: index hit, matched=${matched.size} for "${keyword}"`);
+        return results;
+      }
+      console.log(`keywordSearch: index had no versions, falling back to enumeration`);
     }
     console.log(`keywordSearch: index miss for "${keyword}" — falling back to enumeration`);
   }
@@ -336,25 +373,6 @@ async function handleManifestSearch(
   const inclusions: any[] = body?.Inclusions ?? [];
   const query = body?.Query;
 
-  // ── Helper: look up a package ID in winget-pkgs and return a Data entry ────
-  async function lookupPackageId(id: string): Promise<object | null> {
-    const { basePath, publisher, packageRest } = parsePackageId(id);
-    const resp = await ghFetch(`${WINGET_PKGS_API}/contents/${basePath}`, env);
-    if (!resp.ok) return null;
-    const entries = (await resp.json()) as any[];
-    const versions = entries
-      .filter((e) => e.type === "dir")
-      .map((e) => e.name)
-      .sort((a, b) => compareVersions(b, a));
-    if (versions.length === 0) return null;
-    return {
-      PackageIdentifier: id,
-      PackageName: packageRest.replace(/\./g, " "),
-      Publisher: publisher,
-      Versions: versions.slice(0, 10).map((v) => ({ PackageVersion: v })),
-    };
-  }
-
   // ── Case 1: PackageIdentifier filter/inclusion ───────────────────────────
   // Only treat as a real id lookup when the value contains a dot. winget
   // sometimes sends a bare keyword (e.g. "HandBrake") under the
@@ -372,7 +390,7 @@ async function handleManifestSearch(
   if (idFilter) {
     const id: string = idFilter.RequestMatch.KeyWord;
     console.log("manifestSearch: looking up package id:", id);
-    const entry = await lookupPackageId(id);
+    const entry = await lookupPackageId(id, env);
     if (entry) {
       const result = { Data: [entry] };
       console.log("manifestSearch response:", JSON.stringify(result));
@@ -395,7 +413,7 @@ async function handleManifestSearch(
   if (keyword) {
     // If keyword looks like a PackageIdentifier (Publisher.Package), try direct lookup first
     if (/^[A-Za-z0-9_-]+\.[A-Za-z0-9._-]+$/.test(keyword)) {
-      const entry = await lookupPackageId(keyword);
+      const entry = await lookupPackageId(keyword, env);
       if (entry) {
         return Response.json({ Data: [entry] });
       }

@@ -34,11 +34,23 @@ git -C "$TMP/repo" ls-tree -r HEAD --name-only -- 'manifests/' \
     {
       nf = split($0, f, "/");
       if (f[1] != "manifests") next;
-      # versioned manifest: manifests/{l}/{Publisher}/{PackageIdentifier}/{Version}/{file}
-      # f[4] is already the full PackageIdentifier (e.g. "HandBrake.HandBrake")
+      # versioned manifest path:
+      #   manifests/{l}/{Publisher}/{PackageIdentifier-with-dots-as-slashes}/{Version}/{file}
+      # The PackageIdentifier is NOT a single directory component — the package
+      # directory is only the package portion (publisher prefix stripped), and
+      # for multi-component packages the dots become slashes. The canonical
+      # full PackageIdentifier lives in the manifest FILENAME, so recover it
+      # from there:
+      #   manifests/h/HandBrake/HandBrake/1.11.2/HandBrake.HandBrake.installer.yaml
+      #                                                      ^^^^^^^^^^^^^^^^^^^ id
       if (nf >= 6) {
-        id = f[4];
-        ver = f[5];
+        fn = f[nf];
+        sub(/\.yaml$/, "", fn);
+        sub(/\.installer$/, "", fn);
+        sub(/\.defaultLocale$/, "", fn);
+        sub(/\.locale\.[^.]+$/, "", fn);
+        id = fn;
+        ver = f[nf - 1];
         if ((id in latest) == 0 || vcmp(ver, latest[id]) > 0) latest[id] = ver;
       }
     }
