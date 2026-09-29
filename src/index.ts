@@ -19,8 +19,13 @@
  *
  * Usage:
  *   winget source add --name winget-cn \
- *     --arg https://winget.cn.lihongjie.cn \
+ *     --arg https://<your-worker-subdomain>.workers.dev \
  *     --type Microsoft.Rest
+ *
+ * Configure the installer mirror via the MIRROR env var (wrangler.toml [vars]
+ * or a secret). It must accept the path form:
+ *   <MIRROR>/https://github.com/owner/repo/...
+ * e.g. https://gh-proxy.org
  */
 import * as jsyaml from "js-yaml";
 
@@ -490,7 +495,7 @@ async function handlePackageManifest(
 
 // ─── Landing page ─────────────────────────────────────────────────────────────
 
-function landingPage(intlHost: string, cnHost: string): Response {
+function landingPage(host: string, mirror: string): Response {
   const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -537,24 +542,24 @@ function landingPage(intlHost: string, cnHost: string): Response {
 <div class="container">
   <header>
     <h1>📦 Winget 镜像代理</h1>
-    <p>基于 Cloudflare Workers · 加速 Windows Package Manager 安装器下载</p>
+    <p>基于 Cloudflare Workers 的自建 winget 源（Microsoft.Rest）· 自动将 GitHub 安装包地址改写为国内镜像（gh-proxy 等），安装器由客户端直连镜像下载，国内拉取飞快。</p>
     <div class="badge-row">
-      <span class="badge">🌐 国际线路：<code>${intlHost}</code></span>
-      <span class="badge">🇨🇳 国内优选：<code>${cnHost}</code></span>
+      <span class="badge">🌐 镜像源地址：<code>${host}</code></span>
+      <span class="badge">🇨🇳 安装器镜像：<code>${mirror}</code></span>
     </div>
   </header>
 
   <!-- Quick Start -->
   <div class="card">
     <h2>🚀 快速开始（推荐：Microsoft.Rest 模式）</h2>
-    <div class="alert">⚡ 新版使用 <code>Microsoft.Rest</code> 源类型，安装器下载地址会通过本代理加速，真正解决国内下载慢的问题。</div>
+    <div class="alert">⚡ 新版使用 <code>Microsoft.Rest</code> 源类型，安装器下载地址会自动改写为 MIRROR 镜像（如 gh-proxy.org），由客户端<b>直连镜像</b>下载，真正解决国内下载慢的问题。</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
           <p>添加镜像源（国内优选推荐）：</p>
           <div class="code-block">
-            <pre>winget source add --name winget-cn --arg https://${cnHost} --type Microsoft.Rest</pre>
+            <pre>winget source add --name winget-cn --arg https://${host} --type Microsoft.Rest</pre>
             <button class="btn" onclick="copyBlock(this)">复制</button>
           </div>
         </div>
@@ -604,7 +609,7 @@ winget install SublimeHQ.SublimeText.4 --source winget-cn</pre>
         <div class="step-body">
           <p>以相同名称添加镜像源：</p>
           <div class="code-block">
-            <pre>winget source add --name winget --arg https://${cnHost} --type Microsoft.Rest</pre>
+            <pre>winget source add --name winget --arg https://${host} --type Microsoft.Rest</pre>
             <button class="btn" onclick="copyBlock(this)">复制</button>
           </div>
         </div>
@@ -675,7 +680,7 @@ export default {
 
     // Landing page
     if (pathname === "/" || pathname === "") {
-      return landingPage("winget.lihongjie.cn", "winget.cn.lihongjie.cn");
+      return landingPage(url.host, mirror);
     }
 
     // ── Microsoft.Rest API endpoints ────────────────────────────────────────
