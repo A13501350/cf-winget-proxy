@@ -203,6 +203,61 @@ function handleInformation(): Response {
   });
 }
 
+// ─── Keyword search (directory enumeration) ──────────────────────────────────
+// GitHub code search (/search/code) is unreliable for the enormous winget-pkgs
+// repo — it frequently returns 0 hits for packages that genuinely exist (e.g.
+// "HandBrake"). Instead we enumerate the publisher directory under the keyword's
+// first letter and keep publishers whose name contains the keyword
+// ("HandBrake" -> publisher "HandBrake"). This reliably finds publisher-name
+// matches. Limitation: it will not find a package whose *name* matches but whose
+// *publisher* does not (e.g. searching "vscode" for Microsoft.VisualStudioCode).
+
+async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
+  const seen = new Map<string, string>();
+  const kw = keyword.toLowerCase();
+  const letter = keyword[0].toLowerCase();
+
+  const listUrl = `${WINGET_PKGS_API}/contents/manifests/${letter}`;
+  const lresp = await ghFetch(listUrl, env);
+  if (!lresp.ok) {
+    console.log(`keywordSearch: letter list failed status ${lresp.status} (letter=${letter})`);
+    return [];
+  }
+  const dirs = (await lresp.json()) as any[];
+  const pubs = (dirs ?? []).filter(
+    (d) => d.type === "dir" && d.name.toLowerCase().includes(kw)
+  );
+  console.log(`keywordSearch: letter=${letter}, dirs=${(dirs ?? []).length}, matchedPubs=${pubs.length}`);
+
+  // Cap to keep latency / API-call count reasonable on a cold cache.
+  for (const pub of pubs.slice(0, 20)) {
+    const pkgUrl = `${WINGET_PKGS_API}/contents/manifests/${letter}/${pub.name}`;
+    const presp = await ghFetch(pkgUrl, env);
+    if (!presp.ok) continue;
+    const pkgs = (await presp.json()) as any[];
+    for (const pkg of pkgs.filter((p) => p.type === "dir").slice(0, 20)) {
+      const id = `${pub.name}.${pkg.name}`;
+      if (seen.has(id)) continue;
+      const vUrl = `${WINGET_PKGS_API}/contents/manifests/${letter}/${pub.name}/${pkg.name}`;
+      const vresp = await ghFetch(vUrl, env);
+      if (!vresp.ok) continue;
+      const vers = ((await vresp.json()) as any[])
+        .filter((e) => e.type === "dir")
+        .map((e) => e.name)
+        .sort(compareVersions)
+        .reverse();
+      if (vers.length) seen.set(id, vers[0]);
+    }
+  }
+
+  return [...seen.entries()].map(([id, version]) => ({
+    PackageIdentifier: id,
+    PackageName: id.split(".").slice(1).join(" "),
+    Publisher: id.split(".")[0],
+    Versions: [{ PackageVersion: version }],
+  }));
+}
+
 // ─── REST API: POST /manifestSearch ──────────────────────────────────────────
 
 async function handleManifestSearch(
@@ -222,7 +277,6 @@ async function handleManifestSearch(
   const filters: any[] = body?.Filters ?? [];
   const inclusions: any[] = body?.Inclusions ?? [];
   const query = body?.Query;
-  const maxResults: number = body?.MaximumResults ?? 20;
 
   // ── Helper: look up a package ID in winget-pkgs and return a Data entry ────
   async function lookupPackageId(id: string): Promise<object | null> {
@@ -289,41 +343,11 @@ async function handleManifestSearch(
       }
     }
 
-    // Fall back to GitHub code search (rate-limited: 10/min unauthenticated)
-    const searchUrl =
-      `https://api.github.com/search/code` +
-      `?q=${encodeURIComponent(keyword)}+repo:microsoft/winget-pkgs+path:manifests` +
-      `&per_page=${Math.min(maxResults, 10)}`;
-    const resp = await ghFetch(searchUrl, env);
-    if (resp.ok) {
-      const data = (await resp.json()) as any;
-      const items = data.items ?? [];
-      console.log(`manifestSearch (code): ok, ${items.length} raw hits for "${keyword}"`);
-      const seen = new Map<string, string>();
-      for (const item of items) {
-        // path: manifests/{l}/{Publisher}/{Package}/{version}/...
-        const m = item.path?.match(
-          /^manifests\/[a-z]\/([^/]+)\/([^/]+)\/([^/]+)\//
-        );
-        if (m) {
-          const id = `${m[1]}.${m[2]}`;
-          if (!seen.has(id)) seen.set(id, m[3]);
-        }
-      }
-      const results = [...seen.entries()]
-        .slice(0, maxResults)
-        .map(([id, version]) => ({
-          PackageIdentifier: id,
-          PackageName: id.split(".").slice(1).join(" "),
-          Publisher: id.split(".")[0],
-          Versions: [{ PackageVersion: version }],
-        }));
+    // Keyword search via publisher-directory enumeration (GitHub code search is
+    // unreliable for winget-pkgs, so we don't use it).
+    const results = await keywordSearch(keyword, env);
+    if (results.length) {
       return Response.json({ Data: results });
-    } else {
-      console.log(
-        `manifestSearch (code): FAILED status ${resp.status} for "${keyword}" ` +
-          `(likely GitHub rate limit — set GITHUB_TOKEN via "wrangler secret put")`
-      );
     }
   }
 
