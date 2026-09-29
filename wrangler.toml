@@ -10,3 +10,8 @@ MIRROR = "https://gh-proxy.org"
 # For higher GitHub API rate limits (search / version listing), set a token:
 #   wrangler secret put GITHUB_TOKEN
 # (do NOT put the token here in plaintext; use the secret store above)
+
+[[cache_namespaces]]
+binding = "WINGET_CACHE"
+# Edge cache for the worker's outbound GitHub requests (directory listings,
+# version enumerations, manifest YAML). Cuts GitHub API rate-limit pressure.
