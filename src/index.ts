@@ -33,8 +33,15 @@ import * as jsyaml from "js-yaml";
 
 const UPSTREAM_CDN = "https://cdn.winget.microsoft.com";
 const WINGET_PKGS_API = "https://api.github.com/repos/microsoft/winget-pkgs";
-// YAML manifest files: raw.githubusercontent.com (not subject to api.github.com rate limits)
-const WINGET_PKGS_MANIFEST_BASE = "https://raw.githubusercontent.com/microsoft/winget-pkgs/master";
+// YAML manifest files. Prefer jsDelivr's CDN (cdn.jsdelivr.net/gh/...@master):
+// it is purpose-built for serving repo files, has a global edge cache, and — unlike
+// raw.githubusercontent.com — does NOT rate-limit Cloudflare Workers' shared egress
+// IPs. A transient 429 from raw.githubusercontent previously returned an empty body
+// that the cf cache then pinned for an hour, producing manifests with Installers:[]
+// (winget install dies with 0x8a150039). We only fall back to raw.githubusercontent
+// if jsDelivr is unreachable.
+const JSDLV_MANIFEST_BASE = "https://cdn.jsdelivr.net/gh/microsoft/winget-pkgs@master";
+const RAW_MANIFEST_BASE = "https://raw.githubusercontent.com/microsoft/winget-pkgs/master";
 
 // Domain-like path prefix: /download.example.com/path  (requires at least one dot)
 const DOMAIN_PREFIX_RE = /^\/([a-zA-Z0-9][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9][a-zA-Z0-9-]*)+)(\/.*)?$/;
@@ -162,6 +169,40 @@ async function ghFetch(url: string, env: Env): Promise<Response> {
       cacheTtlByStatus: { "200-299": 1800, "300-399": 1800, "400-599": 0 },
     },
   });
+}
+
+// Fetch a manifest YAML file, trying jsDelivr first then raw.githubusercontent.
+// Returns the text body, or null if every source failed or returned an empty body.
+// Error/empty responses are never edge-cached (cacheTtlByStatus 400-599:0) so a
+// transient upstream failure can't be pinned for an hour like it could with a
+// fixed cacheTtl.
+async function fetchManifestFile(
+  versionPath: string,
+  filename: string
+): Promise<string | null> {
+  const candidates = [
+    `${JSDLV_MANIFEST_BASE}/${versionPath}/${filename}`,
+    `${RAW_MANIFEST_BASE}/${versionPath}/${filename}`,
+  ];
+  for (const url of candidates) {
+    try {
+      const r = await fetch(url, {
+        headers: { "User-Agent": "winget-cn-proxy/2.0" },
+        // @ts-ignore — CF Workers cf option for edge caching.
+        cf: {
+          cacheEverything: true,
+          cacheTtlByStatus: { "200-299": 3600, "400-599": 0 },
+        },
+      });
+      if (r.ok) {
+        const t = await r.text();
+        if (t && t.trim().length) return t;
+      }
+    } catch {
+      // try next candidate
+    }
+  }
+  return null;
 }
 
 // ─── Package ID helpers ───────────────────────────────────────────────────────
@@ -445,63 +486,57 @@ async function handlePackageManifest(
   if (requestedVersion) {
     version = requestedVersion;
   } else {
-    const resp = await ghFetch(`${WINGET_PKGS_API}/contents/${basePath}`, env);
-    if (!resp.ok) {
-      return Response.json(
-        { ErrorCode: 404, ErrorMessage: `Package not found: ${id}` },
-        { status: 404 }
-      );
+    // Resolve the latest version. Prefer the prebuilt index (no GitHub API call,
+    // no rate limit). Fall back to the GitHub contents API only if the package
+    // isn't in the index (brand-new, or index miss).
+    const index = await getIndex(env);
+    const hit = index?.find((e) => e.id === id);
+    if (hit?.v) {
+      version = hit.v;
+    } else {
+      const resp = await ghFetch(`${WINGET_PKGS_API}/contents/${basePath}`, env);
+      if (!resp.ok) {
+        return Response.json(
+          { ErrorCode: 404, ErrorMessage: `Package not found: ${id}` },
+          { status: 404 }
+        );
+      }
+      const entries = (await resp.json()) as any[];
+      const versions = entries
+        .filter((e) => e.type === "dir")
+        .map((e) => e.name)
+        .sort((a, b) => compareVersions(b, a));
+      if (versions.length === 0) {
+        return Response.json(
+          { ErrorCode: 404, ErrorMessage: `No versions found: ${id}` },
+          { status: 404 }
+        );
+      }
+      version = versions[0];
     }
-    const entries = (await resp.json()) as any[];
-    const versions = entries
-      .filter((e) => e.type === "dir")
-      .map((e) => e.name)
-      .sort((a, b) => compareVersions(b, a));
-    if (versions.length === 0) {
-      return Response.json(
-        { ErrorCode: 404, ErrorMessage: `No versions found: ${id}` },
-        { status: 404 }
-      );
-    }
-    version = versions[0];
   }
 
   const versionPath = `${basePath}/${version}`;
-  const cdnBase = `${WINGET_PKGS_MANIFEST_BASE}/${versionPath}`;
 
-  // Fetch installer YAML from Microsoft CDN (same path as GitHub, no API rate limits)
-  const installerUrl = `${cdnBase}/${id}.installer.yaml`;
-  let installerResp = await fetch(installerUrl, {
-    headers: { "User-Agent": "winget-cn-proxy/2.0" },
-    // @ts-ignore
-    cf: { cacheEverything: true, cacheTtl: 3600 },
-  });
-  let installerYaml: string;
+  // Fetch installer YAML: try the multi-file ".installer.yaml" first, then the
+  // single combined ".yaml". Both are resolved via fetchManifestFile (jsDelivr
+  // prefer red, raw.githubusercontent fallback).
+  const installerYaml =
+    (await fetchManifestFile(versionPath, `${id}.installer.yaml`)) ??
+    (await fetchManifestFile(versionPath, `${id}.yaml`));
 
-  if (installerResp.ok) {
-    installerYaml = await installerResp.text();
-  } else {
-    const singleResp = await fetch(`${cdnBase}/${id}.yaml`, {
-      headers: { "User-Agent": "winget-cn-proxy/2.0" },
-      // @ts-ignore
-      cf: { cacheEverything: true, cacheTtl: 3600 },
-    });
-    if (!singleResp.ok) {
-      return Response.json(
-        { ErrorCode: 404, ErrorMessage: `Manifest not found: ${id}@${version}` },
-        { status: 404 }
-      );
-    }
-    installerYaml = await singleResp.text();
+  if (!installerYaml) {
+    return Response.json(
+      { ErrorCode: 404, ErrorMessage: `Manifest not found: ${id}@${version}` },
+      { status: 404 }
+    );
   }
 
-  // Fetch locale YAML for display metadata
-  const localeResp = await fetch(`${cdnBase}/${id}.locale.en-US.yaml`, {
-    headers: { "User-Agent": "winget-cn-proxy/2.0" },
-    // @ts-ignore
-    cf: { cacheEverything: true, cacheTtl: 3600 },
-  });
-  const localeYaml = localeResp.ok ? await localeResp.text() : null;
+  // Fetch locale YAML for display metadata (optional; null if absent).
+  const localeYaml = await fetchManifestFile(
+    versionPath,
+    `${id}.locale.en-US.yaml`
+  );
 
   // Parse YAMLs
   let installerDoc: any = {};
