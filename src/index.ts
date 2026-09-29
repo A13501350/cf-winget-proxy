@@ -296,7 +296,23 @@ async function handleManifestSearch(
           Publisher: id.split(".")[0],
           Versions: [{ PackageVersion: version }],
         }));
-      return Response.json({ Data: results });
+      // DEBUG: surface the raw keyword-search payload so we can see which
+      // field is empty when winget reports "Missing required package fields".
+      console.log(
+        "manifestSearch keyword response:",
+        JSON.stringify({ items: data.items?.length, results })
+      );
+      // Defensive: drop any result missing a required non-empty field so the
+      // whole search doesn't get rejected by the client.
+      const clean = results.filter(
+        (r) =>
+          r.PackageIdentifier &&
+          r.PackageName &&
+          r.Publisher &&
+          r.Versions?.length &&
+          r.Versions[0]?.PackageVersion
+      );
+      return Response.json({ Data: clean });
     }
   }
 
