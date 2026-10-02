@@ -91,20 +91,37 @@ winget upgrade --all
 
 ## 搜索
 
-`Microsoft.Rest` 源没有官方那种全文索引。本 Worker 的搜索策略：
+搜索完全走**预建索引**，正常路径**一次 GitHub API 都不发**：
 
-1. **精确 ID**（`Publisher.Package`，带点）：直接查 `winget-pkgs` 目录，返回版本列表。
-2. **关键词**：GitHub 代码搜索（`/search/code`）对 `winget-pkgs` 这种巨型仓库**经常返回 0 命中**，
-   因此改为**枚举目录**：列出 `manifests/{关键词首字母}` 下的 publisher 目录，过滤名字包含关键词者，
-   再逐级解析其最新版本。
+1. **精确 ID**（`Publisher.Package`，带点）：在 `index.json` 里直接查到最新版本。
+2. **关键词**：对 `index.json`（15230 个包，每天由 Action 重建）做 id 子串 + 归一化子串匹配。
+3. **依赖解析**（`ProductCode`）：剥掉 `_microsoft.winget.source_…` 后缀还原 id，同样走索引。
+
+只有索引确实没命中时，才会回落到 `manifests/{首字母}` 目录枚举；该回落**有硬预算**
+（1 + 2×6 次 Contents API 请求，并发发出），且只接受首字母为 ASCII 的关键词。
 
 ### 已知限制
 
-- 关键词搜索只能匹配 **publisher 名** 包含关键词的包。
-  - ✅ `winget show HandBrake` 能命中（publisher 就是 `HandBrake`）。
-  - ❌ `winget show vscode` 命中不了（`Microsoft.VisualStudioCode` 的 publisher 是 `Microsoft`）。
-  - 「包名命中、publisher 不命中」的场景需要额外索引，暂未实现。
-- 目录枚举对首字母目录过大的 publisher（如 `m`）受 GitHub 单目录 1000 条上限影响，可能截断。
+- 索引按 **PackageIdentifier** 匹配，不含 moniker / display name。
+  - ✅ `winget show visualstudiocode`、`winget search vscode` 能命中（id 子串）。
+  - ❌ 只有 moniker 能命中的包（如 `VideoLAN.VLC` 之外的某些别名）仍会走枚举回落。
+  - 彻底消掉这条路需要给索引加 moniker 字段（要逐仓库扫 YAML，暂未做）。
+- 每天 04:23 UTC 重建索引，因此当天新提交的包查不到（可手动触发 workflow）。
+
+### 自检
+
+```bash
+npm run test:index    # 解析器单测 + index.json 完整性 + 索引命中率（全离线）
+npm run typecheck     # tsc --noEmit
+npm run test:worker   # esbuild 打包 Worker，用 stub fetch（api.github.com 一律 403）跑 15 个用例
+```
+
+`test:worker` 断言的是「**0 次 GitHub API 调用**」，所以它同时是搜索路径的回归闸门：
+任何改动若把查询重新推上 Contents API，这条命令就会红。
+`deploy.yml` 部署前跑全部三条；`build-index.yml` 重建索引前跑
+`scripts/test-index-parser.sh` + `node test_index_search.mjs`（后者需要刚构建出的 `index.json`）。
+
+完整的 GitHub 请求点与限流/延迟分析见 [docs/github-requests.md](docs/github-requests.md)。
 
 ## 调试
 
@@ -115,7 +132,8 @@ wrangler tail
 Worker 会打印：
 
 - `manifestSearch body: ...` —— winget 发来的搜索请求原始体；
-- `keywordSearch: letter=h, dirs=N, matchedPubs=M` —— 目录枚举搜索的中间结果；
+- `keywordSearch: index hit, matched=N for "..."` / `index miss ... falling back to enumeration` —— 是否命中索引；
+- `keywordSearch: letter=h, dirs=N, probingPubs=M` —— 枚举回落的中间结果（最多 6 个 publisher）；
 - `manifestSearch: no results (empty Data)` —— 确实没找到。
 
 ## 环境变量

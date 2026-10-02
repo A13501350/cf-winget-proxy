@@ -11,11 +11,8 @@
  *   POST /manifestSearch          → package search (exact ID + keyword)
  *   GET  /packageManifests/{id}   → package manifest with rewritten InstallerUrl
  *
- * Generic installer download proxy:
- *   GET  /<hostname>/path         → https://<hostname>/path  (transparent proxy)
- *
- * Legacy PreIndexed proxy (transparent, no manifest rewriting):
- *   GET  /cache/**                → cdn.winget.microsoft.com
+ * Generic installer downloads are NOT proxied: InstallerUrl values are rewritten
+ * to the MIRROR and the client fetches them from the mirror directly.
  *
  * Usage:
  *   winget source add --name winget-cn \
@@ -31,7 +28,6 @@ import * as jsyaml from "js-yaml";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const UPSTREAM_CDN = "https://cdn.winget.microsoft.com";
 const WINGET_PKGS_API = "https://api.github.com/repos/microsoft/winget-pkgs";
 // YAML manifest files. Prefer jsDelivr's CDN (cdn.jsdelivr.net/gh/...@master):
 // it is purpose-built for serving repo files, has a global edge cache, and — unlike
@@ -42,15 +38,6 @@ const WINGET_PKGS_API = "https://api.github.com/repos/microsoft/winget-pkgs";
 // if jsDelivr is unreachable.
 const JSDLV_MANIFEST_BASE = "https://cdn.jsdelivr.net/gh/microsoft/winget-pkgs@master";
 const RAW_MANIFEST_BASE = "https://raw.githubusercontent.com/microsoft/winget-pkgs/master";
-
-// Domain-like path prefix: /download.example.com/path  (requires at least one dot)
-const DOMAIN_PREFIX_RE = /^\/([a-zA-Z0-9][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9][a-zA-Z0-9-]*)+)(\/.*)?$/;
-
-const HOP_BY_HOP = new Set([
-  "host", "connection", "keep-alive", "proxy-authenticate",
-  "proxy-authorization", "te", "trailers", "transfer-encoding", "upgrade",
-  "proxy-connection",
-]);
 
 // ─── Environment ─────────────────────────────────────────────────────────────
 
@@ -66,14 +53,6 @@ interface Env {
 }
 
 // ─── HTTP helpers ────────────────────────────────────────────────────────────
-
-function stripHopByHop(headers: Headers): Headers {
-  const out = new Headers();
-  for (const [k, v] of headers) {
-    if (!HOP_BY_HOP.has(k.toLowerCase())) out.set(k, v);
-  }
-  return out;
-}
 
 // Rewrite only GitHub-hosted installer URLs to go through a ghproxy-style
 // mirror. Non-GitHub installers keep their original URL (winget downloads them
@@ -93,64 +72,11 @@ function rewriteInstallerUrl(url: string, mirror: string): string {
   return url;
 }
 
-// ─── Generic transparent proxy ───────────────────────────────────────────────
-
-async function proxyRequest(
-  request: Request,
-  targetUrl: string,
-  proxyBase: string
-): Promise<Response> {
-  const reqHeaders = stripHopByHop(request.headers);
-
-  const upstreamReq = new Request(targetUrl, {
-    method: request.method,
-    headers: reqHeaders,
-    body: ["GET", "HEAD"].includes(request.method) ? null : request.body,
-    redirect: "manual",
-    // @ts-ignore — Workers-specific streaming hint
-    duplex: "half",
-  });
-
-  let upstream: Response;
-  try {
-    upstream = await fetch(upstreamReq);
-  } catch (err) {
-    return new Response(`Upstream fetch failed: ${err}`, { status: 502 });
-  }
-
-  const respHeaders = stripHopByHop(upstream.headers);
-
-  // Rewrite 3xx Location to keep client inside the proxy
-  if (upstream.status >= 300 && upstream.status < 400) {
-    const loc = upstream.headers.get("location");
-    if (loc) {
-      try {
-        const resolved = new URL(loc, targetUrl);
-        if (resolved.protocol === "https:" || resolved.protocol === "http:") {
-          respHeaders.set(
-            "location",
-            `${proxyBase}/${resolved.host}${resolved.pathname}${resolved.search}${resolved.hash}`
-          );
-        }
-      } catch { /* leave as-is */ }
-    }
-    return new Response(null, {
-      status: upstream.status,
-      statusText: upstream.statusText,
-      headers: respHeaders,
-    });
-  }
-
-  return new Response(upstream.body, {
-    status: upstream.status,
-    statusText: upstream.statusText,
-    headers: respHeaders,
-  });
-}
-
 // ─── GitHub helper ────────────────────────────────────────────────────────────
 // Only used for directory listing (version enumeration). Responses are cached
-// at the CF edge for 30 minutes to stay well within the 60 req/hr rate limit.
+// at the CF edge to keep the request volume against api.github.com far below the
+// rate limit (60/h unauthenticated — and Cloudflare egress IPs are shared, so
+// that budget is not even ours alone; 5000/h with GITHUB_TOKEN).
 
 async function ghFetch(url: string, env: Env): Promise<Response> {
   const headers: Record<string, string> = {
@@ -161,12 +87,13 @@ async function ghFetch(url: string, env: Env): Promise<Response> {
   return fetch(url, {
     headers,
     // @ts-ignore: CF Workers cf option for edge-level caching.
-    // Do NOT cache error responses (e.g. a 403 rate-limit). Caching a failed
-    // code-search result for 30 min would make every later search for the same
-    // term silently fail until the cache expires.
+    // Errors are cached very briefly rather than at all: a 403 rate-limit must
+    // not be pinned (it would make every later search for the same term fail),
+    // but replaying it on every request while we are limited just burns the
+    // shared upstream budget faster. 60s bounds both.
     cf: {
       cacheEverything: true,
-      cacheTtlByStatus: { "200-299": 1800, "300-399": 1800, "400-599": 0 },
+      cacheTtlByStatus: { "200-399": 1800, "400-599": 60 },
     },
   });
 }
@@ -289,12 +216,32 @@ async function getIndex(env: Env): Promise<{ id: string; v: string }[] | null> {
   }
 }
 
-// Look up a PackageIdentifier in winget-pkgs and return a search Data entry.
-// Reconstructs the GitHub directory path from the id: the package portion's
-// dots map to directory slashes (e.g. OpenJS.Electron.33 →
-// manifests/o/OpenJS/Electron/33).
-async function lookupPackageId(id: string, env: Env): Promise<object | null> {
+// Return a search Data entry for a PackageIdentifier. The prebuilt index is
+// consulted first: it knows the package exists and its latest version, which is
+// all winget needs to then fetch a manifest. Only a package that is genuinely
+// absent from the index (published after the last index build) costs a GitHub
+// API call, to enumerate its version directories.
+async function lookupPackageId(
+  id: string,
+  env: Env,
+  requestedVersion?: string | null
+): Promise<object | null> {
   const { basePath, publisher, packageRest } = parsePackageId(id);
+  const index = await getIndex(env);
+  const hit =
+    index?.find((e) => e.id === id) ??
+    index?.find((e) => e.id.toLowerCase() === id.toLowerCase());
+  if (hit?.v) {
+    const versions = [hit.v];
+    if (requestedVersion && requestedVersion !== hit.v) versions.push(requestedVersion);
+    return {
+      PackageIdentifier: hit.id,
+      PackageName: packageRest.replace(/\./g, " "),
+      Publisher: publisher,
+      Versions: versions.map((v) => ({ PackageVersion: v })),
+    };
+  }
+
   const resp = await ghFetch(`${WINGET_PKGS_API}/contents/${basePath}`, env);
   if (!resp.ok) return null;
   const entries = (await resp.json()) as any[];
@@ -311,53 +258,131 @@ async function lookupPackageId(id: string, env: Env): Promise<object | null> {
   };
 }
 
-async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
-  const seen = new Map<string, string>();
-  const kw = keyword.toLowerCase();
+// The enumeration fallback is the ONLY thing that can burn the GitHub API
+// budget, so it is bounded hard: at most 1 letter listing + ENUM_PUBLISHERS
+// publisher listings + ENUM_PUBLISHERS·ENUM_PACKAGES package listings per cold
+// query, each level fetched concurrently. Worst case ≈ 1 + 6 + 36 = 43 calls,
+// i.e. usable inside the 60/h unauthenticated budget even in one burst (and
+// Cloudflare's shared egress IP means that budget is not ours alone).
+const ENUM_PUBLISHERS = 6;
+const ENUM_PACKAGES = 6;
 
-  // 1) Full prebuilt index (if configured). Matched by substring on id.
+// Directory enumeration is keyed off manifests/{first letter}/{Publisher}/…, so
+// it can only work for an ASCII-letter keyword. Anything else (digits, CJK,
+// empty) must not reach the API at all.
+function isEnumerableKeyword(kw: string): boolean {
+  return /^[a-z]/.test(kw);
+}
+
+// Search results only need the four fields winget's deserializer requires; the
+// full display metadata comes later from /packageManifests.
+function toSearchResults(matched: Map<string, string>): object[] {
+  const out: object[] = [];
+  for (const [id, version] of matched) {
+    out.push({
+      PackageIdentifier: id,
+      PackageName: id.split(".").slice(1).join(" "),
+      Publisher: id.split(".")[0],
+      Versions: [{ PackageVersion: version }],
+    });
+  }
+  return out;
+}
+
+// Match quality, lowest number wins. Truncation keeps the best matches.
+const P_EXACT = 0;
+const P_ID_PREFIX = 1;
+const P_NORM_PREFIX = 2;
+const P_SUBSTRING = 3;
+const P_ABBREVIATION = 4;
+
+// Does `needle` appear as a character subsequence of `hay`? "vlc" is a
+// subsequence of "videolanvlc", and winget users type exactly these
+// abbreviations. This is the last tier, so it only runs when nothing matched.
+// Returns the end position of the tightest match, or -1 when there is none:
+// tighter means a better candidate when the tier is capped.
+function subsequenceEnd(needle: string, hay: string): number {
+  let i = 0;
+  for (let j = 0; j < hay.length; j++) {
+    if (hay[j] === needle[i]) {
+      i++;
+      if (i === needle.length) return j;
+    }
+  }
+  return -1;
+}
+
+const ABBREVIATION_MIN_LENGTH = 3;
+const MAX_KEYWORD_RESULTS = 200;
+// Subsequence hits are a weak signal; let them fill the screen but never swamp it.
+const MAX_ABBREVIATION_RESULTS = 40;
+
+async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
+  const kw = keyword.toLowerCase().trim();
+  if (!kw) return [];
+
+  // 1) Full prebuilt index, in five tiers of decreasing precision:
+  //      exact id → id prefix → normalized prefix → substring → abbreviation.
+  //    Answering here is what keeps a query off api.github.com. `winget search
+  //    vscode` used to reach enumeration because "vscode" is neither a substring
+  //    of nor a prefix of "microsoftvisualstudiocode"; the abbreviation tier
+  //    covers it locally.
   const index = await getIndex(env);
   if (index && index.length) {
-    const matched = new Map<string, string>();
-    const nkw = normalizeTerm(kw); // for NormalizedPackageNameAndPublisher-style queries
+    const nkw = normalizeTerm(kw);
+    const best = new Map<string, { v: string; p: number; t: number }>();
+    const consider = (id: string, v: string, p: number, t: number) => {
+      const cur = best.get(id);
+      if (!cur || p < cur.p || (p === cur.p && t < cur.t)) best.set(id, { v, p, t });
+    };
     for (const e of index) {
-      const rawHit = e.id.toLowerCase().includes(kw);
-      const normHit = nkw.length > 1 && normalizeTerm(e.id).includes(nkw);
-      if ((rawHit || normHit) && !matched.has(e.id)) {
-        matched.set(e.id, e.v ?? "");
+      if (!e.v) continue; // never emit empty Versions — winget rejects it (0x8a150039)
+      const lowerId = e.id.toLowerCase();
+      const nid = nkw.length > 1 ? normalizeTerm(e.id) : "";
+      if (lowerId === kw) consider(e.id, e.v, P_EXACT, lowerId.length);
+      else if (lowerId.startsWith(kw)) consider(e.id, e.v, P_ID_PREFIX, lowerId.length);
+      else if (nid && nid.startsWith(nkw)) consider(e.id, e.v, P_NORM_PREFIX, nid.length);
+      else if (lowerId.includes(kw) || (nid && nid.includes(nkw))) {
+        // earlier match position = more likely the package the user meant
+        const pos = Math.max(0, lowerId.indexOf(kw));
+        consider(e.id, e.v, P_SUBSTRING, pos * 1000 + lowerId.length);
+      } else if (nkw.length >= ABBREVIATION_MIN_LENGTH && nid) {
+        const end = subsequenceEnd(nkw, nid);
+        if (end >= 0) consider(e.id, e.v, P_ABBREVIATION, end);
       }
     }
-    if (matched.size) {
-      const results: object[] = [];
-      for (const [id, version] of matched) {
-        if (!version) {
-          // Light index entry with no version (shouldn't happen) — fetch the
-          // real version from GitHub so we never emit empty Versions (which
-          // winget rejects with 0x8a150039 "invalid data").
-          const entry = await lookupPackageId(id, env);
-          if (entry) results.push(entry);
-          continue;
+    if (best.size) {
+      const ranked = [...best.entries()].sort(
+        (a, b) => a[1].p - b[1].p || a[1].t - b[1].t || a[0].localeCompare(b[0])
+      );
+      // The abbreviation tier is a weak signal; cap it separately so a short
+      // keyword cannot flood the result list with subsequence noise.
+      const kept = new Map<string, string>();
+      let abbrevKept = 0;
+      for (const [id, e] of ranked) {
+        if (kept.size >= MAX_KEYWORD_RESULTS) break;
+        if (e.p === P_ABBREVIATION) {
+          if (abbrevKept >= MAX_ABBREVIATION_RESULTS) continue;
+          abbrevKept++;
         }
-        results.push({
-          PackageIdentifier: id,
-          PackageName: id.split(".").slice(1).join(" "),
-          Publisher: id.split(".")[0],
-          Versions: [{ PackageVersion: version }],
-        });
+        kept.set(id, e.v);
       }
-      if (results.length) {
-        console.log(`keywordSearch: index hit, matched=${matched.size} for "${keyword}"`);
-        return results;
-      }
-      console.log(`keywordSearch: index had no versions, falling back to enumeration`);
+      console.log(
+        `keywordSearch: index hit, matched=${best.size} (${ranked[0][1].p <= P_SUBSTRING ? "direct" : "abbreviation"}), returned=${kept.size} for "${keyword}"`
+      );
+      return toSearchResults(kept);
     }
     console.log(`keywordSearch: index miss for "${keyword}" — falling back to enumeration`);
   }
 
-  const letter = keyword[0].toLowerCase();
+  if (!isEnumerableKeyword(kw)) {
+    console.log(`keywordSearch: "${keyword}" is not enumerable (needs an ASCII first letter)`);
+    return [];
+  }
+  const letter = kw[0];
 
-  const listUrl = `${WINGET_PKGS_API}/contents/manifests/${letter}`;
-  const lresp = await ghFetch(listUrl, env);
+  // 2) Publisher-directory enumeration, bounded and concurrent.
+  const lresp = await ghFetch(`${WINGET_PKGS_API}/contents/manifests/${letter}`, env);
   if (!lresp.ok) {
     console.log(`keywordSearch: letter list failed status ${lresp.status} (letter=${letter})`);
     return [];
@@ -365,36 +390,46 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   const dirs = (await lresp.json()) as any[];
   const pubs = (dirs ?? []).filter(
     (d) => d.type === "dir" && d.name.toLowerCase().includes(kw)
-  );
-  console.log(`keywordSearch: letter=${letter}, dirs=${(dirs ?? []).length}, matchedPubs=${pubs.length}`);
+  ).slice(0, ENUM_PUBLISHERS);
+  console.log(`keywordSearch: letter=${letter}, dirs=${(dirs ?? []).length}, probingPubs=${pubs.length}`);
 
-  // Cap to keep latency / API-call count reasonable on a cold cache.
-  for (const pub of pubs.slice(0, 20)) {
-    const pkgUrl = `${WINGET_PKGS_API}/contents/manifests/${letter}/${pub.name}`;
-    const presp = await ghFetch(pkgUrl, env);
-    if (!presp.ok) continue;
-    const pkgs = (await presp.json()) as any[];
-    for (const pkg of pkgs.filter((p) => p.type === "dir").slice(0, 20)) {
-      const id = `${pub.name}.${pkg.name}`;
-      if (seen.has(id)) continue;
-      const vUrl = `${WINGET_PKGS_API}/contents/manifests/${letter}/${pub.name}/${pkg.name}`;
-      const vresp = await ghFetch(vUrl, env);
-      if (!vresp.ok) continue;
-      const vers = ((await vresp.json()) as any[])
+  const pkgLists = await Promise.all(
+    pubs.map(async (pub) => {
+      const r = await ghFetch(
+        `${WINGET_PKGS_API}/contents/manifests/${letter}/${pub.name}`, env);
+      if (!r.ok) return [];
+      const entries = ((await r.json()) as any[]).filter((p) => p.type === "dir");
+      return entries.slice(0, ENUM_PACKAGES).map((p) => ({ pub: pub.name, pkg: p.name }));
+    })
+  );
+
+  const wanted = new Map<string, string>();
+  for (const list of pkgLists) {
+    for (const { pub, pkg } of list) {
+      const id = `${pub}.${pkg}`;
+      if (!wanted.has(id)) wanted.set(id, `${letter}/${pub}/${pkg}`);
+    }
+  }
+
+  const versionLists = await Promise.all(
+    [...wanted.entries()].map(async ([id, dir]) => {
+      const r = await ghFetch(`${WINGET_PKGS_API}/contents/manifests/${dir}`, env);
+      if (!r.ok) return null;
+      const vers = ((await r.json()) as any[])
         .filter((e) => e.type === "dir")
         .map((e) => e.name)
         .sort(compareVersions)
         .reverse();
-      if (vers.length) seen.set(id, vers[0]);
-    }
+      return vers.length ? { id, version: vers[0] } : null;
+    })
+  );
+
+  const seen = new Map<string, string>();
+  for (const v of versionLists) {
+    if (v && !seen.has(v.id)) seen.set(v.id, v.version);
   }
 
-  return [...seen.entries()].map(([id, version]) => ({
-    PackageIdentifier: id,
-    PackageName: id.split(".").slice(1).join(" "),
-    Publisher: id.split(".")[0],
-    Versions: [{ PackageVersion: version }],
-  }));
+  return toSearchResults(seen);
 }
 
 // winget's ProductCode is "<PackageIdentifier>_<sourceId>", e.g.
@@ -448,17 +483,13 @@ async function handleManifestSearch(
     (f) => f.PackageMatchField === "ProductCode"
   )?.RequestMatch?.KeyWord;
   if (productCode) {
-    const rawId = stripProductCodeSuffix(productCode);
-    // winget LOWERCASES the PackageIdentifier inside a ProductCode, but the
+    // winget LOWERCASES the PackageIdentifier inside a ProductCode, while the
     // GitHub directory path is case-sensitive ("yt-dlp.FFmpeg" not "...ffmpeg").
-    // Resolve the canonical casing from the index before looking it up.
-    const index = await getIndex(env);
-    const canonical =
-      index?.find((e) => e.id.toLowerCase() === rawId.toLowerCase())?.id ??
-      rawId;
-    console.log("manifestSearch: productCode -> id:", productCode, "->", canonical);
-    if (canonical && canonical.includes(".")) {
-      const entry = await lookupPackageId(canonical, env);
+    // lookupPackageId resolves the canonical casing from the index.
+    const rawId = stripProductCodeSuffix(productCode);
+    console.log("manifestSearch: productCode -> id:", productCode, "->", rawId);
+    if (rawId && rawId.includes(".")) {
+      const entry = await lookupPackageId(rawId, env);
       if (entry) {
         const result = { Data: [entry] };
         console.log("manifestSearch response (productCode):", JSON.stringify(result));
@@ -855,7 +886,6 @@ winget upgrade --all</pre>
         <tr><td><code>POST /manifestSearch</code></td><td>包搜索，后端为 microsoft/winget-pkgs</td></tr>
         <tr><td><code>GET /packageManifests/{id}</code></td><td>包清单，InstallerUrl 自动重写为代理地址</td></tr>
         <tr><td><code>InstallerUrl</code></td><td>GitHub 链接被改写为 <code>MIRROR/https://github.com/...</code>，由客户端直连镜像下载（不经本 Worker）</td></tr>
-        <tr><td><code>GET /cache/**</code></td><td>CDN 索引透明代理（legacy）</td></tr>
       </tbody>
     </table>
   </div>
@@ -882,7 +912,7 @@ function copyBlock(btn) {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const { pathname, search } = url;
+    const { pathname } = url;
     const mirror = (env.MIRROR || "https://gh-proxy.org").replace(/\/+$/, "");
 
     // Landing page

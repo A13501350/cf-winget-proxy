@@ -2,4 +2,21 @@ node_modules/
 .wrangler/
 dist/
 *.log
-test_*.mjs
+
+# local scratch / test build output
+.build-test/
+.scratch/
+wrangler.dev.toml
+.qoder/settings.local.json
+
+# Regression guards are tracked (they used to be hidden by a `test_*.mjs`
+# ignore rule, so CI never ran them):
+#   test_index_search.mjs     - index hit rate, offline
+#   test_zero_github_calls.mjs- real bundled Worker vs a fetch stub that 403s
+#                               api.github.com; the assertion that matters here
+#                               is that nothing reaches GitHub at all.
+# These three predate that harness: they re-implement the logic inline instead
+# of importing it, so they pass even when the Worker is wrong.
+/test_search.mjs
+/test_manifest.mjs
+/test_rewrite.mjs

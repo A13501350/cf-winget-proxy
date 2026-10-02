@@ -4,11 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "build:test": "esbuild src/index.ts --bundle --format=esm --platform=node --external:js-yaml --outfile=.build-test/worker.mjs",
+    "test:worker": "npm run build:test && node test_zero_github_calls.mjs",
+    "test:index": "bash scripts/test-index-parser.sh && bash scripts/validate-index.sh && node test_index_search.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240725.0",
     "@types/js-yaml": "^4.0.9",
+    "esbuild": "^0.27.3",
     "typescript": "^5.5.2",
     "wrangler": "^4.0.0"
   },

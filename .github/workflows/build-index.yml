@@ -20,8 +20,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Test index path parser
+        run: bash scripts/test-index-parser.sh
+
       - name: Build index
         run: bash scripts/build-index.sh
+
+      # build-index.sh already refuses to emit a malformed table; this asks the
+      # stronger question — does the fresh index still answer real queries
+      # locally? A rebuild that silently drops coverage is what pushes live
+      # traffic back onto the rate-limited Contents API, and only a hit-rate
+      # check notices. Needs plain node, which the runner ships.
+      - name: Verify search hit rate
+        run: node test_index_search.mjs
 
       - name: Commit index.json
         run: |
