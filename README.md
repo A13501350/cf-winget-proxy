@@ -39,10 +39,14 @@ winget  ──REST(JSON)──▶  Cloudflare Worker  ──读 YAML──▶  m
 
 ## 部署
 
-推送到 `main` 即由 **Cloudflare Workers Builds**（GitHub App 集成，只看 `src/**` 与
-`wrangler.toml`）自动构建上线，因此 `.github/workflows/deploy.yml` 是**故意停用**的
-—— 它需要 `CLOUDFLARE_API_TOKEN`，而这条路径不需要。改动若不含 `src/**`，
-不会触发重建。
+推送到 `main` 即由 **Cloudflare Workers Builds**（GitHub App 集成）自动构建上线，
+因此 `.github/workflows/deploy.yml` 是**故意停用**的
+—— 它需要 `CLOUDFLARE_API_TOKEN`，而这条路径不需要。
+
+Builds **不筛路径**：任意文件的推送都会重建并上线，只改 README 和 `ci.yml` 的
+`d3c7507` 同样产出了新版本。所以别把「这次没动代码」当成不会影响线上的理由。
+唯一不重建的是提交信息带 `[skip ci]` —— 每天那条 `chore: update winget index` 就靠它
+不重复部署，因为索引是 Worker 运行时从 `INDEX_URL` 拉的，换索引内容不需要重新上线。
 
 手动部署（本地已 `wrangler login` 时）：
 
