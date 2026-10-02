@@ -102,33 +102,39 @@ winget upgrade --all
 
 ## 搜索
 
-搜索完全走**预建索引**，正常路径**一次 GitHub API 都不发**：
+只有一条路径：**预建索引 → 按索引取清单 → 改写 → 返回**。代码里不存在任何能打
+到 `api.github.com` 的调用（打包产物中该字符串出现 0 次）。
 
 1. **精确 ID**（`Publisher.Package`，带点）：在 `index.json` 里直接查到最新版本。
-2. **关键词**：对 `index.json`（15230 个包，每天由 Action 重建）做 id 子串 + 归一化子串匹配。
+2. **关键词**：对 `index.json`（15284 个包，每天由 Action 重建）做五档匹配，
+   精度从高到低：id 精确 → id 前缀 → 归一化前缀 → 子串 → 缩写子序列。
+   最后一档让 `vscode`、`vlc` 这类用户手写的别名也能本地命中。
 3. **依赖解析**（`ProductCode`）：剥掉 `_microsoft.winget.source_…` 后缀还原 id，同样走索引。
 
-只有索引确实没命中时，才会回落到 `manifests/{首字母}` 目录枚举；该回落**有硬预算**
-（1 + 2×6 次 Contents API 请求，并发发出），且只接受首字母为 ASCII 的关键词。
+**索引里没有就当没有**：搜索返回空 `Data`，`packageManifests/{id}`（未带 `?Version=`）
+返回 404。不做目录枚举回源 —— Contents API 未认证限额是 **60 次/小时且按 IP 计**，
+而 Cloudflare 的出口 IP 是和别的 worker 共享的，一次突发失败会让同 IP 上的所有用户
+一起不可用，比「查不到」更糟。
 
 ### 已知限制
 
-- 索引按 **PackageIdentifier** 匹配，不含 moniker / display name。
-  - ✅ `winget show visualstudiocode`、`winget search vscode` 能命中（id 子串）。
-  - ❌ 只有 moniker 能命中的包（如 `VideoLAN.VLC` 之外的某些别名）仍会走枚举回落。
-  - 彻底消掉这条路需要给索引加 moniker 字段（要逐仓库扫 YAML，暂未做）。
-- 每天 04:23 UTC 重建索引，因此当天新提交的包查不到（可手动触发 workflow）。
+- **新包隐身**：索引每天 04:23 UTC 重建，之后发布的包最坏 24 小时查不到
+  （可手动触发 workflow）。这是删掉回源后故意接受的唯一缺口。
+- 索引只含 `PackageIdentifier` + 最新版本，不含 moniker / display name。
+  id 里出现过的别名（`visualstudiocode`、缩写 `vscode`）能命中，
+  纯靠 moniker 区分的短词（裸 `code`）无法排序依据。
+  彻底解决要给索引加 moniker 字段（需逐仓库读 YAML，暂未做）。
 
 ### 自检
 
 ```bash
 npm run test:index    # 解析器单测 + index.json 完整性 + 索引命中率（全离线）
 npm run typecheck     # tsc --noEmit
-npm run test:worker   # esbuild 打包 Worker，用 stub fetch（api.github.com 一律 403）跑 15 个用例
+npm run test:worker   # esbuild 打包 Worker，用 stub fetch（任何 api.github.com 调用直接抛错）跑 16 个用例
 ```
 
-`test:worker` 断言的是「**0 次 GitHub API 调用**」，所以它同时是搜索路径的回归闸门：
-任何改动若把查询重新推上 Contents API，这条命令就会红。
+`test:worker` 里索引未命中的用例断言的是「0 结果 **且** 0 次 GitHub 调用」，
+所以任何回源代码一旦被加回来，这条命令会立刻抛 `unexpected GitHub API call` 变红。
 `ci.yml`（push/PR，不需要任何 secret）跑全部三条；`build-index.yml` 重建索引前跑
 `scripts/test-index-parser.sh` + `node test_index_search.mjs`（后者需要刚构建出的 `index.json`）。
 `deploy.yml` 是停用的（上线由 Cloudflare Workers Builds 负责），别指望它兜底。
@@ -144,8 +150,9 @@ wrangler tail
 Worker 会打印：
 
 - `manifestSearch body: ...` —— winget 发来的搜索请求原始体；
-- `keywordSearch: index hit, matched=N for "..."` / `index miss ... falling back to enumeration` —— 是否命中索引；
-- `keywordSearch: letter=h, dirs=N, probingPubs=M` —— 枚举回落的中间结果（最多 6 个 publisher）；
+- `manifestSearch: looking up package id: ...` / `productCode -> id: ...` —— 走 id 直查的路径；
+- `keywordSearch: index hit, matched=N (direct|abbreviation), returned=M for "..."` —— 命中索引第几档；
+- `keywordSearch: no index match for "..."` —— 索引里没有，直接返回空（不再回源）；
 - `manifestSearch: no results (empty Data)` —— 确实没找到。
 
 ## 环境变量
@@ -153,7 +160,7 @@ Worker 会打印：
 | 变量 | 必填 | 说明 |
 | --- | --- | --- |
 | `MIRROR` | 否 | 安装器镜像地址，如 `https://gh-proxy.org`；缺失时回退到该默认值 |
-| `GITHUB_TOKEN` | 否 | 提升 GitHub API 限流（目录枚举 / 版本列举） |
+| `GITHUB_TOKEN` | 否 | **当前无代码读取**（回源路径已删除），保留仅为日后接入用 |
 
 ## License
 

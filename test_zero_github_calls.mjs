@@ -11,7 +11,6 @@ const INDEX_BODY = readFileSync(new URL("./index.json", import.meta.url));
 
 const seen = [];
 const realFetch = globalThis.fetch;
-let allowGitHub = false;
 globalThis.fetch = (input, init) => {
   const url = typeof input === "string" ? input : input.url;
   seen.push(url);
@@ -19,10 +18,9 @@ globalThis.fetch = (input, init) => {
     return Promise.resolve(new Response(INDEX_BODY, { status: 200 }));
   }
   if (url.includes("api.github.com")) {
-    if (!allowGitHub) throw new Error("unexpected GitHub API call: " + url);
-    // Rate-limited upstream: answer fast and badly, so the bounded-enumeration
-    // assertion measures call count rather than wall-clock luck.
-    return Promise.resolve(new Response('{"message":"rate limit"}', { status: 403 }));
+    // There is no code path that is allowed to reach the GitHub API. Anything
+    // arriving here is a regression, so fail loudly instead of counting.
+    throw new Error("unexpected GitHub API call: " + url);
   }
   return realFetch(input, init);
 };
@@ -77,19 +75,26 @@ for (const [label, body, expectId] of cases) {
   console.log(`✅ ${label}: ${data.length} result(s), 0 GitHub calls`);
 }
 
-// ── 2. a keyword the index misses must enumerate, but within the hard budget ──
+// ── 2. an index miss is reported as "nothing found", not guessed at ──
+// The stub above throws on any api.github.com request, so this case failing with
+// "unexpected GitHub API call" is exactly the regression it guards: a fallback
+// creeping back in.
 reset();
-allowGitHub = true;
-try {
-  await search({ Query: { KeyWord: "zzqxvnope", MatchType: "Contains" } });
-} finally {
-  allowGitHub = false;
-}
-assert.ok(githubCalls() > 0, "expected enumeration to run on an index miss");
-assert.ok(githubCalls() <= 43, `enumeration exceeded its budget: ${githubCalls()} calls (cap 43)`);
-console.log(`✅ index miss enumerates within budget (${githubCalls()} calls ≤ 43)`);
+const missed = await search({ Query: { KeyWord: "zzqxvnope", MatchType: "Contains" } });
+assert.equal(missed.length, 0, `index miss returned ${missed.length} result(s)`);
+assert.equal(githubCalls(), 0, "index miss reached the GitHub API");
+console.log("✅ index miss: 0 result(s), 0 GitHub calls");
 
-// ── 3. keywords that cannot be enumerated must not reach the API at all ──
+// ── 2b. same for a manifest request with no version and no index entry ──
+reset();
+const missing = await worker.fetch(
+  new Request("http://worker.test/packageManifests/NoSuchPublisher.NoSuchPackage"), env, {}
+);
+assert.equal(missing.status, 404, `expected fail-close 404, got ${missing.status}`);
+assert.equal(githubCalls(), 0, "missing manifest reached the GitHub API");
+console.log("✅ packageManifests of an unindexed id: 404, 0 GitHub calls");
+
+// ── 3. odd-shaped keywords must not reach the API either ──
 for (const kw of ["七", "123pan", ""]) {
   reset();
   const data = await search({ Query: { KeyWord: kw, MatchType: "Contains" } });

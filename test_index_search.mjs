@@ -60,12 +60,3 @@ for (const junk of [".package", ".validation"]) {
   assert.ok(!entries.some((e) => e.id === junk), `index still contains ${junk}`);
 }
 console.log("✅ no publisher-less ids");
-
-// 4. a keyword that cannot be enumerated upstream must produce zero results
-//    rather than burning GitHub requests (ASCII-first-letter rule).
-for (const kw of ["七", "123pan", ""]) {
-  const letterOk = /^[a-z]/.test(kw.toLowerCase());
-  if (!letterOk) continue;
-  assert.fail(`unexpectedly enumerable: ${kw}`);
-}
-console.log("✅ non-ASCII / digit keywords are correctly non-enumerable");
