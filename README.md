@@ -39,6 +39,13 @@ winget  ──REST(JSON)──▶  Cloudflare Worker  ──读 YAML──▶  m
 
 ## 部署
 
+推送到 `main` 即由 **Cloudflare Workers Builds**（GitHub App 集成，只看 `src/**` 与
+`wrangler.toml`）自动构建上线，因此 `.github/workflows/deploy.yml` 是**故意停用**的
+—— 它需要 `CLOUDFLARE_API_TOKEN`，而这条路径不需要。改动若不含 `src/**`，
+不会触发重建。
+
+手动部署（本地已 `wrangler login` 时）：
+
 ```powershell
 npm install
 wrangler deploy
@@ -49,13 +56,17 @@ wrangler deploy
 ```toml
 name = "cf-winget-proxy"
 main = "src/index.ts"
-compatibility_date = "2024-07-25"
+compatibility_date = "2026-09-29"
 
 [vars]
 # 安装器镜像，必须支持路径形式：<MIRROR>/https://github.com/owner/repo/...
 # 安装器由客户端直接从此镜像下载（不经 Worker）。
 MIRROR = "https://gh-proxy.org"
 ```
+
+> 本地 `wrangler dev` 可能需要更旧的 `compatibility_date`（取决于本机 wrangler
+> 二进制支持的日期）。用一份 gitignore 掉的 `wrangler.dev.toml` 覆盖，
+> 不要为此改动提交里的值。
 
 可选，但强烈建议——目录枚举搜索会调用 GitHub contents API，设置后限流更宽松：
 
@@ -118,8 +129,9 @@ npm run test:worker   # esbuild 打包 Worker，用 stub fetch（api.github.com 
 
 `test:worker` 断言的是「**0 次 GitHub API 调用**」，所以它同时是搜索路径的回归闸门：
 任何改动若把查询重新推上 Contents API，这条命令就会红。
-`deploy.yml` 部署前跑全部三条；`build-index.yml` 重建索引前跑
+`ci.yml`（push/PR，不需要任何 secret）跑全部三条；`build-index.yml` 重建索引前跑
 `scripts/test-index-parser.sh` + `node test_index_search.mjs`（后者需要刚构建出的 `index.json`）。
+`deploy.yml` 是停用的（上线由 Cloudflare Workers Builds 负责），别指望它兜底。
 
 完整的 GitHub 请求点与限流/延迟分析见 [docs/github-requests.md](docs/github-requests.md)。
 

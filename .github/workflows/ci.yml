@@ -1,0 +1,42 @@
+name: CI
+
+# Tests only — no cloud access, so it needs no secrets.
+#
+# This exists because `wrangler deploy` is NOT driven from here: Cloudflare
+# Workers Builds watches the repo (src/** and wrangler.toml) and deploys on push,
+# which is why deploy.yml is disabled. Without this workflow the regression
+# guards would run nowhere at all — a broken search path would be built and
+# shipped by Cloudflare before anything noticed.
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Index integrity + does the index still answer real queries locally.
+      - name: Verify index
+        run: npm run test:index
+
+      # The assertion that matters: the bundled Worker reaches api.github.com
+      # zero times for indexed traffic. Fails if a change reopens the
+      # rate-limited Contents API path.
+      - name: Verify search hot path makes no GitHub calls
+        run: npm run test:worker
