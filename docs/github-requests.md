@@ -88,7 +88,7 @@ B1/B2 不是「回源」：`winget-pkgs` 本身就同时存在多文件布局和
    （`V1.33 - Rev. 87104`、`py310_23.5.2-0`）被「版本号必须像数字」的猜测规则误杀。
    → 改成：id 只认文件名后缀，再要求「路径重建出的 id == 文件名推出的 id」互相印证。
 
-重建后的索引：**15230** 条（当前随上游增长到 15284），与上游文件名集合完全一致
+重建后的索引：**15230** 条（之后每天重建，随上游增长到 1.5 万条上下），与上游文件名集合完全一致
 （0 真包丢失，+12 找回，-2 垃圾），
 `scripts/build-index.sh` 加了失败即退出的校验（条数下限、行格式、去重、C 转义残留），
 解析器拆到 `scripts/index-parser.awk` 并由 `scripts/test-index-parser.sh` 单测。
@@ -97,10 +97,12 @@ B1/B2 不是「回源」：`winget-pkgs` 本身就同时存在多文件布局和
 ## 5. 还能继续收敛的方向（未实施）
 
 1. 给索引加 `Moniker` / `PackageName` 字段（代价：build 要读 YAML，blobless 克隆省不了
-   流量，可改走 jsDelivr 批量拉 locale 文件）。删掉回源之后这件事的性质变了：
-   它不再影响「能不能查到」，只影响「排得准不准」—— 缩写（subsequence）那一档已经
-   保证 `vscode` → Microsoft.VisualStudioCode、`vlc` → VideoLAN.VLC 能命中，
-   但裸 `code` 会同时命中几十个包，谁在前没有依据。别名索引才是排序的正解。
+   流量，可改走 jsDelivr 批量拉 locale 文件）。这件事现在又影响「能不能查到」了：
+   原先顶着这活的缩写（subsequence）档已删除 —— 它能让 `vscode` →
+   `Microsoft.VisualStudioCode`，也能让 `sqlite3` → `SublimeText 3`，而后者是会被
+   `winget install` 真装错的假命中（客户端回推不出命中字段，显示 `UnknownMatchField:`）。
+   所以现在 `winget search vscode` 返回空，直到索引里有真正的 Moniker 列为止；
+   裸 `code` 那种「能命中但排不准」的问题要一并解决，还是得靠这列。
 2. B1/B3 并行 `Promise.all`，冷缓存延迟减半。
 3. 新包隐身窗口。现在是每天 04:23 UTC 重建一次，最坏 24 小时；一次完整重建实测只花
    约 20 秒，所以频率本身很便宜。但**同时**要把 `getIndex` 的 memo 与边缘 TTL（都是 1h）

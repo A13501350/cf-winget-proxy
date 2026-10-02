@@ -233,39 +233,27 @@ const P_EXACT = 0;
 const P_ID_PREFIX = 1;
 const P_NORM_PREFIX = 2;
 const P_SUBSTRING = 3;
-const P_ABBREVIATION = 4;
 
-// Does `needle` appear as a character subsequence of `hay`? "vlc" is a
-// subsequence of "videolanvlc", and winget users type exactly these
-// abbreviations. This is the last tier, so it only runs when nothing matched.
-// Returns the end position of the tightest match, or -1 when there is none:
-// tighter means a better candidate when the tier is capped.
-function subsequenceEnd(needle: string, hay: string): number {
-  let i = 0;
-  for (let j = 0; j < hay.length; j++) {
-    if (hay[j] === needle[i]) {
-      i++;
-      if (i === needle.length) return j;
-    }
-  }
-  return -1;
-}
-
-const ABBREVIATION_MIN_LENGTH = 3;
 const MAX_KEYWORD_RESULTS = 200;
-// Subsequence hits are a weak signal; let them fill the screen but never swamp it.
-const MAX_ABBREVIATION_RESULTS = 40;
 
 async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   const kw = keyword.toLowerCase().trim();
   if (!kw) return [];
 
-  // 1) Full prebuilt index, in five tiers of decreasing precision:
-  //      exact id → id prefix → normalized prefix → substring → abbreviation.
-  //    Answering here is what keeps a query off api.github.com. `winget search
-  //    vscode` used to reach enumeration because "vscode" is neither a substring
-  //    of nor a prefix of "microsoftvisualstudiocode"; the abbreviation tier
-  //    covers it locally.
+  // Four tiers of decreasing precision, all of them checks that `keyword`
+  // literally occurs in the id: exact → id prefix → normalized prefix →
+  // substring.
+  //
+  // Deliberately nothing weaker than that. A subsequence tier used to sit here
+  // to make "vscode" find Microsoft.VisualStudioCode, but it also returned
+  // SublimeText for "sqlite3" (s-q-l-i-t-e-3 scattered through
+  // "sublimehqsublimetext3"). winget re-derives the match column from the
+  // package's own properties (MatchCriteriaResolver.cpp FindBestMatchCriteria);
+  // when it finds none there it prints "UnknownMatchField:", and a package the
+  // client cannot attribute is a package it should not have been offered —
+  // `winget install <keyword>` would then offer the wrong thing to install.
+  // The official source never guesses either: "vscode" there hits the Moniker
+  // field, which is real data we do not have in the index yet.
   const index = await getIndex(env);
   if (index && index.length) {
     const nkw = normalizeTerm(kw);
@@ -285,30 +273,18 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
         // earlier match position = more likely the package the user meant
         const pos = Math.max(0, lowerId.indexOf(kw));
         consider(e.id, e.v, P_SUBSTRING, pos * 1000 + lowerId.length);
-      } else if (nkw.length >= ABBREVIATION_MIN_LENGTH && nid) {
-        const end = subsequenceEnd(nkw, nid);
-        if (end >= 0) consider(e.id, e.v, P_ABBREVIATION, end);
       }
     }
     if (best.size) {
       const ranked = [...best.entries()].sort(
         (a, b) => a[1].p - b[1].p || a[1].t - b[1].t || a[0].localeCompare(b[0])
       );
-      // The abbreviation tier is a weak signal; cap it separately so a short
-      // keyword cannot flood the result list with subsequence noise.
       const kept = new Map<string, string>();
-      let abbrevKept = 0;
       for (const [id, e] of ranked) {
         if (kept.size >= MAX_KEYWORD_RESULTS) break;
-        if (e.p === P_ABBREVIATION) {
-          if (abbrevKept >= MAX_ABBREVIATION_RESULTS) continue;
-          abbrevKept++;
-        }
         kept.set(id, e.v);
       }
-      console.log(
-        `keywordSearch: index hit, matched=${best.size} (${ranked[0][1].p <= P_SUBSTRING ? "direct" : "abbreviation"}), returned=${kept.size} for "${keyword}"`
-      );
+      console.log(`keywordSearch: index hit, matched=${best.size}, returned=${kept.size} for "${keyword}"`);
       return toSearchResults(kept);
     }
   }
@@ -693,7 +669,7 @@ winget install SublimeHQ.SublimeText.4 --source winget-cn</pre>
         <div class="step-body">
           <p>搜索软件包：</p>
           <div class="code-block">
-            <pre>winget search vscode --source winget-cn</pre>
+            <pre>winget search notepad --source winget-cn</pre>
             <button class="btn" onclick="copyBlock(this)">复制</button>
           </div>
         </div>

@@ -50,8 +50,7 @@ const reset = () => { seen.length = 0; };
 // ── 1. every query shape winget actually sends must be answered from the index ──
 const cases = [
   ["keyword (Query)", { Query: { KeyWord: "firefox", MatchType: "Contains" } }, "Mozilla.Firefox"],
-  ["abbreviation vscode", { Inclusions: [{ PackageMatchField: "Moniker", RequestMatch: { KeyWord: "vscode", MatchType: "Exact" } }] }, "Microsoft.VisualStudioCode"],
-  ["abbreviation vlc", { Query: { KeyWord: "vlc", MatchType: "Contains" } }, "VideoLAN.VLC"],
+  ["normalized substring vlc", { Query: { KeyWord: "vlc", MatchType: "Contains" } }, "VideoLAN.VLC"],
   ["normalized substring 7zip", { Query: { KeyWord: "7zip", MatchType: "Contains" } }, null],
   ["exact id (Filters)", { Filters: [{ PackageMatchField: "PackageIdentifier", RequestMatch: { KeyWord: "Git.Git", MatchType: "Exact" } }] }, "Git.Git"],
   ["lowercased id", { Filters: [{ PackageMatchField: "PackageIdentifier", RequestMatch: { KeyWord: "yt-dlp.ffmpeg", MatchType: "Exact" } }] }, "yt-dlp.FFmpeg"],
@@ -93,6 +92,37 @@ const missing = await worker.fetch(
 assert.equal(missing.status, 404, `expected fail-close 404, got ${missing.status}`);
 assert.equal(githubCalls(), 0, "missing manifest reached the GitHub API");
 console.log("✅ packageManifests of an unindexed id: 404, 0 GitHub calls");
+
+// ── 2c. no query is answered by guessing ──
+// A keyword that fits an id only as a *character subsequence* must return
+// nothing. That shape used to be the "abbreviation" tier: it is how "vscode"
+// found Microsoft.VisualStudioCode, and also how "sqlite3" handed back
+// SublimeText 3 (s-q-l-i-t-e-3 scattered through "sublimehqsublimetext3").
+// winget re-derives the match column from the package's own properties
+// (FindBestMatchCriteria), so a package whose id does not literally contain the
+// keyword prints "UnknownMatchField:" — and `winget install <keyword>` would
+// offer the wrong package to install.
+reset();
+const guessed = await search({ Query: { KeyWord: "sqlite3", MatchType: "Contains" } });
+assert.equal(guessed.length, 0, `"sqlite3" was answered by guessing: ${JSON.stringify(guessed.map((d) => d.PackageIdentifier))}`);
+console.log("✅ sqlite3: nothing is guessed at any more (0 results)");
+
+// "vscode" is the query that tier existed for. Anything it now returns must
+// contain the literal string, and the package the tier was really propping up
+// must be gone — that absence is the alias gap that a Moniker column in the
+// index is supposed to close properly, not a subsequence.
+reset();
+const aliases = await search({ Query: { KeyWord: "vscode", MatchType: "Contains" } });
+for (const d of aliases) {
+  assert.ok(d.PackageIdentifier.toLowerCase().includes("vscode"), `"vscode" returned ${d.PackageIdentifier}, which does not contain "vscode"`);
+}
+assert.equal(
+  aliases.some((d) => d.PackageIdentifier === "Microsoft.VisualStudioCode"),
+  false,
+  "Microsoft.VisualStudioCode was matched for 'vscode' without the id containing it"
+);
+console.log(`✅ vscode: ${aliases.length} result(s), all literally containing it, no invented alias hit`);
+assert.equal(githubCalls(), 0, "the alias queries reached the GitHub API");
 
 // ── 3. odd-shaped keywords must not reach the API either ──
 for (const kw of ["七", "123pan", ""]) {

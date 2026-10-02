@@ -110,10 +110,17 @@ winget upgrade --all
 到 `api.github.com` 的调用（打包产物中该字符串出现 0 次）。
 
 1. **精确 ID**（`Publisher.Package`，带点）：在 `index.json` 里直接查到最新版本。
-2. **关键词**：对 `index.json`（15284 个包，每天由 Action 重建）做五档匹配，
-   精度从高到低：id 精确 → id 前缀 → 归一化前缀 → 子串 → 缩写子序列。
-   最后一档让 `vscode`、`vlc` 这类用户手写的别名也能本地命中。
+2. **关键词**：对 `index.json`（1.5 万条左右，每天由 Action 重建）做四档匹配，
+   精度从高到低：id 精确 → id 前缀 → 归一化前缀 → 子串。四档的共同点就一个：
+   关键词必须**字面出现**在 id 里。没有更弱的了。
 3. **依赖解析**（`ProductCode`）：剥掉 `_microsoft.winget.source_…` 后缀还原 id，同样走索引。
+
+**不做缩写/子序列猜测。** 曾经有过第五档，它让 `vscode` 命中
+`Microsoft.VisualStudioCode`，也顺手让 `sqlite3` 命中了 `SublimeText 3`
+（`sublimehqsublimetext3` 里正散落着 s-q-l-i-t-e-3）。winget 拿到结果后会用包
+自身的属性回推「命中在哪个字段」（`FindBestMatchCriteria`），推不出来就显示
+`UnknownMatchField:` —— 而 `winget install <关键词>` 是真会拿这个假命中去装包的。
+官方源答 `vscode` 靠的是 Moniker 字段，那是数据不是猜测。
 
 **索引里没有就当没有**：搜索返回空 `Data`，`packageManifests/{id}`（未带 `?Version=`）
 返回 404。不做目录枚举回源 —— Contents API 未认证限额是 **60 次/小时且按 IP 计**，
@@ -124,17 +131,20 @@ winget upgrade --all
 
 - **新包隐身**：索引每天 04:23 UTC 重建，之后发布的包最坏 24 小时查不到
   （可手动触发 workflow）。这是删掉回源后故意接受的唯一缺口。
-- 索引只含 `PackageIdentifier` + 最新版本，不含 moniker / display name。
-  id 里出现过的别名（`visualstudiocode`、缩写 `vscode`）能命中，
-  纯靠 moniker 区分的短词（裸 `code`）无法排序依据。
-  彻底解决要给索引加 moniker 字段（需逐仓库读 YAML，暂未做）。
+- **没有别名检索**：索引只含 `PackageIdentifier` + 最新版本，不含 moniker /
+  display name / tag。所以 `winget search vscode` 查不到
+  `Microsoft.VisualStudioCode`（它的 id 里并没有 `vscode` 这个字面串），得写全名或
+  `visualstudio`；靠 tag 才能命中的词（`sqlite3`）一律返回空。要补就是给索引加
+  moniker / package name 列（需逐包读 YAML），见 `docs/github-requests.md` §5.1。
+- 命中列（`匹配`）多为空：我们按 id 匹配，winget 对 Id/Name 命中就是显示空白，
+  这是正常的；只要不再出现 `UnknownMatchField:` 就说明结果都是可归因的。
 
 ### 自检
 
 ```bash
 npm run test:index    # 解析器单测 + index.json 完整性 + 索引命中率（全离线）
 npm run typecheck     # tsc --noEmit
-npm run test:worker   # esbuild 打包 Worker，用 stub fetch（任何 api.github.com 调用直接抛错）跑 16 个用例
+npm run test:worker   # esbuild 打包 Worker，用 stub fetch（任何 api.github.com 调用直接抛错）跑 17 个用例
 ```
 
 `test:worker` 里索引未命中的用例断言的是「0 结果 **且** 0 次 GitHub 调用」，
@@ -155,7 +165,7 @@ Worker 会打印：
 
 - `manifestSearch body: ...` —— winget 发来的搜索请求原始体；
 - `manifestSearch: looking up package id: ...` / `productCode -> id: ...` —— 走 id 直查的路径；
-- `keywordSearch: index hit, matched=N (direct|abbreviation), returned=M for "..."` —— 命中索引第几档；
+- `keywordSearch: index hit, matched=N, returned=M for "..."` —— 命中索引，候选 N 个、截断后返回 M 个；
 - `keywordSearch: no index match for "..."` —— 索引里没有，直接返回空（不再回源）；
 - `manifestSearch: no results (empty Data)` —— 确实没找到。
 
