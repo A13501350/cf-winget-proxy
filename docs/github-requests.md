@@ -10,7 +10,7 @@
 | 函数 | 位置 | 目标 | 边缘缓存 |
 |---|---|---|---|
 | `fetchManifestFile()` | src/index.ts:86 | jsDelivr → 再 raw.githubusercontent | 200=3600s，其余 0 |
-| `getIndex()` | src/index.ts:175 | `INDEX_URL`（本仓库 raw） | 进程内 memo 1h + 边缘 3600s |
+| `getIndex()` | src/index.ts:175 | `INDEX_URL`（本仓库 raw） | 进程内 memo 5min + 边缘 300s |
 
 （历史上还有三个出口，均已删除：通用透明代理 `proxyRequest()` 及其
 `/cache/**`、域名前缀路由；`ghFetch()` 及其全部 Contents API 调用点；

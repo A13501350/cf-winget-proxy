@@ -166,8 +166,11 @@ function handleInformation(): Response {
 // (75%) have tags, so those two are genuinely optional, not defensively typed.
 type IndexEntry = { id: string; v: string; n?: string; m?: string; t?: string[] };
 
-// Module-level memo of the parsed index (refreshed hourly). The blob itself is
-// also edge-cached via the cf fetch option, so this just avoids re-parsing.
+// Module-level memo of the parsed index. The blob is served from the edge cache
+// (cacheTtl below), so a refresh costs a Worker invocation but not a GitHub
+// request; 15 310 lines parse in well under a millisecond. The memo only needs
+// to be shorter than the index refresh period (daily), so an index push reaches
+// users without a redeploy.
 // If a refresh fails the previous index keeps serving: stale-but-correct beats
 // an empty result set that looks like "no such package".
 let indexCache: { data: IndexEntry[]; at: number } | null = null;
@@ -175,11 +178,11 @@ let indexCache: { data: IndexEntry[]; at: number } | null = null;
 async function getIndex(env: Env): Promise<IndexEntry[] | null> {
   if (!env.INDEX_URL) return null;
   const now = Date.now();
-  if (indexCache && now - indexCache.at < 3_600_000) return indexCache.data;
+  if (indexCache && now - indexCache.at < 300_000) return indexCache.data;
   try {
     const resp = await fetch(env.INDEX_URL, {
       headers: { "User-Agent": "winget-cn-proxy/2.0" },
-      cf: { cacheEverything: true, cacheTtl: 3600 },
+      cf: { cacheEverything: true, cacheTtl: 300 },
     });
     if (!resp.ok) return indexCache?.data ?? null;
     const text = await resp.text();
