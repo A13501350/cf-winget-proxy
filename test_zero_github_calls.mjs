@@ -212,6 +212,8 @@ for (const kw of ["七", "123pan", ""]) {
 
 // ── 4. manifest resolution picks the version from the index, not the API ──
 // Git.Git's installer is GitHub-hosted, so it must come back mirror-rewritten.
+// These two go to the real static hosts (jsDelivr → raw), so a network blip
+// turns them red as a 502-with-reason rather than as a broken search path.
 reset();
 const mf = await worker.fetch(
   new Request("http://worker.test/packageManifests/Git.Git"), env, {}

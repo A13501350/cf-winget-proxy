@@ -28,13 +28,49 @@ winget ──REST(JSON)──▶ Cloudflare Worker ──▶ index.json（本仓
 - 安装器（大文件）由**客户端直连镜像**下载，不经 Worker，因此不受 Worker 25MB 体积极限影响，
   且镜像对 GitHub Release 是字节透明的，winget 的 SHA256 校验照常通过。
 
+### 清单是怎么拼出来的
+
+`winget-pkgs` 里一个版本目录通常是三个文件，也可能是一个合并文件：
+
+```
+{id}.yaml                          ManifestType: version  —— 声明 DefaultLocale
+{id}.installer.yaml                ManifestType: installer —— 安装器列表
+{id}.locale.{DefaultLocale}.yaml   ManifestType: defaultLocale
+```
+
+先取 `{id}.yaml`：它既告诉 Worker 这是三文件还是合并布局（`ManifestType: merged`
+时一个文件就是全部），也告诉 Worker **默认 locale 是哪一个**。第二步才并行取
+installer 与那份 locale，并把 locale 的字段整体透传进 REST 的 `DefaultLocale`
+（Moniker、Author、Tags、ReleaseNotes、Documentations…… 只有 `Installers`、
+`ManifestType` 这类外壳键丢掉），`InstallerUrl` 换成镜像地址，其余原样返回。
+
+默认 locale 必须问 `{id}.yaml`，不能猜。曾经按「en-US 最常见」的顺序探文件名，
+结果是：`115.115Chrome`、`Alibaba.UC` 这类包**确实有** `{id}.locale.en-US.yaml`，
+但那是 `ManifestType: locale`（附加本地化），schema 不要求它带 `PackageName`，
+拿它当默认 locale 只会拼出一份残缺清单。探测还最坏要 16 次 404；问一次
+`{id}.yaml` 是确定的。
+
+**拼不出就报错，不交残缺清单**：索引里没有这个包、或两个静态主机都答 404 → 404；
+版本 manifest 声明的 locale 文件取不到、locale 缺 `PackageName`/`License`、
+请求本身失败（5xx / 429 / 网络异常）→ 502 并带上原因。区分这两类是刻意的：
+把 CDN 抖动说成「没有这个包」，用户在 winget 里看到的就是一个不存在的包。
+而交一份残缺清单更糟 —— `ManifestValidation`→`Interface.cpp:290` 只要错误数 > 0
+就抛 `APPINSTALLER_CLI_ERROR_RESTSOURCE_INVALID_DATA`，客户端看到的是
+`0x8a150039 REST 源返回的数据无效`，那是**整源**级别的报错，和源坏了无法区分。
+
+`InstallerType` / `NestedInstallerType` / `Dependencies` 是包级键，REST 要求每个
+安装器都带 `InstallerType`，所以 Worker 把包级的值补进每个安装器，但**不改写它**：
+上游写 `zip` + `portable`（zip 里装一个 portable exe，官方源显示
+`portable (zip)`），Worker 曾把它反转成 `portable` + `zip`，客户端于是把一个 `.zip`
+当成裸 exe 执行。反转已删除。
+
 ### REST 端点
 
 | 端点 | 说明 |
 | --- | --- |
 | `GET  /information` | 源元数据（Microsoft.Rest 协议） |
 | `POST /manifestSearch` | 包搜索，后端为 `index.json`（官方源的包索引） |
-| `GET  /packageManifests/{id}` | 包清单，`InstallerUrl` 已改写为镜像地址 |
+| `GET  /packageManifests/{id}` | 包清单（最新版本取自 `index.json`），`InstallerUrl` 已改写为镜像地址 |
 | `GET  /packageManifests/{id}?Version=x` | 指定版本（winget 以 query 参数传版本） |
 | `GET  /_index` | 自检：强制重取 `INDEX_URL`，返回条数/moniker/tag 计数。搜索返回空 `Data` 时先看它 |
 
@@ -74,13 +110,8 @@ MIRROR = "https://gh-proxy.org"
 > 二进制支持的日期）。用一份 gitignore 掉的 `wrangler.dev.toml` 覆盖，
 > 不要为此改动提交里的值。
 
-可选，但强烈建议——目录枚举搜索会调用 GitHub contents API，设置后限流更宽松：
-
-```powershell
-wrangler secret put GITHUB_TOKEN   # 细粒度 PAT，仅需 public-repo 读权限
-```
-
-> 不要在 `wrangler.toml` 里明文写 `GITHUB_TOKEN`，请用上面的 secret 方式。
+不需要任何 secret：代码里没有能打向 `api.github.com` 的路径，清单全部走静态主机。
+`GITHUB_TOKEN` 因此无人读取，别为它创建 PAT。
 
 ## 使用
 
@@ -162,6 +193,12 @@ winget upgrade --all
   （`WorkflowBase.cpp:38` 对这两个字段直接返回空串）。官方源是预索引 SQLite，
   命中列由那条查询自己给出，所以它知道、我们不知道。
   **返回的包集合和排序都不受影响**，只有这一列不同。
+- **只交默认 locale**：`Locales` 恒为空数组，附加本地化（同一包的
+  `ManifestType: locale` 文件）没有搬运过来。`winget show` 里的文案因此永远是
+  默认那一份，切 `--locale` 不会换词。
+- **拼不出只坏那一个包**：404/502 是单个 `packageManifests/{id}` 请求的返回值，
+  源本身不受影响。相比交一份残缺清单（那会让客户端报 `0x8a150039`，看起来像整源
+  坏了），宁可在这里明确失败。
 
 ### 自检
 
@@ -170,11 +207,15 @@ npm run build:index   # 下载 source2.msix → 导出 index.json → 校验（�
 npm run test:index    # index.json 完整性 + 字段覆盖率 + 索引命中率（全离线）
 npm run typecheck     # tsc --noEmit
 npm run test:worker   # esbuild 打包 Worker，用 stub fetch（任何 api.github.com 调用直接抛错）跑 22 个用例
+npm run test:manifest # 清单拼装：读哪份 locale、拼不出怎么失败、安装器类型透传（全离线 fixture）
 ```
 
 `test:worker` 里索引未命中的用例断言的是「0 结果 **且** 0 次 GitHub 调用」，
 所以任何回源代码一旦被加回来，这条命令会立刻抛 `unexpected GitHub API call` 变红。
-`ci.yml`（push/PR，不需要任何 secret）跑全部三条；`build-index.yml` 重建索引后跑
+`test:manifest` 的 fixture 是真从 `winget-pkgs` 抄下来的文件（`2dust.v2rayN` 的三件套、
+一份 `ManifestType: locale` 的诱饵、一份 merged），fetch 全被替换成内存表，
+所以它不需要网络也不会随上游抖动而变红。
+`ci.yml`（push/PR，不需要任何 secret）跑这四条；`build-index.yml` 重建索引后跑
 `node test_index_search.mjs`（校验列齐不齐、老词还查不查得到）。
 `deploy.yml` 是停用的（上线由 Cloudflare Workers Builds 负责），别指望它兜底。
 
@@ -192,7 +233,16 @@ Worker 会打印：
 - `manifestSearch: looking up package id: ...` / `productCode -> id: ...` —— 走 id 直查的路径；
 - `keywordSearch: index hit, returned=M for "..."` —— 命中索引，返回 M 条（不截断）；
 - `keywordSearch: no index match for "..."` —— 索引里没有，直接返回空（不再回源）；
-- `manifestSearch: no results (empty Data)` —— 确实没找到。
+- `manifestSearch: no results (empty Data)` —— 确实没找到；
+- `packageManifests: <文件名> for <id>@<版本>: <原因>` —— 某个清单文件没拿到，
+  原因是 `404`/`not served by ...`（当没有这个包）或 `5xx from ...` /
+  `fetch threw ...`（当上游失败，返回 502）；
+- `packageManifests: incomplete default locale for ...` —— locale 拿到了但缺
+  `PackageName`/`License`，502；
+- `packageManifests: unexpected manifest layout ...` —— `{id}.yaml` 的
+  `ManifestType` 既不是 `version` 也不是 `merged`；
+- `packageManifests: version manifest has no DefaultLocale ...` —— 版本清单没声明
+  默认 locale，无法知道该取哪份 locale，502。
 
 区分「索引没加载」和「索引里真没这个词」：`curl https://<worker>/_index`。它绕过
 memo 和边缘缓存重取一次，返回 `entries` / `withMoniker` / `withTags`；

@@ -78,38 +78,63 @@ function rewriteInstallerUrl(url: string, mirror: string): string {
 // Cloudflare's egress IPs are shared with every other worker on them, so any
 // code path that could reach it is a path to a 403 for all users at once.
 
+// One manifest file, three possible outcomes. They must stay distinguishable:
+// a 404 means the package does not have that file, while a 5xx or a thrown fetch
+// (jsDelivr building a cold path can exceed its own limit) means we could not
+// tell. Collapsing the two into "absent" makes a CDN outage look like a package
+// that does not exist, which is the ambiguity this Worker keeps having to avoid.
+type FileFetch =
+  | { body: string }
+  | { missing: true }
+  | { error: string };
+
+// Fetch one manifest file from one host. Error/empty responses are never
+// edge-cached (cacheTtlByStatus 400-599:0) so a transient upstream failure can't
+// be pinned for an hour like it could with a fixed cacheTtl.
+async function fetchFromHost(
+  host: string,
+  versionPath: string,
+  filename: string
+): Promise<FileFetch> {
+  const url = `${host}/${versionPath}/${filename}`;
+  try {
+    const r = await fetch(url, {
+      headers: { "User-Agent": "winget-cn-proxy/2.0" },
+      // @ts-ignore — CF Workers cf option for edge caching.
+      cf: {
+        cacheEverything: true,
+        cacheTtlByStatus: { "200-299": 3600, "400-599": 0 },
+      },
+    });
+    if (r.status === 404) return { missing: true };
+    if (!r.ok) return { error: `${r.status} from ${host}` };
+    const t = await r.text();
+    // jsDelivr answers some failures with an empty 200; an empty manifest is not
+    // a manifest, so it counts as absent rather than as content to parse.
+    if (!t.trim().length) return { missing: true };
+    return { body: t };
+  } catch (e) {
+    return { error: `fetch threw: ${String((e as Error)?.message ?? e)}` };
+  }
+}
+
+const MANIFEST_HOSTS = [JSDLV_MANIFEST_BASE, RAW_MANIFEST_BASE];
+
 // Fetch a manifest YAML file, trying jsDelivr first then raw.githubusercontent.
-// Returns the text body, or null if every source failed or returned an empty body.
-// Error/empty responses are never edge-cached (cacheTtlByStatus 400-599:0) so a
-// transient upstream failure can't be pinned for an hour like it could with a
-// fixed cacheTtl.
+// A host that fails does not end the lookup — the other one may well have it —
+// but if none of them served the file, a failure outranks a 404: we report that
+// we could not tell rather than that the file is not there.
 async function fetchManifestFile(
   versionPath: string,
   filename: string
-): Promise<string | null> {
-  const candidates = [
-    `${JSDLV_MANIFEST_BASE}/${versionPath}/${filename}`,
-    `${RAW_MANIFEST_BASE}/${versionPath}/${filename}`,
-  ];
-  for (const url of candidates) {
-    try {
-      const r = await fetch(url, {
-        headers: { "User-Agent": "winget-cn-proxy/2.0" },
-        // @ts-ignore — CF Workers cf option for edge caching.
-        cf: {
-          cacheEverything: true,
-          cacheTtlByStatus: { "200-299": 3600, "400-599": 0 },
-        },
-      });
-      if (r.ok) {
-        const t = await r.text();
-        if (t && t.trim().length) return t;
-      }
-    } catch {
-      // try next candidate
-    }
+): Promise<FileFetch> {
+  let last: FileFetch = { missing: true };
+  for (const host of MANIFEST_HOSTS) {
+    const result = await fetchFromHost(host, versionPath, filename);
+    if ("body" in result) return result;
+    if ("error" in result) last = result;
   }
-  return null;
+  return last;
 }
 
 // ─── Package ID helpers ───────────────────────────────────────────────────────
@@ -489,7 +514,7 @@ async function handlePackageManifest(
   mirror: string,
   env: Env
 ): Promise<Response> {
-  const { publisher, packageRest, basePath } = parsePackageId(id);
+  const { publisher, basePath } = parsePackageId(id);
 
   let version: string;
   if (requestedVersion) {
@@ -513,35 +538,95 @@ async function handlePackageManifest(
 
   const versionPath = `${basePath}/${version}`;
 
-  // Fetch installer YAML: try the multi-file ".installer.yaml" first, then the
-  // single combined ".yaml". Both are resolved via fetchManifestFile (jsDelivr
-  // prefer red, raw.githubusercontent fallback).
-  const installerYaml =
-    (await fetchManifestFile(versionPath, `${id}.installer.yaml`)) ??
-    (await fetchManifestFile(versionPath, `${id}.yaml`));
+  const parseYaml = (body: string): any => {
+    try {
+      return (jsyaml.load(body) as any) ?? {};
+    } catch {
+      return {};
+    }
+  };
 
-  if (!installerYaml) {
+  // A manifest we cannot assemble is reported, not padded with empty fields.
+  // `missingStatus` is what to say when a host plainly does not have the file:
+  // 404 for the version and installer manifests (that package is not here), 502
+  // for a locale the version manifest promises but nobody serves (the package
+  // does exist; the upstream state is broken). A failed request is always 502 —
+  // it is not evidence of absence.
+  const fileFailed = (
+    result: { missing: true } | { error: string },
+    filename: string,
+    missingStatus: 404 | 502
+  ): Response => {
+    const status = "error" in result ? 502 : missingStatus;
+    const detail = "error" in result ? result.error : `not served by ${MANIFEST_HOSTS.join(" or ")}`;
+    console.log(`packageManifests: ${filename} for ${id}@${version}: ${detail}`);
     return Response.json(
-      { ErrorCode: 404, ErrorMessage: `Manifest not found: ${id}@${version}` },
-      { status: 404 }
+      { ErrorCode: status, ErrorMessage: `${filename} for ${id}@${version}: ${detail}` },
+      { status }
+    );
+  };
+
+  // Every version directory in winget-pkgs has a `{id}.yaml` that says which
+  // layout it uses: `ManifestType: version` (three files, with the default
+  // locale's tag in its `DefaultLocale` field) or `ManifestType: merged` (one
+  // file, locale inline). Asking it is one small request and beats guessing the
+  // tag: a package whose default locale is zh-CN usually *does* have a
+  // `{id}.locale.en-US.yaml`, but that is an additional localization
+  // (`ManifestType: locale`), which is not allowed to carry PackageName — using
+  // it as the default produced manifests we then had to refuse.
+  const versionFile = await fetchManifestFile(versionPath, `${id}.yaml`);
+  if (!("body" in versionFile)) return fileFailed(versionFile, `${id}.yaml`, 404);
+  const rootDoc = parseYaml(versionFile.body);
+
+  // The locale a REST manifest must return is the package's default one, and it
+  // has to satisfy the schema's required fields (PackageName, License,
+  // ShortDescription, Publisher).
+  let installerDoc: any;
+  let localeDoc: any;
+
+  if (rootDoc.ManifestType === "merged") {
+    installerDoc = rootDoc;
+    localeDoc = rootDoc;
+  } else if (rootDoc.ManifestType === "version") {
+    if (!rootDoc.DefaultLocale) {
+      console.log(`packageManifests: version manifest has no DefaultLocale for ${id}@${version}`);
+      return Response.json(
+        { ErrorCode: 502, ErrorMessage: `No default locale declared for ${id}@${version}` },
+        { status: 502 }
+      );
+    }
+    const [installerFile, localeFile] = await Promise.all([
+      fetchManifestFile(versionPath, `${id}.installer.yaml`),
+      fetchManifestFile(versionPath, `${id}.locale.${rootDoc.DefaultLocale}.yaml`),
+    ]);
+    if (!("body" in installerFile)) return fileFailed(installerFile, `${id}.installer.yaml`, 404);
+    if (!("body" in localeFile)) {
+      return fileFailed(localeFile, `${id}.locale.${rootDoc.DefaultLocale}.yaml`, 502);
+    }
+    installerDoc = parseYaml(installerFile.body);
+    localeDoc = parseYaml(localeFile.body);
+  } else {
+    console.log(`packageManifests: unexpected manifest layout for ${id}@${version} (ManifestType=${rootDoc.ManifestType})`);
+    return Response.json(
+      { ErrorCode: 502, ErrorMessage: `Unexpected version manifest for ${id}@${version}` },
+      { status: 502 }
     );
   }
 
-  // Fetch locale YAML for display metadata (optional; null if absent).
-  const localeYaml = await fetchManifestFile(
-    versionPath,
-    `${id}.locale.en-US.yaml`
-  );
-
-  // Parse YAMLs
-  let installerDoc: any = {};
-  let localeDoc: any = {};
-  try {
-    installerDoc = (jsyaml.load(installerYaml) as any) ?? {};
-  } catch { /* ignore parse errors */ }
-  try {
-    if (localeYaml) localeDoc = (jsyaml.load(localeYaml) as any) ?? {};
-  } catch { /* ignore */ }
+  // winget validates the assembled manifest before it will show or install
+  // anything (Interface.cpp:290 throws APPINSTALLER_CLI_ERROR_RESTSOURCE_INVALID_DATA
+  // on any error), so a DefaultLocale missing PackageName or License would fail
+  // as 0x8a150039 for the whole source rather than for this one package.
+  if (!localeDoc.PackageName || !localeDoc.License) {
+    console.log(`packageManifests: incomplete default locale for ${id}@${version}`);
+    return Response.json(
+      {
+        ErrorCode: 502,
+        ErrorMessage: `Incomplete default locale manifest for ${id}@${version}`,
+      },
+      { status: 502 }
+    );
+  }
 
   // Build installers list with rewritten InstallerUrl
   const rawInstallers: any[] = Array.isArray(installerDoc.Installers)
@@ -564,15 +649,6 @@ async function handlePackageManifest(
     if (!out.Dependencies && installerDoc.Dependencies) {
       out.Dependencies = installerDoc.Dependencies;
     }
-    // Canonicalize portable installers. A portable package is a zip that is
-    // extracted and registered; the top-level InstallerType must be "portable"
-    // and the nested type the archive ("zip"). Some manifests store the
-    // inverted pair (InstallerType: zip / NestedInstallerType: portable), which
-    // is an inconsistent combination winget's REST deserializer rejects.
-    if (out.NestedInstallerType === "portable") {
-      out.NestedInstallerType = "zip";
-      if (out.InstallerType !== "portable") out.InstallerType = "portable";
-    }
     if (out.InstallerUrl) {
       out.InstallerUrl = rewriteInstallerUrl(out.InstallerUrl, mirror);
     }
@@ -584,32 +660,27 @@ async function handlePackageManifest(
   // PackageUrl, Tags, ReleaseNotes, ReleaseNotesUrl, Documentations, Agreements,
   // Description, ...). The winget REST DefaultLocale schema accepts these as
   // optional members; only a hardcoded subset was mapped before, which is why
-  // `winget show` looked sparse next to the official source. Drop the
-  // YAML-only wrapper keys that have no place in the REST DefaultLocale object.
+  // `winget show` looked sparse next to the official source. Drop the keys that
+  // belong to the surrounding document rather than to its locale — including the
+  // installer keys, because a merged manifest doubles as the locale source.
   const LOCALE_OMIT = new Set([
     "PackageIdentifier",
     "PackageVersion",
     "ManifestType",
     "ManifestVersion",
+    "Installers",
+    "InstallerLocale",
+    "Locales",
+    "DisplayWarnings",
+    "InstallerType",
+    "NestedInstallerType",
+    "Dependencies",
+    "MinimumOSVersion",
+    "ReleaseDate",
   ]);
-  const defaultLocale: any = {};
-  if (localeDoc && Object.keys(localeDoc).length) {
-    defaultLocale.PackageLocale = localeDoc.PackageLocale ?? "en-US";
-    for (const [k, v] of Object.entries(localeDoc)) {
-      if (!LOCALE_OMIT.has(k)) defaultLocale[k] = v;
-    }
-  } else {
-    // Fallback when the locale yaml is unavailable: only the required fields.
-    defaultLocale.PackageLocale = "en-US";
-    defaultLocale.Publisher = installerDoc?.Publisher ?? publisher;
-    defaultLocale.PublisherUrl = installerDoc?.PublisherUrl ?? "";
-    defaultLocale.PackageName =
-      installerDoc?.PackageName ?? `${publisher} ${packageRest}`;
-    defaultLocale.ShortDescription =
-      installerDoc?.ShortDescription ?? installerDoc?.Description ?? "";
-    defaultLocale.License = installerDoc?.License ?? "";
-    defaultLocale.LicenseUrl = installerDoc?.LicenseUrl ?? "";
-    defaultLocale.Copyright = installerDoc?.Copyright ?? "";
+  const defaultLocale: any = { PackageLocale: localeDoc.PackageLocale };
+  for (const [k, v] of Object.entries(localeDoc)) {
+    if (!LOCALE_OMIT.has(k)) defaultLocale[k] = v;
   }
 
   return Response.json({
@@ -619,13 +690,9 @@ async function handlePackageManifest(
       // and Publisher at the top-level Data object (not only inside
       // DefaultLocale). Omitting them makes winget reject the whole manifest
       // with 0x8a150039 "REST source returned invalid data".
-      PackageName:
-        localeDoc?.PackageName ??
-        installerDoc?.PackageName ??
-        `${publisher} ${packageRest}`,
-      Publisher: localeDoc?.Publisher ?? installerDoc?.Publisher ?? publisher,
-      ShortDescription:
-        localeDoc?.ShortDescription ?? installerDoc?.Description ?? "",
+      PackageName: localeDoc.PackageName,
+      Publisher: localeDoc.Publisher ?? publisher,
+      ShortDescription: localeDoc.ShortDescription ?? "",
       Versions: [
         {
           PackageVersion: version,

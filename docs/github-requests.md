@@ -9,8 +9,9 @@
 
 | 函数 | 位置 | 目标 | 边缘缓存 |
 |---|---|---|---|
-| `fetchManifestFile()` | src/index.ts:86 | jsDelivr → 再 raw.githubusercontent | 200=3600s，其余 0 |
-| `getIndex()` | src/index.ts:175 | `INDEX_URL`（本仓库 raw） | 进程内 memo 5min + 边缘 300s |
+| `fetchFromHost()` | src/index.ts:94 | 单个静态主机上的单个文件 | 200=3600s，其余 0 |
+| `fetchManifestFile()` | src/index.ts:127 | jsDelivr → 再 raw.githubusercontent | 同上 |
+| `getIndex()` | src/index.ts:203 | `INDEX_URL`（本仓库 raw） | 进程内 memo 5min + 边缘 300s |
 
 （历史上还有三个出口，均已删除：通用透明代理 `proxyRequest()` 及其
 `/cache/**`、域名前缀路由；`ghFetch()` 及其全部 Contents API 调用点；
@@ -49,17 +50,28 @@ Contents API 未认证限额是 **60 次/小时，且按源 IP 计**。Cloudflar
 
 | # | 位置 | 端点 | 触发 | 单次请求数 |
 |---|---|---|---|---|
-| B1 | src/index.ts:499 | `{id}.installer.yaml` | `packageManifests` | 1（jsDelivr 命中即停） |
-| B2 | src/index.ts:500 | `{id}.yaml` | 仅 B1 未命中（合并式单文件清单） | ≤1 |
-| B3 | src/index.ts:510 | `{id}.locale.en-US.yaml` | `packageManifests` | 1 |
-| B4 | src/index.ts:180 | `INDEX_URL` | 每小时每 isolate | 1 |
+| B1 | src/index.ts:577 | `{id}.yaml`（版本清单 / 合并清单） | `packageManifests` | 1 |
+| B2 | src/index.ts:599 | `{id}.installer.yaml` | 仅三文件布局 | 1 |
+| B3 | src/index.ts:600 | `{id}.locale.{DefaultLocale}.yaml` —— 名字来自 B1 | 仅三文件布局 | 1 |
+| B4 | src/index.ts:203 | `INDEX_URL` | 每 isolate 5 分钟 | 1 |
 
-B1/B2 不是「回源」：`winget-pkgs` 本身就同时存在多文件布局和合并单文件布局，
-只试一个文件名会对另一种布局的包直接 404。同理 jsDelivr → raw 两个候选是同一个
-静态文件的两个主机，不涉及 API 配额。
+B1 先跑，因为它决定后面取什么：三文件布局里 `{id}.yaml` 是 `ManifestType: version`，
+它的 `DefaultLocale` 就是 locale 文件的名字；`ManifestType: merged` 时一个文件就是
+全部，只有一次请求。**这里没有候选表** —— 按「en-US 最常见」探文件名会撞上
+`ManifestType: locale`（附加本地化），那份文件允许不带 `PackageName`，当默认 locale
+用就会拼出残缺清单（`115.115Chrome`、`Alibaba.UC` 正是这样）。
+
+jsDelivr → raw 两个候选是同一个静态文件的两个主机，不涉及 API 配额；命中即停。
+B2/B3 已经并行（`Promise.all`），冷缓存下一次清单请求是 2 跳而不是 3 跳。
+
+一个主机的**失败**（5xx、429、fetch 抛异常）和它的**404**不是一回事：前者接着问下一个
+主机，全都问不出来时报 502 并带上原因，只有两边都答 404 才报「没有这个包」。
+`fetchFromHost()` 用 `{body} | {missing} | {error}` 三种结果把这件事写进类型里
+（src/index.ts:86）。之前它把任何非 200 都折叠成「没有」，于是 jsDelivr 冷路径超时
+会让 `winget show` 报告一个并不存在的包 —— 也正是本地压测里那三条 404 的真因。
 
 `INDEX_URL` 默认是 `https://raw.githubusercontent.com/A13501350/cf-winget-proxy/main/index.json`
-（wrangler.toml:13）。B1–B3 是顺序 await，冷缓存下最多 6 跳；可并行化（未做）。
+（wrangler.toml:20）。
 
 ## 3. 每次典型操作的请求矩阵
 
@@ -67,8 +79,8 @@ B1/B2 不是「回源」：`winget-pkgs` 本身就同时存在多文件布局和
 |---|---|---|
 | `winget search <索引内关键词>` | 0 | 0 |
 | `winget search <索引外关键词>` | 0（返回空 `Data`） | 0 |
-| `winget install <id>` | 0 | 2–3 |
-| 依赖解析（ProductCode） | 0 | 2–3 |
+| `winget install <id>` | 0 | 1–3（三文件 3 个、合并布局 1 个；2 跳） |
+| 依赖解析（ProductCode） | 0 | 1–3 |
 | 索引里没有的新包 | 0 | 0（404） |
 
 任何一行的 api.github.com 都不可能变成非零：这条出口在源码里已不存在。
@@ -117,6 +129,5 @@ blobless 克隆省不掉流量。整表替换直接绕开了这个问题：官�
 
 ## 5. 还能继续收敛的方向（未实施）
 
-1. B1/B3 并行 `Promise.all`，冷缓存延迟减半。
-2. 极端情况下可以让索引自己带上构建时间，搜索无命中时在日志里区分
+1. 极端情况下可以让索引自己带上构建时间，搜索无命中时在日志里区分
    「这个包比索引新」和「根本没这个包」；目前不值得为实验性实现加这条分支。

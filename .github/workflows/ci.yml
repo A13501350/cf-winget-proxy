@@ -41,3 +41,9 @@ jobs:
       # rate-limited Contents API path.
       - name: Verify search hot path makes no GitHub calls
         run: npm run test:worker
+
+      # Manifest resolution against stubbed winget-pkgs files: which locale
+      # document is the default one, what happens when it cannot be completed,
+      # and that installer types pass through untouched.
+      - name: Verify manifest resolution
+        run: npm run test:manifest
