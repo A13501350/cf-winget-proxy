@@ -1926,7 +1926,7 @@
 {"id":"BrechtSanders.WinLibs.POSIX.UCRT","v":"16.2.0-14.0.0-r1","n":"WinLibs (POSIX threads, UCRT runtime)","t":["cpp","compiler","fortran","c++","gcc","assembly","assembler","binutils","c","gdb","gfortran","make","mingw","mingw-w64","汇编","汇编器","编译器"]}
 {"id":"BrechtSanders.WinLibs.POSIX.UCRT.LLVM","v":"14.2.0-19.1.1-12.0.0-r2","n":"WinLibs (POSIX threads, UCRT runtime, LLVM included)","m":"winlibs","t":["cpp","compiler","fortran","c++","gcc","assembly","assembler","binutils","c","gdb","gfortran","make","mingw","mingw-w64","汇编","汇编器","编译器","clang","llvm"]}
 {"id":"breeze2.DSUManager","v":"0.6.2","n":"DSUManager","t":["controller","手柄","dsucontroller"]}
-{"id":"Breizhzion.JustMakeQ","v":"1.0.0-beta.114","n":"JustMakeQ","m":"justmakeq","t":["video","audio","lighting","midi","stage","osc","show-control"]}
+{"id":"Breizhzion.JustMakeQ","v":"1.0.0-beta.115","n":"JustMakeQ","m":"justmakeq","t":["video","audio","lighting","midi","stage","osc","show-control"]}
 {"id":"BrettMayson.HEMTT","v":"1.22.0","n":"HEMTT","t":["arma","arma3","hemtt"]}
 {"id":"Bria.Bria","v":"68.13.1171","n":"Bria","t":["sip","softphone","telephone","telephony","电话"]}
 {"id":"BrianApps.Sizer","v":"3.3.4.0","n":"Sizer","m":"sizer","t":["屏幕","screen","size","大小","window","窗口","resize","view","尺寸","视图","缩放"]}
@@ -2135,7 +2135,7 @@
 {"id":"CacheFarms.SkeeBall","v":"1.0.10","n":"Skeeball"}
 {"id":"Cachix.SecretSpec","v":"0.21.0","n":"SecretSpec","m":"secretspec","t":["security","cli","developer-tools","password-manager","secrets"]}
 {"id":"CactusNetwork.CactusBlockchainGUI","v":"2.5.0","n":"Cactus Blockchain","t":["blockchain","blockchain-network","cactus-blockchain","chaia","farmer","full-node","harvesters","peer","proof-of-space","proof-of-time","timelord","vdf","wallets"]}
-{"id":"CaddyServer.Caddy","v":"2.11.6","n":"Caddy","t":["go","security","privacy","hacktoberfest","reverse-proxy","golang","http","tls","https","acme","automatic-https","caddy","caddyfile","http-server","http3","web-server"]}
+{"id":"CaddyServer.Caddy","v":"2.11.7","n":"Caddy","t":["go","security","privacy","hacktoberfest","reverse-proxy","golang","http","tls","https","acme","automatic-https","caddy","caddyfile","http-server","http3","web-server"]}
 {"id":"cadwal.BookDB","v":"4.0.1","n":"BookDB","t":["books","library","catalog"]}
 {"id":"Caelum.OpenASRDesktop","v":"0.1.8","n":"OpenASR Desktop","m":"openasr","t":["productivity","privacy","offline","accessibility","speech-to-text","transcription","dictation","speech-recognition"]}
 {"id":"CAI.CASecureBrowser","v":"12.5.0","n":"CASecureBrowser"}
@@ -3390,7 +3390,7 @@
 {"id":"dillonkearns.mobster","v":"0.0.48","n":"Mobster","m":"mobster","t":["electron","timer","mob"]}
 {"id":"Dilluti0n.DPIBreak","v":"0.6.2","n":"DPIBreak","m":"dpibreak","t":["privacy","network","firewall","tls","dpi","censorship","sni","vpn-alternative"]}
 {"id":"DimisAIO.DindeGDPS","v":"2025.10.13","n":"DindeGDPS"}
-{"id":"DimitarRadenkov.Pointframe","v":"6.7.12","n":"Pointframe","m":"pointframe","t":["windows","wpf","screen-recorder","ocr","annotation","screenshot","screen-capture"]}
+{"id":"DimitarRadenkov.Pointframe","v":"6.7.22","n":"Pointframe","m":"pointframe","t":["windows","wpf","screen-recorder","ocr","annotation","screenshot","screen-capture"]}
 {"id":"DimitarRadenkov.SnippingTool","v":"4.6.1","n":"SnippingTool","m":"snippingtool","t":["windows","wpf","screen-recorder","ocr","annotation","screenshot","screen-capture","snipping-tool"]}
 {"id":"DimitriVanHeesch.Doxygen","v":"1.18.0","n":"doxygen","t":["documentation","document","文档","generator"]}
 {"id":"DimitrovAdrian.RcloneTray","v":"1.0.0","n":"RcloneTray","m":"rclonetray","t":["rclone","rclone-client"]}
@@ -3752,7 +3752,7 @@
 {"id":"EasyTier.EasyTierGUI","v":"2.6.4","n":"easytier-gui","t":["network","网络","ethernet","switch","intranet","network-switch","交换机","以太网","内网","内网穿透"]}
 {"id":"eat-pray-ai.yutu","v":"0.11.0","n":"yutu","m":"yutu","t":["mcp","cli","automation","youtube"]}
 {"id":"EazyHood.AppCloner","v":"4.0.0","n":"AppCloner","m":"appcloner","t":["portable","clone","multi-account","multi-instance","sessions"]}
-{"id":"EazyMake.EazyMake","v":"1.4.5","n":"EazyMake","m":"ezmk","t":["package-manager","cpp","compiler","build-tool","c"]}
+{"id":"EazyMake.EazyMake","v":"1.4.7","n":"EazyMake","m":"ezmk","t":["package-manager","cpp","compiler","build-tool","c"]}
 {"id":"EAZYPETITIONLLC.eazyPetition","v":"1.0.0","n":"eazyPetition"}
 {"id":"Ebbflow.Ebbflow","v":"1.1.0","n":"ebbflow","m":"ebbflow","t":["proxy","ebbflow","load-balancer"]}
 {"id":"EberhardWerle.QuickGamma","v":"4.1.0.0","n":"QuickGamma","m":"QuickGamma","t":["utility","tool","monitor","calibration","calibrate","gamma"]}
@@ -4272,7 +4272,7 @@
 {"id":"FaFaRunner.FaFaRunner","v":"3.2.2.397","n":"FaFa Runner","t":["game","flutter","fafarunner","fafa runner","flame","bonfire"]}
 {"id":"FAForever.FAFClient","v":"2026.7.1","n":"FAF Client","t":["oauth2","java","javafx","frontend","install4j","spring"]}
 {"id":"FahmiRidho.MyPDF","v":"0.2.0","n":"MyPDF","m":"mypdf","t":["compress","privacy","offline","pdf","ocr","open-source","merge","pdf-tools"]}
-{"id":"FahrenheitResearch.ArWen","v":"2.8.3","n":"ArWen","m":"arwen"}
+{"id":"FahrenheitResearch.ArWen","v":"2.8.4","n":"ArWen","m":"arwen"}
 {"id":"FahrenheitResearch.BowEcho","v":"0.35.0","n":"BowEcho","m":"bowecho"}
 {"id":"FahrenheitResearch.Cursdar2","v":"0.5.1","n":"Cursdar2","m":"cursdar2"}
 {"id":"FahrenheitResearch.FFW-BOT","v":"1.0.1","n":"FFW-BOT","m":"ffw-bot"}
@@ -6161,7 +6161,7 @@
 {"id":"Jackbox.Utility","v":"1.5.1","n":"Jackbox Utility","m":"jackboxutility","t":["utility","flutter","translation","launcher","patcher","jackbox","jackbox-party-pack","jackbox-tv","jackboxgames","utility-application"]}
 {"id":"JackDevey.Lux","v":"1.1.1","n":"Lux","m":"lux","t":["govee","govee-api","lighting-controller","lighting-strips","smart-home"]}
 {"id":"JackenWu.MSearcher","v":"1.6.2","n":"MSearcher","t":["搜索","图片","复制","meme","梗图","meme图"]}
-{"id":"Jackett.Jackett","v":"0.24.2756","n":"Jackett","m":"jackett","t":["proxy","torrent","p2p","rss","indexer","sonarr","torent-management","torrent-search-engine","trackers"]}
+{"id":"Jackett.Jackett","v":"0.24.2780","n":"Jackett","m":"jackett","t":["proxy","torrent","p2p","rss","indexer","sonarr","torent-management","torrent-search-engine","trackers"]}
 {"id":"JackHumphries.Socially","v":"1.0.0","n":"Socially"}
 {"id":"JackieLiu.NotepadsApp","v":"1.5.6.0","n":"Notepads","t":["markdown","text-editor","foss","open-source","notepad","uwp","fluent-design","texteditor","notepadsapp"]}
 {"id":"jacking75.TabBouncer","v":"1.1.0","n":"TabBouncer","t":["privacy","chrome","ad-blocker","popup-blocker","팝업차단","광고차단"]}
@@ -8233,7 +8233,7 @@
 {"id":"Microsoft.RemoteHelp","v":"5.2.1040.0","n":"Remote help","t":["enterprise","intune","remote","remote-control","microsoft","support","remote-assistance","help","assistance","remote-help"]}
 {"id":"Microsoft.ReportBuilder","v":"15.1.30001.02","n":"Microsoft Report Builder"}
 {"id":"Microsoft.RMSClient","v":"1.0.5406.9","n":"Active Directory Rights Management Services Client 2.1","t":["activedirectory","azureinformationprotection","azure-information-protection","adrms","on-premises","rightsmanagementserviceclient"]}
-{"id":"Microsoft.SafetyScanner","v":"1.459.528.0","n":"Microsoft Safety Scanner","t":["microsoft-safety-scanner","windows-security","microsoft-defender-antivirus","msert"]}
+{"id":"Microsoft.SafetyScanner","v":"1.459.530.0","n":"Microsoft Safety Scanner","t":["microsoft-safety-scanner","windows-security","microsoft-defender-antivirus","msert"]}
 {"id":"Microsoft.SaRACmd","v":"17.01.3954.000","n":"Microsoft Support and Recovery Assistant Command Line","m":"SaRAcmd.exe","t":["teams","outlook","Outlook","Office","microsoft365","microsoftoffice","onenote","Microsoft365","Teams","microsoftsupportandrecoveryassistant","support-and-recovery-assistant"]}
 {"id":"Microsoft.SBOMTool","v":"4.1.5","n":"SBOM Tool","t":["sbom","sbom-generator"]}
 {"id":"Microsoft.ScoutAgent","v":"0.23.578","n":"Microsoft Scout","m":"scout","t":["artificialintelligence","artificial-intelligence","microsoft-scout-agent","microsoftscoutagent"]}
@@ -8650,7 +8650,7 @@
 {"id":"moshfeu.y2mp3","v":"3.0.1","n":"y2mp3","m":"y2mp3","t":["video","视频","download","下载","electron","ffmpeg","music","audio","音频","youtube","音乐","webpack"]}
 {"id":"Mossmouth.SpelunkyClassic","v":"1.1","n":"Spelunky Classic","m":"spelunky-classic","t":["open-source","games","freeware","spelunky"]}
 {"id":"Mostaqem.Mostaqem","v":"2.2.1","n":"Mostaqem","t":["flutter","religion","islam","quran","quran-desktop"]}
-{"id":"mostlygeek.llama-swap","v":"261","n":"llama-swap","m":"llama-swap","t":["llama","golang","openai","llamacpp","openai-api","localllama","localllm","vllm"]}
+{"id":"mostlygeek.llama-swap","v":"262","n":"llama-swap","m":"llama-swap","t":["llama","golang","openai","llamacpp","openai-api","localllama","localllm","vllm"]}
 {"id":"MotionLabSystems.C3Dserver","v":"1.204.8.1","n":"Motion Lab Systems C3Dserver"}
 {"id":"MotionTeam.MotionDesktopApp","v":"0.117.0","n":"Motion Desktop App","m":"motion","t":["productivity","to-do","motion","usemotion"]}
 {"id":"motoi-tsushima.mfprobe","v":"1.1.2.0","n":"mfprobe","t":["utility","cli","command-line","encoding","text-processing","file-inspection"]}
@@ -11739,7 +11739,7 @@
 {"id":"Samsung.UserManual.Q1-WinXP","v":"2.0","n":"Samsung Q1 Windows XP User Manual"}
 {"id":"Samsung.WatchFaceStudio","v":"1.9.9","n":"WatchFaceStudio","m":"watchfacestudio"}
 {"id":"SamsungSDS.BrityMeeting","v":"2.7.26.09081","n":"Brity Meeting","m":"brity-meeting"}
-{"id":"SamsungSDS.BrityMessenger","v":"2.1.81.10","n":"Brity Messenger","m":"brity-messenger"}
+{"id":"SamsungSDS.BrityMessenger","v":"2.1.83.9","n":"Brity Messenger","m":"brity-messenger"}
 {"id":"SamTaylor.MapInABox","v":"1.0.0.12.0","n":"Map in a Box"}
 {"id":"samuel-lucas6.kryptor","v":"4.1.1","n":"Kryptor"}
 {"id":"SamuelAttard.GooglePlayMusicDesktopPlayer","v":"4.7.1","n":"Google Play Music Desktop Player"}
@@ -12248,7 +12248,7 @@
 {"id":"skyjake.Lagrange","v":"1.20.9","n":"Lagrange","t":["gui","gemini","client","gemini-protocol","geminiprotocol","gemini-web-protocol","geminiwebprotocol"]}
 {"id":"Skyjos.Redfish","v":"1.2","n":"Redfish","t":["smb","samba","filesharing","fileshare","fileserver"]}
 {"id":"Skyline.BalatroModManager","v":"0.2.6","n":"Balatro Mod Manager","t":["rust","svelte","mod-manager","balatro","game-mods","modding-tools"]}
-{"id":"SkyLLC.UFFS","v":"0.6.42","n":"UFFS - Ultra Fast File Search","t":["rust","windows","cli","search","ntfs","file-search","mft"]}
+{"id":"SkyLLC.UFFS","v":"0.6.43","n":"UFFS - Ultra Fast File Search","t":["rust","windows","cli","search","ntfs","file-search","mft"]}
 {"id":"Skylot.jadx","v":"1.5.6","n":"jadx","t":["android","dex","java","decompiler"]}
 {"id":"skypjack.QSapecNG","v":"2.0.0","n":"QSapecNG - Qt-based GUI for SapecNG","t":["physics","electronics","circuit","物理","电子","电路"]}
 {"id":"Skyvex.SkyvexWebcamUploader","v":"1.0.0.0","n":"Skyvex Webcam Uploader","m":"skyvex-webcam-uploader","t":["skyvex-webcam-uploader"]}
@@ -12494,7 +12494,7 @@
 {"id":"Solidiquis.Erdtree","v":"3.1.2","n":"Erdtree"}
 {"id":"SolidWorks.eDrawings","v":"34.41.0003","n":"eDrawings","t":["cad"]}
 {"id":"solnsu.StarBox","v":"0.2.0","n":"StarBox","t":["人工智能","ai","chatgpt","codex","openai"]}
-{"id":"solpbc.Solstone","v":"2.0.16","n":"solstone","m":"solstone","t":["privacy","open-source","journal","solstone","personal-data","self-determination","observer"]}
+{"id":"solpbc.Solstone","v":"2.0.17","n":"solstone","m":"solstone","t":["privacy","open-source","journal","solstone","personal-data","self-determination","observer"]}
 {"id":"Soltrubeg.TungSay","v":"0.1.0","n":"TungSay","t":["cli","game","terminal","meme","fun","Console","Command-Line","brainrot","tung"]}
 {"id":"Soluling.Soluling","v":"1.0.1105","n":"Soluling","t":["translate"]}
 {"id":"SolveSpace.SolveSpace","v":"3.2","n":"SolveSpace","t":["cad","parametric"]}
