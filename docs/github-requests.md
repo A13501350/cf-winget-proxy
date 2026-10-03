@@ -35,8 +35,10 @@ Contents API 未认证限额是 **60 次/小时，且按源 IP 计**。Cloudflar
 | `lookupPackageId` 索引未命中 → 列版本目录 | 返回 null（winget 视作查不到） |
 | `handlePackageManifest` 无 `?Version=` 且索引未命中 → 列版本目录 | **404**（fail close） |
 
-保留的唯一「兜底」是 `getIndex` 刷新失败时继续沿用 isolate 里上一次成功的索引 ——
-过时但正确的结果，好过一片空集伪装成「没有这个包」。
+保留的只有一条：索引取不到就当没有索引 —— 搜索返回空 `Data`，但**每次查询都会重试**
+并在日志里留下原因（`getIndex: <status> from <url>` / `fetch threw ...`）。
+曾经这里是「沿用 isolate 里上一次成功的索引且失败不记日志」，那次改动把一次抓取失败
+变成了之后所有搜索永久返回空、而 winget 显示成「没有这个包」，看板上完全看不出来。
 
 ### 索引没有 = 就当没有
 

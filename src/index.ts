@@ -166,34 +166,48 @@ function handleInformation(): Response {
 // (75%) have tags, so those two are genuinely optional, not defensively typed.
 type IndexEntry = { id: string; v: string; n?: string; m?: string; t?: string[] };
 
-// Module-level memo of the parsed index. The blob is served from the edge cache
-// (cacheTtl below), so a refresh costs a Worker invocation but not a GitHub
-// request; 15 310 lines parse in well under a millisecond. The memo only needs
-// to be shorter than the index refresh period (daily), so an index push reaches
-// users without a redeploy.
-// If a refresh fails the previous index keeps serving: stale-but-correct beats
-// an empty result set that looks like "no such package".
+// Module-level memo of the parsed index, so a refresh costs one request per
+// interval rather than one per search.
+// A failure is not swallowed: indexCache stays null, every later query retries,
+// and the reason is logged. The old `catch { return indexCache?.data ?? null }`
+// plus a silent `!resp.ok` turn produced 200 `{"Data":[]}` responses forever
+// after one bad fetch, which looks exactly like "no such package" to winget and
+// is impossible to tell apart from the dashboard.
 let indexCache: { data: IndexEntry[]; at: number } | null = null;
 
-async function getIndex(env: Env): Promise<IndexEntry[] | null> {
-  if (!env.INDEX_URL) return null;
+async function getIndex(
+  env: Env,
+  opts: { force?: boolean } = {}
+): Promise<IndexEntry[] | null> {
+  if (!env.INDEX_URL) {
+    console.log("getIndex: INDEX_URL is not configured, search has no data source");
+    return null;
+  }
   const now = Date.now();
-  if (indexCache && now - indexCache.at < 300_000) return indexCache.data;
+  if (!opts.force && indexCache && now - indexCache.at < 300_000) return indexCache.data;
   try {
     const resp = await fetch(env.INDEX_URL, {
       headers: { "User-Agent": "winget-cn-proxy/2.0" },
       cf: { cacheEverything: true, cacheTtl: 300 },
     });
-    if (!resp.ok) return indexCache?.data ?? null;
     const text = await resp.text();
+    if (!resp.ok) {
+      console.log(`getIndex: ${resp.status} from ${env.INDEX_URL} (${text.length} bytes), searching without an index`);
+      return null;
+    }
     const data = text
       .split("\n")
       .filter((l) => l.trim().length > 0)
       .map((l) => JSON.parse(l) as IndexEntry);
+    if (!data.length) {
+      console.log(`getIndex: empty body from ${env.INDEX_URL}, searching without an index`);
+      return null;
+    }
     indexCache = { data, at: now };
     return data;
-  } catch {
-    return indexCache?.data ?? null;
+  } catch (e) {
+    console.log(`getIndex: fetch threw ${e instanceof Error ? e.message : String(e)}, searching without an index`);
+    return null;
   }
 }
 
@@ -810,6 +824,21 @@ export default {
     }
 
     // ── Microsoft.Rest API endpoints ────────────────────────────────────────
+    // Operational read-out for "is the search broken because the index is
+    // missing?" — which otherwise looks identical to "nothing matches that
+    // keyword". Fetches with force, so it reports the origin rather than a memo
+    // a previous request happened to leave behind.
+    if (pathname === "/_index" && request.method === "GET") {
+      const index = await getIndex(env, { force: true });
+      return Response.json({
+        url: env.INDEX_URL ?? null,
+        entries: index?.length ?? 0,
+        first: index?.[0]?.id ?? null,
+        withMoniker: index?.filter((e) => e.m).length ?? 0,
+        withTags: index?.filter((e) => e.t).length ?? 0,
+      });
+    }
+
     if (pathname === "/information" && request.method === "GET") {
       return handleInformation();
     }
