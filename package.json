@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "build:test": "esbuild src/index.ts --bundle --format=esm --platform=node --external:js-yaml --outfile=.build-test/worker.mjs",
     "test:worker": "npm run build:test && node test_zero_github_calls.mjs",
-    "test:index": "bash scripts/test-index-parser.sh && bash scripts/validate-index.sh && node test_index_search.mjs"
+    "test:index": "bash scripts/validate-index.sh && node test_index_search.mjs",
+    "build:index": "bash scripts/build-index.sh"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240725.0",

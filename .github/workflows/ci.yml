@@ -3,10 +3,11 @@ name: CI
 # Tests only — no cloud access, so it needs no secrets.
 #
 # This exists because `wrangler deploy` is NOT driven from here: Cloudflare
-# Workers Builds watches the repo (src/** and wrangler.toml) and deploys on push,
-# which is why deploy.yml is disabled. Without this workflow the regression
-# guards would run nowhere at all — a broken search path would be built and
-# shipped by Cloudflare before anything noticed.
+# Workers Builds watches the repo and deploys on any push to the watched branch
+# (it does not filter paths — only a `[skip ci]` commit message stops it), which
+# is why deploy.yml is disabled. Without this workflow the regression guards
+# would run nowhere at all — a broken search path would be built and shipped by
+# Cloudflare before anything noticed.
 on:
   push:
     branches: [main, master]

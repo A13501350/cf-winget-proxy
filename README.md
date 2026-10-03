@@ -16,12 +16,12 @@ GitHub，国内直连经常很慢或超时。本项目提供一个**自建的 `M
 ## 工作原理
 
 ```
-winget  ──REST(JSON)──▶  Cloudflare Worker  ──读 YAML──▶  microsoft/winget-pkgs (GitHub)
-   ▲                         │
-   │ 改写 InstallerUrl        └── 把 github.com / githubusercontent.com 的 InstallerUrl
-   │                              换成  <MIRROR>/https://github.com/...
+winget ──REST(JSON)──▶ Cloudflare Worker ──▶ index.json（本仓库，包列表）
+                          │
+                          └──▶ jsDelivr 上的 YAML 清单（只取命中的那个包）
    │
-   └── 客户端直连 MIRROR（gh-proxy 等）下载安装器（不经 Worker）
+   │ 改写 InstallerUrl：github.com / githubusercontent.com → <MIRROR>/https://github.com/...
+   └── 客户端直连 MIRROR（gh-proxy 等）下载安装器，不经 Worker
 ```
 
 - 清单（小 JSON）经 Cloudflare 边缘取回，改写后交给 winget；
@@ -33,7 +33,7 @@ winget  ──REST(JSON)──▶  Cloudflare Worker  ──读 YAML──▶  m
 | 端点 | 说明 |
 | --- | --- |
 | `GET  /information` | 源元数据（Microsoft.Rest 协议） |
-| `POST /manifestSearch` | 包搜索，后端为 `microsoft/winget-pkgs` |
+| `POST /manifestSearch` | 包搜索，后端为 `index.json`（官方源的包索引） |
 | `GET  /packageManifests/{id}` | 包清单，`InstallerUrl` 已改写为镜像地址 |
 | `GET  /packageManifests/{id}?Version=x` | 指定版本（winget 以 query 参数传版本） |
 
@@ -46,7 +46,8 @@ winget  ──REST(JSON)──▶  Cloudflare Worker  ──读 YAML──▶  m
 Builds **不筛路径**：任意文件的推送都会重建并上线，只改 README 和 `ci.yml` 的
 `d3c7507` 同样产出了新版本。所以别把「这次没动代码」当成不会影响线上的理由。
 唯一不重建的是提交信息带 `[skip ci]` —— 每天那条 `chore: update winget index` 就靠它
-不重复部署，因为索引是 Worker 运行时从 `INDEX_URL` 拉的，换索引内容不需要重新上线。
+不重复部署（那是一次 GitHub Actions 的 `skipped`，Cloudflare 也认这个标记），
+因为索引是 Worker 运行时从 `INDEX_URL` 拉的，换索引内容不需要重新上线。
 
 手动部署（本地已 `wrangler login` 时）：
 
@@ -109,18 +110,33 @@ winget upgrade --all
 只有一条路径：**预建索引 → 按索引取清单 → 改写 → 返回**。代码里不存在任何能打
 到 `api.github.com` 的调用（打包产物中该字符串出现 0 次）。
 
+索引 `index.json` 不是从 git 路径推出来的，而是从官方源自己的库里导出来的：
+`https://cdn.winget.microsoft.com/cache/source2.msix` 里的 `Public/index.db`
+（SQLite），也就是 winget 默认源下载并本地检索的那份数据。每行是
+
+```json
+{"id":"Microsoft.VisualStudioCode","v":"1.140.0","n":"Microsoft Visual Studio Code","m":"vscode","t":["editor","developer-tools"]}
+```
+
+1.5 万条、约 2.3 MB，其中 15310 条有名称、5940 条有 moniker、11496 条有 tag。
+
 1. **精确 ID**（`Publisher.Package`，带点）：在 `index.json` 里直接查到最新版本。
-2. **关键词**：对 `index.json`（1.5 万条左右，每天由 Action 重建）做四档匹配，
-   精度从高到低：id 精确 → id 前缀 → 归一化前缀 → 子串。四档的共同点就一个：
-   关键词必须**字面出现**在 id 里。没有更弱的了。
+2. **关键词**：对 `id / moniker / name / tag` 四个字段做大小写无关的
+   精确 → 前缀 → 子串匹配，再按「匹配质量优先、字段其次」排序：
+   `vscode` 首条是 `Microsoft.VisualStudioCode`（Moniker 精确），排在
+   仅仅 id 里含 `vscode` 的 `…CommandPalette-VSCode` 之前。
+   关键词必须**字面出现**在某个字段里，没有更弱的了。
 3. **依赖解析**（`ProductCode`）：剥掉 `_microsoft.winget.source_…` 后缀还原 id，同样走索引。
+
+结果条数不截断，和官方源一致（`winget search e` 官方返回 14468 条，本 worker 返回
+同量级）；截断会把用户要找的那个包悄悄藏起来。
 
 **不做缩写/子序列猜测。** 曾经有过第五档，它让 `vscode` 命中
 `Microsoft.VisualStudioCode`，也顺手让 `sqlite3` 命中了 `SublimeText 3`
 （`sublimehqsublimetext3` 里正散落着 s-q-l-i-t-e-3）。winget 拿到结果后会用包
 自身的属性回推「命中在哪个字段」（`FindBestMatchCriteria`），推不出来就显示
 `UnknownMatchField:` —— 而 `winget install <关键词>` 是真会拿这个假命中去装包的。
-官方源答 `vscode` 靠的是 Moniker 字段，那是数据不是猜测。
+现在 `vscode` 靠 Moniker 字段命中、`sqlite3` 靠 Tag 字段命中，是数据不是猜测。
 
 **索引里没有就当没有**：搜索返回空 `Data`，`packageManifests/{id}`（未带 `?Version=`）
 返回 404。不做目录枚举回源 —— Contents API 未认证限额是 **60 次/小时且按 IP 计**，
@@ -129,28 +145,28 @@ winget upgrade --all
 
 ### 已知限制
 
-- **新包隐身**：索引每天 04:23 UTC 重建，之后发布的包最坏 24 小时查不到
-  （可手动触发 workflow）。这是删掉回源后故意接受的唯一缺口。
-- **没有别名检索**：索引只含 `PackageIdentifier` + 最新版本，不含 moniker /
-  display name / tag。所以 `winget search vscode` 查不到
-  `Microsoft.VisualStudioCode`（它的 id 里并没有 `vscode` 这个字面串），得写全名或
-  `visualstudio`；靠 tag 才能命中的词（`sqlite3`）一律返回空。要补就是给索引加
-  moniker / package name 列（需逐包读 YAML），见 `docs/github-requests.md` §5.1。
-- 命中列（`匹配`）多为空：我们按 id 匹配，winget 对 Id/Name 命中就是显示空白，
-  这是正常的；只要不再出现 `UnknownMatchField:` 就说明结果都是可归因的。
+- **新包隐身**：官方 feed 本身就落后 `winget-pkgs`，索引再每天 04:23 UTC 重建一次，
+  两层延迟叠加。这是删掉回源后故意接受的唯一缺口（可手动触发 workflow）。
+- **feed 拿不到就报错**：重建依赖 `cdn.winget.microsoft.com` 可达且 `source2.msix`
+  仍在那个路径上；任一条件不满足，`build-index.sh` 直接失败、保留仓库里上一版
+  `index.json`，而不是发布一份残缺索引。
+- 命中列（`匹配`）在 id/name 命中时为空：winget 对这两个字段就是显示空白，
+  这是正常的；moniker/tag 命中会显示 `Moniker: vscode` / `Tag: sqlite3`。
+  只要不再出现 `UnknownMatchField:` 就说明结果都是可归因的。
 
 ### 自检
 
 ```bash
-npm run test:index    # 解析器单测 + index.json 完整性 + 索引命中率（全离线）
+npm run build:index   # 下载 source2.msix → 导出 index.json → 校验（需要联网）
+npm run test:index    # index.json 完整性 + 字段覆盖率 + 索引命中率（全离线）
 npm run typecheck     # tsc --noEmit
-npm run test:worker   # esbuild 打包 Worker，用 stub fetch（任何 api.github.com 调用直接抛错）跑 17 个用例
+npm run test:worker   # esbuild 打包 Worker，用 stub fetch（任何 api.github.com 调用直接抛错）跑 22 个用例
 ```
 
 `test:worker` 里索引未命中的用例断言的是「0 结果 **且** 0 次 GitHub 调用」，
 所以任何回源代码一旦被加回来，这条命令会立刻抛 `unexpected GitHub API call` 变红。
-`ci.yml`（push/PR，不需要任何 secret）跑全部三条；`build-index.yml` 重建索引前跑
-`scripts/test-index-parser.sh` + `node test_index_search.mjs`（后者需要刚构建出的 `index.json`）。
+`ci.yml`（push/PR，不需要任何 secret）跑全部三条；`build-index.yml` 重建索引后跑
+`node test_index_search.mjs`（校验列齐不齐、老词还查不查得到）。
 `deploy.yml` 是停用的（上线由 Cloudflare Workers Builds 负责），别指望它兜底。
 
 完整的 GitHub 请求点与限流/延迟分析见 [docs/github-requests.md](docs/github-requests.md)。
@@ -165,7 +181,7 @@ Worker 会打印：
 
 - `manifestSearch body: ...` —— winget 发来的搜索请求原始体；
 - `manifestSearch: looking up package id: ...` / `productCode -> id: ...` —— 走 id 直查的路径；
-- `keywordSearch: index hit, matched=N, returned=M for "..."` —— 命中索引，候选 N 个、截断后返回 M 个；
+- `keywordSearch: index hit, returned=M for "..."` —— 命中索引，返回 M 条（不截断）；
 - `keywordSearch: no index match for "..."` —— 索引里没有，直接返回空（不再回源）；
 - `manifestSearch: no results (empty Data)` —— 确实没找到。
 

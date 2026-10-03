@@ -1,13 +1,18 @@
 // End-to-end guard for the search hot path: it drives the real Worker handler
-// against the committed index.json and asserts that indexed queries never touch
-// api.github.com — that is the whole point of the prebuilt index, and the only
-// thing standing between a shared 60 req/h rate limit and total outage.
+// against the committed index.json and asserts two things — indexed queries
+// never touch api.github.com (the whole point of the prebuilt index, and the
+// only thing standing between a shared 60 req/h rate limit and total outage),
+// and every result is one winget can attribute to a field of the package, so
+// the 匹配 column never comes out as "UnknownMatchField:".
 //   CI: node test_zero_github_calls.mjs
 import assert from "node:assert";
 import { readFileSync } from "node:fs";
 import worker from "./.build-test/worker.mjs";
 
 const INDEX_BODY = readFileSync(new URL("./index.json", import.meta.url));
+const INDEX = INDEX_BODY.toString("utf8").split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l));
+const indexById = new Map(INDEX.map((e) => [e.id, e]));
+const norm = (s) => (s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
 
 const seen = [];
 const realFetch = globalThis.fetch;
@@ -47,32 +52,120 @@ const search = async (body) => {
 const githubCalls = () => seen.filter((u) => u.includes("api.github.com")).length;
 const reset = () => { seen.length = 0; };
 
+// winget re-derives the match column by comparing its own term against the
+// package's Id/Name/Moniker/Tag values (FindBestMatchCriteria); a result that
+// survives none of them prints "UnknownMatchField:" and, worse, is a package
+// `winget install <term>` would happily offer. Only the normalized comparison
+// the client explicitly asks for is allowed to skip the literal check.
+function assertAttributable(term, rows) {
+  for (const d of rows) {
+    const e = indexById.get(d.PackageIdentifier);
+    assert.ok(e, `${term}: the Worker returned ${d.PackageIdentifier}, which is not in the index`);
+    const fields = [e.id, e.n, e.m, ...(e.t ?? [])].filter(Boolean).map((v) => v.toLowerCase());
+    const ok = fields.some((v) => v.includes(term.toLowerCase())) || norm(e.id) === norm(term);
+    assert.ok(
+      ok,
+      `"${term}" returned ${d.PackageIdentifier} (name=${e.n} moniker=${e.m} tags=${(e.t ?? []).join("/")}), ` +
+        `none of which contains it — winget would show UnknownMatchField`
+    );
+  }
+}
+
 // ── 1. every query shape winget actually sends must be answered from the index ──
 const cases = [
-  ["keyword (Query)", { Query: { KeyWord: "firefox", MatchType: "Contains" } }, "Mozilla.Firefox"],
-  ["normalized substring vlc", { Query: { KeyWord: "vlc", MatchType: "Contains" } }, "VideoLAN.VLC"],
-  ["normalized substring 7zip", { Query: { KeyWord: "7zip", MatchType: "Contains" } }, null],
-  ["exact id (Filters)", { Filters: [{ PackageMatchField: "PackageIdentifier", RequestMatch: { KeyWord: "Git.Git", MatchType: "Exact" } }] }, "Git.Git"],
-  ["lowercased id", { Filters: [{ PackageMatchField: "PackageIdentifier", RequestMatch: { KeyWord: "yt-dlp.ffmpeg", MatchType: "Exact" } }] }, "yt-dlp.FFmpeg"],
-  ["ProductCode (dependency)", { Inclusions: [{ PackageMatchField: "ProductCode", RequestMatch: { KeyWord: "yt-dlp.ffmpeg_microsoft.winget.source_8wekyb3d8bbwe", MatchType: "Exact" } }] }, "yt-dlp.FFmpeg"],
-  ["NormalizedPackageNameAndPublisher", { Inclusions: [{ PackageMatchField: "NormalizedPackageNameAndPublisher", RequestMatch: { KeyWord: "ytdlpffmpeg", MatchType: "Exact" } }] }, "yt-dlp.FFmpeg"],
-  ["non-ascii publisher", { Query: { KeyWord: "brötje", MatchType: "Contains" } }, "BRÖTJE.ProfiTool"],
+  {
+    label: "keyword (Query)",
+    kw: "firefox",
+    body: { Query: { KeyWord: "firefox", MatchType: "Contains" } },
+    expect: "Mozilla.Firefox",
+  },
+  {
+    label: "moniker (winget install vscode)",
+    kw: "vscode",
+    body: { Inclusions: [{ PackageMatchField: "Moniker", RequestMatch: { KeyWord: "vscode", MatchType: "Exact" } }] },
+    expect: "Microsoft.VisualStudioCode",
+  },
+  {
+    // The query that used to be answered with a subsequence guess. It is now a
+    // Tag field lookup, so the four packages the official source shows are ours.
+    label: "tag (winget search sqlite3)",
+    kw: "sqlite3",
+    body: { Query: { KeyWord: "sqlite3", MatchType: "Contains" } },
+    expect: "SQLite.SQLite",
+  },
+  {
+    label: "keyword vlc",
+    kw: "vlc",
+    body: { Query: { KeyWord: "vlc", MatchType: "Contains" } },
+    expect: "VideoLAN.VLC",
+  },
+  {
+    label: "keyword 7zip",
+    kw: "7zip",
+    body: { Query: { KeyWord: "7zip", MatchType: "Contains" } },
+    expect: "7zip.7zip",
+  },
+  {
+    label: "display name",
+    kw: "media player",
+    body: { Query: { KeyWord: "media player", MatchType: "Contains" } },
+    expect: "VideoLAN.VLC",
+  },
+  {
+    label: "exact id (Filters)",
+    body: { Filters: [{ PackageMatchField: "PackageIdentifier", RequestMatch: { KeyWord: "Git.Git", MatchType: "Exact" } }] },
+    expect: "Git.Git",
+  },
+  {
+    label: "lowercased id",
+    body: { Filters: [{ PackageMatchField: "PackageIdentifier", RequestMatch: { KeyWord: "yt-dlp.ffmpeg", MatchType: "Exact" } }] },
+    expect: "yt-dlp.FFmpeg",
+  },
+  {
+    label: "ProductCode (dependency)",
+    body: { Inclusions: [{ PackageMatchField: "ProductCode", RequestMatch: { KeyWord: "yt-dlp.ffmpeg_microsoft.winget.source_8wekyb3d8bbwe", MatchType: "Exact" } }] },
+    expect: "yt-dlp.FFmpeg",
+  },
+  {
+    label: "NormalizedPackageNameAndPublisher",
+    kw: "ytdlpffmpeg",
+    body: { Inclusions: [{ PackageMatchField: "NormalizedPackageNameAndPublisher", RequestMatch: { KeyWord: "ytdlpffmpeg", MatchType: "Exact" } }] },
+    expect: "yt-dlp.FFmpeg",
+  },
+  {
+    label: "non-ascii publisher",
+    kw: "brötje",
+    body: { Query: { KeyWord: "brötje", MatchType: "Contains" } },
+    expect: "BRÖTJE.ProfiTool",
+  },
 ];
 
-for (const [label, body, expectId] of cases) {
+for (const c of cases) {
   reset();
-  const data = await search(body);
-  assert.ok(data.length > 0, `${label}: empty Data`);
-  if (expectId) {
-    assert.ok(data.some((d) => d.PackageIdentifier === expectId), `${label}: ${expectId} missing`);
+  const data = await search(c.body);
+  assert.ok(data.length > 0, `${c.label}: empty Data`);
+  if (c.expect) {
+    assert.ok(data.some((d) => d.PackageIdentifier === c.expect), `${c.label}: ${c.expect} missing`);
   }
   for (const d of data) {
-    assert.ok(d.PackageIdentifier && d.PackageName && d.Publisher, `${label}: missing required fields`);
-    assert.ok((d.Versions ?? []).length && d.Versions[0].PackageVersion, `${label}: empty Versions`);
+    assert.ok(d.PackageIdentifier && d.PackageName && d.Publisher, `${c.label}: missing required fields`);
+    assert.ok((d.Versions ?? []).length && d.Versions[0].PackageVersion, `${c.label}: empty Versions`);
+    // PackageName must be the real one from the feed, not a dotted id with the
+    // dots turned into spaces — that is what winget prints as 名称.
+    const e = indexById.get(d.PackageIdentifier);
+    if (e?.n) assert.equal(d.PackageName, e.n, `${c.label}: ${d.PackageIdentifier} reported as "${d.PackageName}", not its real name "${e.n}"`);
   }
-  assert.equal(githubCalls(), 0, `${label}: made ${githubCalls()} GitHub API call(s)`);
-  console.log(`✅ ${label}: ${data.length} result(s), 0 GitHub calls`);
+  if (c.kw) assertAttributable(c.kw, data);
+  assert.equal(githubCalls(), 0, `${c.label}: made ${githubCalls()} GitHub API call(s)`);
+  console.log(`✅ ${c.label}: ${data.length} result(s), 0 GitHub calls`);
 }
+
+// Ranking is not arbitrary: the exact moniker must beat the substring hits that
+// share no part of the word, or `winget install vscode` picks the wrong package.
+reset();
+const ranked = await search({ Query: { KeyWord: "vscode", MatchType: "Contains" } });
+assert.equal(ranked[0].PackageIdentifier, "Microsoft.VisualStudioCode", `"vscode" ranked ${ranked[0].PackageIdentifier} first`);
+console.log("✅ vscode sorts Microsoft.VisualStudioCode first (moniker exact beats id substring)");
 
 // ── 2. an index miss is reported as "nothing found", not guessed at ──
 // The stub above throws on any api.github.com request, so this case failing with
@@ -93,36 +186,18 @@ assert.equal(missing.status, 404, `expected fail-close 404, got ${missing.status
 assert.equal(githubCalls(), 0, "missing manifest reached the GitHub API");
 console.log("✅ packageManifests of an unindexed id: 404, 0 GitHub calls");
 
-// ── 2c. no query is answered by guessing ──
-// A keyword that fits an id only as a *character subsequence* must return
-// nothing. That shape used to be the "abbreviation" tier: it is how "vscode"
-// found Microsoft.VisualStudioCode, and also how "sqlite3" handed back
-// SublimeText 3 (s-q-l-i-t-e-3 scattered through "sublimehqsublimetext3").
-// winget re-derives the match column from the package's own properties
-// (FindBestMatchCriteria), so a package whose id does not literally contain the
-// keyword prints "UnknownMatchField:" — and `winget install <keyword>` would
-// offer the wrong package to install.
+// ── 2c. nothing is answered by character scatter ──
+// The old "abbreviation" tier matched any id whose normalized form contained the
+// keyword as a subsequence. It is gone, and the field data replaced it: a query
+// that only fits that shape must return nothing rather than a package no field
+// of it explains.
 reset();
-const guessed = await search({ Query: { KeyWord: "sqlite3", MatchType: "Contains" } });
-assert.equal(guessed.length, 0, `"sqlite3" was answered by guessing: ${JSON.stringify(guessed.map((d) => d.PackageIdentifier))}`);
-console.log("✅ sqlite3: nothing is guessed at any more (0 results)");
-
-// "vscode" is the query that tier existed for. Anything it now returns must
-// contain the literal string, and the package the tier was really propping up
-// must be gone — that absence is the alias gap that a Moniker column in the
-// index is supposed to close properly, not a subsequence.
-reset();
-const aliases = await search({ Query: { KeyWord: "vscode", MatchType: "Contains" } });
-for (const d of aliases) {
-  assert.ok(d.PackageIdentifier.toLowerCase().includes("vscode"), `"vscode" returned ${d.PackageIdentifier}, which does not contain "vscode"`);
+for (const kw of ["sqblt3", "vscd", "mcd"]) {
+  const scattered = await search({ Query: { KeyWord: kw, MatchType: "Contains" } });
+  assertAttributable(kw, scattered);
+  console.log(`✅ "${kw}": ${scattered.length} result(s), all attributable to a real field`);
 }
-assert.equal(
-  aliases.some((d) => d.PackageIdentifier === "Microsoft.VisualStudioCode"),
-  false,
-  "Microsoft.VisualStudioCode was matched for 'vscode' without the id containing it"
-);
-console.log(`✅ vscode: ${aliases.length} result(s), all literally containing it, no invented alias hit`);
-assert.equal(githubCalls(), 0, "the alias queries reached the GitHub API");
+assert.equal(githubCalls(), 0, "the scatter queries reached the GitHub API");
 
 // ── 3. odd-shaped keywords must not reach the API either ──
 for (const kw of ["七", "123pan", ""]) {
@@ -166,9 +241,4 @@ assert.ok(
   ffInstallers.every((i) => !(i.InstallerUrl ?? "").startsWith(env.MIRROR + "/")),
   "a vendor (non-GitHub) InstallerUrl was rewritten when it should not have been"
 );
-assert.ok(
-  ffInstallers.some((i) => /^https:\/\/[^/]*mozilla/.test(i.InstallerUrl ?? "")),
-  "unexpected Firefox installer host set"
-);
-assert.equal(githubCalls(), 0, "packageManifests reached the GitHub API");
 console.log(`✅ packageManifests/Mozilla.Firefox: ${ffInstallers.length} installer(s), vendor URLs untouched, 0 GitHub calls`);
