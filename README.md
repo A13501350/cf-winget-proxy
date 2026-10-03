@@ -36,6 +36,7 @@ winget ──REST(JSON)──▶ Cloudflare Worker ──▶ index.json（本仓
 | `POST /manifestSearch` | 包搜索，后端为 `index.json`（官方源的包索引） |
 | `GET  /packageManifests/{id}` | 包清单，`InstallerUrl` 已改写为镜像地址 |
 | `GET  /packageManifests/{id}?Version=x` | 指定版本（winget 以 query 参数传版本） |
+| `GET  /_index` | 自检：强制重取 `INDEX_URL`，返回条数/moniker/tag 计数。搜索返回空 `Data` 时先看它 |
 
 ## 部署
 
@@ -133,9 +134,8 @@ winget upgrade --all
 
 **不做缩写/子序列猜测。** 曾经有过第五档，它让 `vscode` 命中
 `Microsoft.VisualStudioCode`，也顺手让 `sqlite3` 命中了 `SublimeText 3`
-（`sublimehqsublimetext3` 里正散落着 s-q-l-i-t-e-3）。winget 拿到结果后会用包
-自身的属性回推「命中在哪个字段」（`FindBestMatchCriteria`），推不出来就显示
-`UnknownMatchField:` —— 而 `winget install <关键词>` 是真会拿这个假命中去装包的。
+（`sublimehqsublimetext3` 里正散落着 s-q-l-i-t-e-3）。而 `winget install <关键词>`
+是真会拿这个假命中去装包的，所以整档删除。
 现在 `vscode` 靠 Moniker 字段命中、`sqlite3` 靠 Tag 字段命中，是数据不是猜测。
 
 **索引里没有就当没有**：搜索返回空 `Data`，`packageManifests/{id}`（未带 `?Version=`）
@@ -150,9 +150,18 @@ winget upgrade --all
 - **feed 拿不到就报错**：重建依赖 `cdn.winget.microsoft.com` 可达且 `source2.msix`
   仍在那个路径上；任一条件不满足，`build-index.sh` 直接失败、保留仓库里上一版
   `index.json`，而不是发布一份残缺索引。
-- 命中列（`匹配`）在 id/name 命中时为空：winget 对这两个字段就是显示空白，
-  这是正常的；moniker/tag 命中会显示 `Moniker: vscode` / `Tag: sqlite3`。
-  只要不再出现 `UnknownMatchField:` 就说明结果都是可归因的。
+- **`匹配` 列在 moniker/tag 命中时显示 `UnknownMatchField:`**（官方源同一行显示
+  `Tag: sqlite3`）。这不是可以修的东西，是 `Microsoft.Rest` 源类型的上限：搜索响应里
+  一个 version 只有 `PackageVersion / Channel / PackageFamilyNames / ProductCodes`
+  （1.4 起再加 `UpgradeCodes`），**不带清单**
+  （`SearchResponseDeserializer_1_0.cpp:163` 把 `VersionInfo::Manifest` 直接写成空）。
+  客户端于是用 `FindBestMatchCriteria` 拿包自身的属性回推命中列，能查的只有
+  Id / Name / 那几个系统引用串；Moniker、Command、Tag 存在清单的本地化段里，
+  REST 命中一律为空 → `Field` 停在 `Unknown`，而 `Unknown` 没有 `ToString()` 分支，
+  就打出了字面量 `UnknownMatchField`。id/name 命中在两种源上都显示空白
+  （`WorkflowBase.cpp:38` 对这两个字段直接返回空串）。官方源是预索引 SQLite，
+  命中列由那条查询自己给出，所以它知道、我们不知道。
+  **返回的包集合和排序都不受影响**，只有这一列不同。
 
 ### 自检
 
@@ -184,6 +193,11 @@ Worker 会打印：
 - `keywordSearch: index hit, returned=M for "..."` —— 命中索引，返回 M 条（不截断）；
 - `keywordSearch: no index match for "..."` —— 索引里没有，直接返回空（不再回源）；
 - `manifestSearch: no results (empty Data)` —— 确实没找到。
+
+区分「索引没加载」和「索引里真没这个词」：`curl https://<worker>/_index`。它绕过
+memo 和边缘缓存重取一次，返回 `entries` / `withMoniker` / `withTags`；
+`entries: 0` 是索引问题（看同一行日志里的 `getIndex: <status> from <url>`），
+条数正常则是查询本身无命中。
 
 ## 环境变量
 

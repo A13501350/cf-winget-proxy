@@ -2,8 +2,8 @@
 // against the committed index.json and asserts two things — indexed queries
 // never touch api.github.com (the whole point of the prebuilt index, and the
 // only thing standing between a shared 60 req/h rate limit and total outage),
-// and every result is one winget can attribute to a field of the package, so
-// the 匹配 column never comes out as "UnknownMatchField:".
+// and every returned row is explained by a real field value, i.e. we never
+// answer a term that no field contains.
 //   CI: node test_zero_github_calls.mjs
 import assert from "node:assert";
 import { readFileSync } from "node:fs";
@@ -52,12 +52,15 @@ const search = async (body) => {
 const githubCalls = () => seen.filter((u) => u.includes("api.github.com")).length;
 const reset = () => { seen.length = 0; };
 
-// winget re-derives the match column by comparing its own term against the
-// package's Id/Name/Moniker/Tag values (FindBestMatchCriteria); a result that
-// survives none of them prints "UnknownMatchField:" and, worse, is a package
-// `winget install <term>` would happily offer. Only the normalized comparison
-// the client explicitly asks for is allowed to skip the literal check.
-function assertAttributable(term, rows) {
+// What "explained" means here: the term must literally occur in one of the four
+// index fields (id / moniker / name / tag). The client re-derives the 匹配 column
+// itself, but only from what a REST search response carries — Id, Name and the
+// system reference strings, never Moniker/Tag (see README 已知限制) — so this
+// check guards against guessing, not against what that column prints. A row no
+// field explains is a package `winget install <term>` would happily offer.
+// Only the normalized comparison the client explicitly asks for may skip the
+// literal check.
+function assertExplainedByField(term, rows) {
   for (const d of rows) {
     const e = indexById.get(d.PackageIdentifier);
     assert.ok(e, `${term}: the Worker returned ${d.PackageIdentifier}, which is not in the index`);
@@ -66,7 +69,7 @@ function assertAttributable(term, rows) {
     assert.ok(
       ok,
       `"${term}" returned ${d.PackageIdentifier} (name=${e.n} moniker=${e.m} tags=${(e.t ?? []).join("/")}), ` +
-        `none of which contains it — winget would show UnknownMatchField`
+        `none of which contains it — a guessed row`
     );
   }
 }
@@ -155,7 +158,7 @@ for (const c of cases) {
     const e = indexById.get(d.PackageIdentifier);
     if (e?.n) assert.equal(d.PackageName, e.n, `${c.label}: ${d.PackageIdentifier} reported as "${d.PackageName}", not its real name "${e.n}"`);
   }
-  if (c.kw) assertAttributable(c.kw, data);
+  if (c.kw) assertExplainedByField(c.kw, data);
   assert.equal(githubCalls(), 0, `${c.label}: made ${githubCalls()} GitHub API call(s)`);
   console.log(`✅ ${c.label}: ${data.length} result(s), 0 GitHub calls`);
 }
@@ -194,8 +197,8 @@ console.log("✅ packageManifests of an unindexed id: 404, 0 GitHub calls");
 reset();
 for (const kw of ["sqblt3", "vscd", "mcd"]) {
   const scattered = await search({ Query: { KeyWord: kw, MatchType: "Contains" } });
-  assertAttributable(kw, scattered);
-  console.log(`✅ "${kw}": ${scattered.length} result(s), all attributable to a real field`);
+  assertExplainedByField(kw, scattered);
+  console.log(`✅ "${kw}": ${scattered.length} result(s), all explained by a real field`);
 }
 assert.equal(githubCalls(), 0, "the scatter queries reached the GitHub API");
 

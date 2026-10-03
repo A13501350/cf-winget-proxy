@@ -115,9 +115,8 @@ console.log("✅ vscode sorts Microsoft.VisualStudioCode first");
 
 // 5. nothing is guessed at. A keyword that fits an id only as a character
 // subsequence used to be answered by an "abbreviation" tier; that is how
-// "sqlite3" once handed back SublimeText 3, and winget then re-derives the match
-// column from the package's own fields and prints "UnknownMatchField:" for a row
-// no field explains.
+// "sqlite3" once handed back SublimeText 3 — a row no field of the package
+// explains, which `winget install` would then offer as if it were the answer.
 for (const kw of ["sqblt3", "sqlte3", "zzqxvnope"]) {
   assert.equal(indexSearch(kw).length, 0, `"${kw}" was answered by guessing`);
 }

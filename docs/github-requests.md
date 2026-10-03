@@ -31,7 +31,7 @@ Contents API 未认证限额是 **60 次/小时，且按源 IP 计**。Cloudflar
 | 原调用点 | 现在 |
 |---|---|
 | `keywordSearch` 索引未命中 → 枚举 `manifests/{letter}` 三级目录 | 返回空 `Data`，`no index match` 记一行日志 |
-| `keywordSearch` 的缩写（subsequence）档 → id 字符散落在词里也算命中 | 整档删除。它让 `vscode` → `Microsoft.VisualStudioCode`，也让 `sqlite3` → `SublimeText 3`，而后者是会被 `winget install` 真装错的假命中（客户端回推不出命中字段，显示 `UnknownMatchField:`）。现在这两条各由 Moniker / Tag 字段命中，是数据不是猜测 |
+| `keywordSearch` 的缩写（subsequence）档 → id 字符散落在词里也算命中 | 整档删除。它让 `vscode` → `Microsoft.VisualStudioCode`，也让 `sqlite3` → `SublimeText 3`，而后者是会被 `winget install` 真装错的假命中。现在这两条各由 Moniker / Tag 字段命中，是数据不是猜测 |
 | `lookupPackageId` 索引未命中 → 列版本目录 | 返回 null（winget 视作查不到） |
 | `handlePackageManifest` 无 `?Version=` 且索引未命中 → 列版本目录 | **404**（fail close） |
 

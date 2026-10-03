@@ -260,13 +260,17 @@ function toSearchResults(matched: IndexEntry[]): object[] {
 // substring); the field only breaks ties (id beats moniker beats name beats
 // tag). Quality first is what the client-side search does too: an exact hit on
 // any field is a better answer than a loose hit, so `vscode` returns
-// Microsoft.VisualStudioCode (Moniker: vscode) ahead of
+// Microsoft.VisualStudioCode (moniker exactly equal) ahead of
 // JonahFintzDEV.CommandPalette-VSCode (id merely contains it).
-// Every comparison is against a real field value of the package, which is
-// exactly what winget does when it re-derives the match column from a result
-// (FindBestMatchCriteria over Id/Name/Moniker/Tag). So a row we return is always
-// a row the client can attribute, and the 匹配 column reads
-// "Moniker: vscode" or "Tag: sqlite3" instead of "UnknownMatchField:".
+// The 匹配 column, though, is not ours to control: a Microsoft.Rest search
+// result carries no manifest (SearchResponseDeserializer_1_0.cpp:163 leaves
+// VersionInfo::Manifest empty), so the client's FindBestMatchCriteria can only
+// ever consult Id/Name and the system reference strings it was given. Moniker,
+// Command and Tag live in the manifest's localization sections and are empty for
+// every REST hit — so a moniker/tag row prints "UnknownMatchField:" here, where
+// the preindexed official source prints "Tag: sqlite3" because its own query
+// knows the column. Id/Name hits print blank on both (WorkflowBase.cpp:38).
+// Ranking and the result set are unaffected; only that one column differs.
 const F_ID = 0;
 const F_MONIKER = 1;
 const F_NAME = 2;
