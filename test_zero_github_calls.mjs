@@ -212,14 +212,25 @@ for (const kw of ["七", "123pan", ""]) {
 
 // ── 4. manifest resolution picks the version from the index, not the API ──
 // Git.Git's installer is GitHub-hosted, so it must come back mirror-rewritten.
-// These two go to the real static hosts (jsDelivr → raw), so a network blip
-// turns them red as a 502-with-reason rather than as a broken search path.
+// These two read the real static hosts (jsDelivr → raw). From a network that
+// resets one of them the Worker legitimately answers 502-with-reason, which is
+// the fail-close path and not a manifest bug, so retry before asserting. The
+// assertion that matters is the assembled manifest, not this machine's route.
+const manifestWithRetry = async (id, tries = 3) => {
+  let last = `no attempt ran`;
+  for (let i = 1; i <= tries; i++) {
+    const r = await worker.fetch(new Request(`http://worker.test/packageManifests/${id}`), env, {});
+    const j = await r.json().catch(() => null);
+    if (r.status === 200) return { j, attempts: i };
+    last = j?.ErrorMessage ?? `status ${r.status}`;
+  }
+  throw new Error(`packageManifests/${id} failed ${tries} times: ${last}`);
+};
+
 reset();
-const mf = await worker.fetch(
-  new Request("http://worker.test/packageManifests/Git.Git"), env, {}
-);
-assert.equal(mf.status, 200, `packageManifests returned ${mf.status}`);
-const mfJson = await mf.json();
+const mfRes = await manifestWithRetry("Git.Git");
+const mfJson = mfRes.j;
+const suffix = mfRes.attempts > 1 ? ` (after ${mfRes.attempts} attempts)` : "";
 const installers = mfJson.Data?.Versions?.[0]?.Installers ?? [];
 assert.ok(installers.length > 0, "manifest has no Installers");
 const GITHUB_HOST = /^https:\/\/[^/]*(github\.com|githubusercontent\.com)\//;
@@ -233,17 +244,15 @@ assert.ok(
 );
 assert.ok(installers.every((i) => i.InstallerType), "an installer is missing InstallerType");
 assert.equal(githubCalls(), 0, "packageManifests reached the GitHub API");
-console.log(`✅ packageManifests/Git.Git: ${installers.length} installer(s), mirror-rewritten, 0 GitHub calls`);
+console.log(`✅ packageManifests/Git.Git: ${installers.length} installer(s), mirror-rewritten, 0 GitHub calls${suffix}`);
 
 // A non-GitHub installer must be left untouched (winget downloads it directly).
-reset();
-const ff = await worker.fetch(
-  new Request("http://worker.test/packageManifests/Mozilla.Firefox"), env, {}
-);
-const ffInstallers = ((await ff.json()).Data?.Versions?.[0]?.Installers) ?? [];
+const ffRes = await manifestWithRetry("Mozilla.Firefox");
+const ffInstallers = ffRes.j.Data?.Versions?.[0]?.Installers ?? [];
 assert.ok(ffInstallers.length > 0, "Firefox manifest has no Installers");
 assert.ok(
   ffInstallers.every((i) => !(i.InstallerUrl ?? "").startsWith(env.MIRROR + "/")),
   "a vendor (non-GitHub) InstallerUrl was rewritten when it should not have been"
 );
-console.log(`✅ packageManifests/Mozilla.Firefox: ${ffInstallers.length} installer(s), vendor URLs untouched, 0 GitHub calls`);
+const ffSuffix = ffRes.attempts > 1 ? ` (after ${ffRes.attempts} attempts)` : "";
+console.log(`✅ packageManifests/Mozilla.Firefox: ${ffInstallers.length} installer(s), vendor URLs untouched, 0 GitHub calls${ffSuffix}`);

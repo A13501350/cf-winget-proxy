@@ -10,8 +10,8 @@
 | 函数 | 位置 | 目标 | 边缘缓存 |
 |---|---|---|---|
 | `fetchFromHost()` | src/index.ts:94 | 单个静态主机上的单个文件 | 200=3600s，其余 0 |
-| `fetchManifestFile()` | src/index.ts:127 | jsDelivr → 再 raw.githubusercontent | 同上 |
-| `getIndex()` | src/index.ts:203 | `INDEX_URL`（本仓库 raw） | 进程内 memo 5min + 边缘 300s |
+| `fetchManifestFile()` | src/index.ts:133 | jsDelivr → 再 raw.githubusercontent | 同上 |
+| `getIndex()` | src/index.ts:263 | `INDEX_URL`（本仓库 raw） | 进程内 memo 5min + 边缘 300s |
 
 （历史上还有三个出口，均已删除：通用透明代理 `proxyRequest()` 及其
 `/cache/**`、域名前缀路由；`ghFetch()` 及其全部 Contents API 调用点；
@@ -50,10 +50,10 @@ Contents API 未认证限额是 **60 次/小时，且按源 IP 计**。Cloudflar
 
 | # | 位置 | 端点 | 触发 | 单次请求数 |
 |---|---|---|---|---|
-| B1 | src/index.ts:577 | `{id}.yaml`（版本清单 / 合并清单） | `packageManifests` | 1 |
-| B2 | src/index.ts:599 | `{id}.installer.yaml` | 仅三文件布局 | 1 |
-| B3 | src/index.ts:600 | `{id}.locale.{DefaultLocale}.yaml` —— 名字来自 B1 | 仅三文件布局 | 1 |
-| B4 | src/index.ts:203 | `INDEX_URL` | 每 isolate 5 分钟 | 1 |
+| B1 | src/index.ts:638 | `{id}.yaml`（版本清单 / 合并清单） | `packageManifests` | 1 |
+| B2 | src/index.ts:660 | `{id}.installer.yaml` | 仅三文件布局 | 1 |
+| B3 | src/index.ts:661 | `{id}.locale.{DefaultLocale}.yaml` —— 名字来自 B1 | 仅三文件布局 | 1 |
+| B4 | src/index.ts:263 | `INDEX_URL` | 每 isolate 5 分钟 | 1 |
 
 B1 先跑，因为它决定后面取什么：三文件布局里 `{id}.yaml` 是 `ManifestType: version`，
 它的 `DefaultLocale` 就是 locale 文件的名字；`ManifestType: merged` 时一个文件就是
@@ -84,6 +84,10 @@ B2/B3 已经并行（`Promise.all`），冷缓存下一次清单请求是 2 跳�
 | 索引里没有的新包 | 0 | 0（404） |
 
 任何一行的 api.github.com 都不可能变成非零：这条出口在源码里已不存在。
+
+请求数已经不是瓶颈之后，剩下的瓶颈是**每个请求自己的 CPU**（一次搜索 = 一次
+15,312 条 × 8.5 字段的全表扫描）。那部分记在 README 的「一次搜索花多少 CPU」里，
+不在这份文档，因为它和 GitHub 无关。
 
 ## 4. 索引构建方式（2026-10-03 整表替换）
 

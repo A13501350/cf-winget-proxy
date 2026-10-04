@@ -114,7 +114,13 @@ async function fetchFromHost(
     if (!t.trim().length) return { missing: true };
     return { body: t };
   } catch (e) {
-    return { error: `fetch threw: ${String((e as Error)?.message ?? e)}` };
+    // undici (and workerd) hide the actual transport failure in `cause` — "fetch
+    // failed" alone cannot tell a reset route from a DNS problem, and this string
+    // is what a 502 reports to the user, so carry it.
+    const err = e as { message?: unknown; cause?: { code?: string; message?: string } };
+    const cause = err.cause?.code ?? err.cause?.message;
+    const reason = `${String(err.message ?? e)}${cause ? ` (${cause})` : ""}`;
+    return { error: `fetch threw: ${reason}` };
   }
 }
 
@@ -191,6 +197,60 @@ function handleInformation(): Response {
 // (75%) have tags, so those two are genuinely optional, not defensively typed.
 type IndexEntry = { id: string; v: string; n?: string; m?: string; t?: string[] };
 
+// The parsed index, in the shape the hot path needs it.
+//
+// `n` is the display name, resolved at parse time; `m`/`t` are kept as the feed
+// gave them because `ensureSearchable()` derives the search form from them.
+type IndexRow = {
+  id: string;   // canonical PackageIdentifier, as the paths and results need it
+  v?: string;   // latest version; absent rows are never returned
+  n: string;    // display name
+  m?: string;   // moniker
+  t?: string[]; // tags
+  lc?: string[]; // [id, moniker, name, ...tags], lowercased — see ensureSearchable
+  nl?: string;   // normalizeTerm(id)
+};
+
+// byId replaces the two linear find() passes per packageManifests / exact lookup.
+//
+// The search projection is deliberately NOT built during the parse: lowering it in
+// the parse cost the cold isolate's first request ~20ms (76ms → 96ms measured), and
+// the two paths that dominate traffic (packageManifests, and an exact id /
+// ProductCode hit) never read those fields. keywordSearch pays it once per isolate
+// instead, on the request that actually scans.
+type SearchIndex = { rows: IndexRow[]; byId: Map<string, IndexRow>; searchable: boolean };
+
+const displayName = (e: IndexEntry) => e.n ?? e.id.split(".").slice(1).join(" ");
+
+function ensureSearchable(index: SearchIndex): void {
+  if (index.searchable) return;
+  for (const row of index.rows) {
+    row.lc = [
+      row.id.toLowerCase(),
+      (row.m ?? "").toLowerCase(),
+      row.n.toLowerCase(),
+      ...(row.t ?? []).map((t) => t.toLowerCase()),
+    ];
+    row.nl = normalizeTerm(row.id);
+  }
+  index.searchable = true;
+}
+
+// One pass, and no intermediate arrays: `split` already allocates 15k strings, and
+// filter + map would allocate two more of the same size on every cold isolate.
+function parseIndex(text: string): SearchIndex {
+  const rows: IndexRow[] = [];
+  const byId = new Map<string, IndexRow>();
+  for (const line of text.split("\n")) {
+    if (!line.trim()) continue;
+    const e = JSON.parse(line) as IndexEntry;
+    const row: IndexRow = { id: e.id, v: e.v, n: displayName(e), m: e.m, t: e.t };
+    rows.push(row);
+    byId.set(e.id.toLowerCase(), row);
+  }
+  return { rows, byId, searchable: false };
+}
+
 // Module-level memo of the parsed index, so a refresh costs one request per
 // interval rather than one per search.
 // A failure is not swallowed: indexCache stays null, every later query retries,
@@ -198,18 +258,18 @@ type IndexEntry = { id: string; v: string; n?: string; m?: string; t?: string[] 
 // plus a silent `!resp.ok` turn produced 200 `{"Data":[]}` responses forever
 // after one bad fetch, which looks exactly like "no such package" to winget and
 // is impossible to tell apart from the dashboard.
-let indexCache: { data: IndexEntry[]; at: number } | null = null;
+let indexCache: { index: SearchIndex; at: number } | null = null;
 
 async function getIndex(
   env: Env,
   opts: { force?: boolean } = {}
-): Promise<IndexEntry[] | null> {
+): Promise<SearchIndex | null> {
   if (!env.INDEX_URL) {
     console.log("getIndex: INDEX_URL is not configured, search has no data source");
     return null;
   }
   const now = Date.now();
-  if (!opts.force && indexCache && now - indexCache.at < 300_000) return indexCache.data;
+  if (!opts.force && indexCache && now - indexCache.at < 300_000) return indexCache.index;
   try {
     const resp = await fetch(env.INDEX_URL, {
       headers: { "User-Agent": "winget-cn-proxy/2.0" },
@@ -220,25 +280,25 @@ async function getIndex(
       console.log(`getIndex: ${resp.status} from ${env.INDEX_URL} (${text.length} bytes), searching without an index`);
       return null;
     }
-    const data = text
-      .split("\n")
-      .filter((l) => l.trim().length > 0)
-      .map((l) => JSON.parse(l) as IndexEntry);
-    if (!data.length) {
+    const index = parseIndex(text);
+    if (!index.rows.length) {
       console.log(`getIndex: empty body from ${env.INDEX_URL}, searching without an index`);
       return null;
     }
-    indexCache = { data, at: now };
-    return data;
+    indexCache = { index, at: now };
+    return index;
   } catch (e) {
     console.log(`getIndex: fetch threw ${e instanceof Error ? e.message : String(e)}, searching without an index`);
     return null;
   }
 }
 
-// The name winget shows. The index carries the real PackageName; the fallback
-// only covers a package the official feed left unnamed.
-const displayName = (e: IndexEntry) => e.n ?? e.id.split(".").slice(1).join(" ");
+// The index is keyed by lowercased id, so this answers both the exact-cased and
+// the case-folded lookup in one Map.get.
+async function findRow(id: string, env: Env): Promise<IndexRow | null> {
+  const index = await getIndex(env);
+  return index?.byId.get(id.toLowerCase()) ?? null;
+}
 
 // Return a search Data entry for a PackageIdentifier, from the prebuilt index
 // only. The index knows the package exists and its latest version, which is all
@@ -251,16 +311,13 @@ async function lookupPackageId(
   requestedVersion?: string | null
 ): Promise<object | null> {
   const { publisher } = parsePackageId(id);
-  const index = await getIndex(env);
-  const hit =
-    index?.find((e) => e.id === id) ??
-    index?.find((e) => e.id.toLowerCase() === id.toLowerCase());
+  const hit = await findRow(id, env);
   if (!hit?.v) return null;
   const versions = [hit.v];
   if (requestedVersion && requestedVersion !== hit.v) versions.push(requestedVersion);
   return {
     PackageIdentifier: hit.id,
-    PackageName: displayName(hit),
+    PackageName: hit.n,
     Publisher: publisher,
     Versions: versions.map((v) => ({ PackageVersion: v })),
   };
@@ -268,14 +325,14 @@ async function lookupPackageId(
 
 // Search results only need the four fields winget's deserializer requires; the
 // full display metadata comes later from /packageManifests.
-function toSearchResults(matched: IndexEntry[]): object[] {
+function toSearchResults(matched: IndexRow[]): object[] {
   const out: object[] = [];
-  for (const e of matched) {
+  for (const row of matched) {
     out.push({
-      PackageIdentifier: e.id,
-      PackageName: displayName(e),
-      Publisher: e.id.split(".")[0],
-      Versions: [{ PackageVersion: e.v }],
+      PackageIdentifier: row.id,
+      PackageName: row.n,
+      Publisher: row.id.split(".")[0],
+      Versions: [{ PackageVersion: row.v }],
     });
   }
   return out;
@@ -297,29 +354,34 @@ function toSearchResults(matched: IndexEntry[]): object[] {
 // knows the column. Id/Name hits print blank on both (WorkflowBase.cpp:38).
 // Ranking and the result set are unaffected; only that one column differs.
 const F_ID = 0;
-const F_MONIKER = 1;
-const F_NAME = 2;
-const F_TAG = 3;
+const F_TAG = 3; // slots 1 and 2 of IndexRow.lc are moniker and name
 const Q_EXACT = 0;
 const Q_PREFIX = 1;
 const Q_SUBSTRING = 2;
 
-// Quality of a single field value against the keyword; null when it does not match.
-function matchQuality(value: string | undefined, kw: string): number | null {
+// Quality of a single already-lowercased field value against the lowercased
+// keyword; null when it does not match. The value is not touched here on purpose:
+// lowercasing inside this function meant ~130k string allocations per query.
+function matchQuality(value: string, kw: string): number | null {
   if (!value) return null;
-  const v = value.toLowerCase();
-  if (v === kw) return Q_EXACT;
-  if (v.startsWith(kw)) return Q_PREFIX;
-  if (v.includes(kw)) return Q_SUBSTRING;
+  if (value === kw) return Q_EXACT;
+  if (value.startsWith(kw)) return Q_PREFIX;
+  if (value.includes(kw)) return Q_SUBSTRING;
   return null;
 }
+
+// Plain codepoint compare, not localeCompare. This only orders rows that already
+// tied on rank and length, so no result is added, dropped or re-ranked; but ICU
+// collation cost 21.8ms where this costs 4.3ms on the 12,670 rows a single-letter
+// keyword produces.
+const compareId = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
 async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   const kw = keyword.toLowerCase().trim();
   if (!kw) return [];
 
   const index = await getIndex(env);
-  if (!index || !index.length) {
+  if (!index || !index.rows.length) {
     console.log(`keywordSearch: no index available for "${keyword}"`);
     return [];
   }
@@ -330,34 +392,36 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   // only: substring matching on a normalized id would accept hits spanning a dot
   // that no client-side comparison can reproduce.
   const nkw = normalizeTerm(kw);
+  ensureSearchable(index);
 
-  const best = new Map<string, { e: IndexEntry; p: number; t: number }>();
-  for (const e of index) {
-    if (!e.v) continue; // never emit empty Versions — winget rejects it (0x8a150039)
+  const best = new Map<string, { row: IndexRow; p: number; t: number }>();
+  for (const row of index.rows) {
+    if (!row.v) continue; // never emit empty Versions — winget rejects it (0x8a150039)
 
+    // lc is [id, moniker, name, ...tags], so the slot is the field for the first
+    // three and Tag for everything after it. ensureSearchable filled it for every
+    // row above; re-filling per request is exactly the cost this avoids.
+    const lc = row.lc!;
     let p = -1;
     let t = 0;
-    const consider = (field: number, value: string | undefined) => {
+    for (let i = 0; i < lc.length; i++) {
+      const value = lc[i];
       const q = matchQuality(value, kw);
-      if (q === null) return;
-      const rank = q * 4 + field;
-      if (p < 0 || rank < p || (rank === p && (value?.length ?? 0) < t)) {
+      if (q === null) continue;
+      const rank = q * 4 + (i < 3 ? i : F_TAG);
+      if (p < 0 || rank < p || (rank === p && value.length < t)) {
         p = rank;
-        t = value?.length ?? 0;
+        t = value.length;
       }
-    };
-    consider(F_ID, e.id);
-    consider(F_MONIKER, e.m);
-    consider(F_NAME, e.n);
-    for (const tag of e.t ?? []) consider(F_TAG, tag);
-    if (p < 0 && nkw && normalizeTerm(e.id) === nkw) {
+    }
+    if (p < 0 && nkw && row.nl === nkw) {
       p = Q_EXACT * 4 + F_ID;
-      t = e.id.length;
+      t = row.id.length;
     }
     if (p < 0) continue;
 
-    const cur = best.get(e.id);
-    if (!cur || p < cur.p || (p === cur.p && t < cur.t)) best.set(e.id, { e, p, t });
+    const cur = best.get(row.id);
+    if (!cur || p < cur.p || (p === cur.p && t < cur.t)) best.set(row.id, { row, p, t });
   }
 
   if (!best.size) {
@@ -372,10 +436,10 @@ async function keywordSearch(keyword: string, env: Env): Promise<object[]> {
   // (`winget search e -s winget` returns 14468 rows), and dropping the tail
   // would silently hide packages a user can otherwise find.
   const ranked = [...best.values()].sort(
-    (a, b) => a.p - b.p || a.t - b.t || a.e.id.localeCompare(b.e.id)
+    (a, b) => a.p - b.p || a.t - b.t || compareId(a.row.id, b.row.id)
   );
   console.log(`keywordSearch: index hit, returned=${ranked.length} for "${keyword}"`);
-  return toSearchResults(ranked.map((r) => r.e));
+  return toSearchResults(ranked.map((r) => r.row));
 }
 
 // winget's ProductCode is "<PackageIdentifier>_<sourceId>", e.g.
@@ -523,10 +587,7 @@ async function handlePackageManifest(
     // Resolve the latest version from the index. No index entry means no
     // version to ask for, so this fails rather than enumerating the package
     // directory through the rate-limited GitHub API.
-    const index = await getIndex(env);
-    const hit =
-      index?.find((e) => e.id === id) ??
-      index?.find((e) => e.id.toLowerCase() === id.toLowerCase());
+    const hit = await findRow(id, env);
     if (!hit?.v) {
       return Response.json(
         { ErrorCode: 404, ErrorMessage: `Not in index: ${id}` },
@@ -900,13 +961,13 @@ export default {
     // keyword". Fetches with force, so it reports the origin rather than a memo
     // a previous request happened to leave behind.
     if (pathname === "/_index" && request.method === "GET") {
-      const index = await getIndex(env, { force: true });
+      const rows = (await getIndex(env, { force: true }))?.rows ?? [];
       return Response.json({
         url: env.INDEX_URL ?? null,
-        entries: index?.length ?? 0,
-        first: index?.[0]?.id ?? null,
-        withMoniker: index?.filter((e) => e.m).length ?? 0,
-        withTags: index?.filter((e) => e.t).length ?? 0,
+        entries: rows.length,
+        first: rows[0]?.id ?? null,
+        withMoniker: rows.filter((r) => !!r.m).length,
+        withTags: rows.filter((r) => !!r.t?.length).length,
       });
     }
 
