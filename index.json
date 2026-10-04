@@ -103,7 +103,7 @@
 {"id":"aahepburn.RAGAssistantForZotero","v":"0.5.2","n":"RAG Assistant for Zotero","t":["productivity","ai","llm","research","rag","assistant","zotero"]}
 {"id":"Aakash.Swiss","v":"1.0.0","n":"Swiss CLI Tools"}
 {"id":"aandrew-me.ytDownloader","v":"4.0.1","n":"YTDownloader","m":"ytdownloader","t":["linux","windows","video","electron","downloader","javascript","electron-app","nodejs","youtube","youtube-downloader","ubuntu","appimage","linux-app","flatpak","snap","ytdownloader"]}
-{"id":"aaravmaloo.blob","v":"1.4.0","n":"blob","m":"blob","t":["notes, minimal, terminal, notes_manager"]}
+{"id":"aaravmaloo.blob","v":"1.5.0","n":"blob","m":"blob","t":["notes, minimal, terminal, notes_manager"]}
 {"id":"aaravmaloo.cmdutils","v":"0.0.3","n":"cmdutils","m":"cmdutils"}
 {"id":"Aardappel.Cube","v":"2005.08.29","n":"Cube","t":["game","fps","first-person","sauerbraten","shooter","firstpersonshooter","videogame"]}
 {"id":"Aardappel.lobster","v":"2026.8","n":"lobster","m":"lobster","t":["lobster","programming-language"]}
@@ -333,7 +333,7 @@
 {"id":"AFAS.ProfitCommunicationCenter.8","v":"2.9.1400.801","n":"Profit Communication Center 8"}
 {"id":"AffluentLabs.ZestSSH","v":"1.9.0","n":"ZestSSH","m":"zestssh","t":["ssh","sysadmin","terminal","sftp","devops","shell","remote","console","tunnel","port-forwarding"]}
 {"id":"afkarxyz.SpotiFLAC","v":"7.2.2","n":"SpotiFLAC","t":["spotify","spotify-downloader","wails"]}
-{"id":"afonsojramos.discrakt","v":"4.1.2","n":"Discrakt","t":["rust","media","discord","rich-presence","plex","trakt","discord-presence"]}
+{"id":"afonsojramos.discrakt","v":"4.1.3","n":"Discrakt","t":["rust","media","discord","rich-presence","plex","trakt","discord-presence"]}
 {"id":"afractal.Echo","v":"1.0.0","n":"Echo"}
 {"id":"afractal.Metronome","v":"1.0.60","n":"Metronome","t":["electron","metronome","ticker"]}
 {"id":"afractal.TwitterTron","v":"1.0.2","n":"TwitterTron"}
@@ -524,7 +524,7 @@
 {"id":"Alibaba.CosyVoice","v":"1.3.0","n":"CosyVoice","t":["人工智能","ai","input-method","输入法","speech-to-text","语音输入","stt","语音转文本","voice-input","方言"]}
 {"id":"Alibaba.DingTalk.Mainland","v":"7.1.0-Release.10199111","n":"DingTalk","m":"dingding","t":["docs","document","文档","bussiness","collaboration","comunication","conference","enterprise","meeting","oa","office","saas","team","企业","会议","公司","办公","协作","协同","商务","团队","沟通","work","attendance","check-in","working","工作","打卡","签到","考勤"]}
 {"id":"Alibaba.DingTalk.Overseas","v":"8.3.10-Release.260413002","n":"DingTalk","m":"dingding","t":["docs","document","文档","bussiness","collaboration","comunication","conference","enterprise","meeting","oa","office","saas","team","企业","会议","公司","办公","协作","协同","商务","团队","沟通","work","attendance","check-in","working","工作","打卡","签到","考勤"]}
-{"id":"Alibaba.DingTalkWorkspaceCLI","v":"1.0.62","n":"DingTalk Workspace CLI","m":"dws","t":["dingtalk","dingding","钉钉"]}
+{"id":"Alibaba.DingTalkWorkspaceCLI","v":"1.0.63","n":"DingTalk Workspace CLI","m":"dws","t":["dingtalk","dingding","钉钉"]}
 {"id":"Alibaba.LightProxy","v":"1.1.41","n":"LightProxy","t":["debug","调试","web","网页","electron","proxy","network","网络","代理","request","response","响应","请求","capture","whistle","抓包","traffic","流量","charles"]}
 {"id":"Alibaba.Lingma","v":"1.106.3","n":"Lingma","t":["ai","develop","development","programming","开发","编程","代码","code","coding","qwen","通义千问","通义灵码"]}
 {"id":"Alibaba.MiniProgramStudio","v":"3.10.5","n":"小程序开发者工具","t":["web","webpage","网页","develop","development","programming","开发","编程","alipay","代码","code","coding","ide","taobao","淘宝","阿里巴巴","tmall","天猫","支付宝","dingtalk","dingding","钉钉","mini-program","小程序","开发者工具","devtools","mini-app","alibaba","阿里","小程序开发者工具","amap","高德"]}
@@ -896,7 +896,7 @@
 {"id":"anyme123.AnyCode","v":"5.29.1","n":"Any Code","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","llm","自主智能","agentic","代码","code","coding","claude","claude-code","codex","gemini-cli"]}
 {"id":"Anysphere.Cursor","v":"3.19.7","n":"Cursor","t":["ai","develop","development","programming","开发","编程","代码","code","coding"]}
 {"id":"AnyTXT.AnyTXTSearcher","v":"1.3.2477","n":"AnyTXT Searcher","m":"anytxt","t":["search","indexing"]}
-{"id":"anyvm-org.anyvm","v":"0.7.2","n":"anyvm","m":"anyvm","t":["emulator","virtual-machine","vm","ci","qemu","freebsd","openbsd","netbsd","dragonflybsd","solaris","illumos","haiku"]}
+{"id":"anyvm-org.anyvm","v":"0.7.3","n":"anyvm","m":"anyvm","t":["emulator","virtual-machine","vm","ci","qemu","freebsd","openbsd","netbsd","dragonflybsd","solaris","illumos","haiku"]}
 {"id":"AnywhereLabs.DSHDesktop","v":"2.0.17-next","n":"DSH Desktop","t":["ai","智能体","大语言模型","large-language-model","llm","自主智能","大模型","deepseek","deepseek-harness","dsh"]}
 {"id":"aoguai.QQtoExcel","v":"1.9.0","n":"QQtoExcel","t":["备份","可视化","excel","消息","表格","整理","数据","分析","统计","导出","qq","聊天记录","消息管理","聊天记录备份","用户画像","NLP"]}
 {"id":"aome510.spotify-player","v":"0.25.1","n":"spotify_player","m":"spotify-player","t":["rust","cli","tui","player","music-player","music","spotify","terminal-based","vim","spotify-tui"]}
@@ -1124,7 +1124,7 @@
 {"id":"AsterPrivacy.AsterMail","v":"1.4.68","n":"Aster Mail","t":["privacy","encryption","email","end-to-end-encryption","secure-email"]}
 {"id":"astral-sh.ruff","v":"0.16.9","n":"Ruff","t":["rust","python","python3","static-analysis","linter","static-code-analysis","ruff","pep8","rustpython","styleguide","style-guide"]}
 {"id":"astral-sh.ty","v":"0.0.84","n":"ty","m":"ty","t":["python"]}
-{"id":"astral-sh.uv","v":"0.12.22","n":"uv","m":"uv","t":["python","uv"]}
+{"id":"astral-sh.uv","v":"0.12.23","n":"uv","m":"uv","t":["python","uv"]}
 {"id":"AstrBot.AstrBotLauncher","v":"0.3.11","n":"AstrBot Launcher","t":["人工智能","ai","智能体","agent","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic"]}
 {"id":"AstroComma.AstroGrep","v":"4.4.9","n":"AstroGrep","t":["utility","file","文件","tool","search","find","搜索","查找","text","文本","grep","regex","regexp","regular-expression","replace","工具","替换","正则","正则表达式"]}
 {"id":"Astronet.Scholaread","v":"1.1.86","n":"Scholaread","t":["viewer","article","pdf","paper","research","学术","论文","查看器","reader","阅读器","阅读","reading","academics","book","citation","cite","journal","literature","thesis","书籍","引文","引用","引用文献","文献","期刊","研究","靠岸学术"]}
@@ -1188,7 +1188,7 @@
 {"id":"audiveris.org.Audiveris","v":"5.11.0","n":"Audiveris","t":["open-source","java","optical-music-recognition"]}
 {"id":"Augchan42.Transcriber","v":"2.0.0","n":"Transcriber","m":"transcriber","t":["offline","ffmpeg","subtitles","speech-to-text","youtube","transcription","srt","whisper","cantonese"]}
 {"id":"AuraMarker.Lattics","v":"4.3.0","n":"Lattics","t":["markdown","editor","编辑器","graph","notes","docs","document","mind-map","mindmap","outliner","大纲","思维导图","文档","笔记","脑图","knowledge","knowledge-base","知识","知识库","reference","引用","backlink","bi-directional-link","block","pkm","个人知识管理","内容块","双向链接","反向链接","图谱"]}
-{"id":"AurelioAvila.PCTweaker","v":"1.15.4","n":"PC Tweaker","t":["windows","privacy","gaming","performance","optimizer","tweak"]}
+{"id":"AurelioAvila.PCTweaker","v":"1.15.8","n":"PC Tweaker","t":["windows","privacy","gaming","performance","optimizer","tweak"]}
 {"id":"AurelioAvila.Redaxa","v":"0.4.7","n":"Redaxa","t":["ai","security","privacy","credentials","redaction"]}
 {"id":"AurelioAvila.SocialDashboard","v":"1.10.9","n":"Redexa Social","t":["analytics","youtube","tiktok","dashboard","instagram","social-media"]}
 {"id":"Aurora.Aurora","v":"v0.8.1","n":"Aurora","m":"aurora","t":["keyboard","led","rgb","light","lighting"]}
@@ -1231,7 +1231,7 @@
 {"id":"Autodesk.NavisworksFreedom.2027","v":"19.00","n":"Autodesk Navisworks Freedom 2027"}
 {"id":"AutoDWG.DWGSeeCAD","v":"8.87","n":"DWGSee CAD 2026","t":["editing","Trial","design","CAD","DWG"]}
 {"id":"AutoDWG.DWGSeePro","v":"6.52","n":"DWGSee Pro 2026","t":["editing","Trial","design","CAD","DWG"]}
-{"id":"AutoHotkey.AutoHotkey","v":"2.0.28","n":"AutoHotkey","m":"ahk","t":["automation","hotkey","自动化","macro","keyboard-shortcuts","keyboardshortcuts","automate","宏","快捷键","热键","shortcut"]}
+{"id":"AutoHotkey.AutoHotkey","v":"2.0.29","n":"AutoHotkey","m":"ahk","t":["automation","hotkey","自动化","macro","keyboard-shortcuts","keyboardshortcuts","automate","宏","快捷键","热键","shortcut"]}
 {"id":"AutoIt.AutoIt","v":"3.3.18.0","n":"AutoIt","m":"autoit","t":["automation","hotkey","自动化","macro","keyboard-shortcuts","keyboardshortcuts","automate","宏","快捷键","热键","shortcut"]}
 {"id":"AutoIt.SciTE4AutoIt3","v":"3.3.15.3","n":"SciTE4AutoIt3"}
 {"id":"AutomatedLab.AutomatedLab","v":"5.61.0","n":"AutomatedLab","t":["directory","powershell","active-directory","deployment","active","automated-deployment","azure","domain-controller","lab-machine-hyperv","pki","scripted","scripted-deployment","hyper-v","microsoft-exchange","microsoftexchange","exchange","hyper"]}
@@ -1410,7 +1410,7 @@
 {"id":"Baidu.BaiduSpeechInput","v":"2.0.0.33","n":"百度语音输入","t":["chinese","中文","汉语","voice","语音","logitech","speech","输入","logi","罗技"]}
 {"id":"Baidu.BaiduWenku","v":"3.4.2","n":"百度文库","t":["docs","document","文档","文稿","knowledge","知识","resource","template","模板","百度","Baidu","资料","百度文库"]}
 {"id":"Baidu.Comate","v":"3.11.1","n":"Comate","t":["编辑器","编辑","开发","编程","代码"]}
-{"id":"Baidu.DuMate","v":"1.0.81","n":"DuMate","t":["人工智能","ai","智能体","agent","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","大模型"]}
+{"id":"Baidu.DuMate","v":"1.0.82","n":"DuMate","t":["人工智能","ai","智能体","agent","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","大模型"]}
 {"id":"Baidu.SwanIDE","v":"4.36.1","n":"百度开发者工具","t":["web","网页","develop","development","开发","ide","mini-program","小程序","开发者工具","devtools","mini-app","baidu","百度","智能小程序","smart-program","front-end","frontend","前端","百度开发者工具"]}
 {"id":"Baidu.TeraBox","v":"1.47.0","n":"TeraBox","t":["backup","cloud","cloud-drive","download","drive","file","netdisk","share","sync","upload","上传","下载","云","云盘","共享","分享","同步","备份","文件","网盘"]}
 {"id":"BaileyBrown.cppcryptfs","v":"1.4.4.10","n":"cppcryptfs"}
@@ -1652,7 +1652,7 @@
 {"id":"Beyond-All-Reason.Beyond-All-Reason","v":"1.2988.0","n":"Beyond-All-Reason"}
 {"id":"BeyondATC.Client.EarlyAccess","v":"1.8.8","n":"BeyondATC Early Access","m":"beyond-atc","t":["flight-sim","msfs"]}
 {"id":"BeyondCode.Herd","v":"1.30.0","n":"Herd"}
-{"id":"bezzad.Downloader","v":"2.15.0","n":"Downloader","m":"downloader","t":["download","downloader","download-manager"]}
+{"id":"bezzad.Downloader","v":"2.16.0","n":"Downloader","m":"downloader","t":["download","downloader","download-manager"]}
 {"id":"Bforartists.Bforartists","v":"5.1.0","n":"Bforartists 4","t":["icons","hotkey","youtube","keymap","addon","bforartists","blender","fork","icon-buttons","iconbutton","improved","layouts","piece","toolbar","tracker","usability"]}
 {"id":"bggRGjQaUbCoE.PiliPlus","v":"2.1.4","n":"PiliPlus","t":["android","macos","windows","flutter","ios","bilibili","linux-desktop"]}
 {"id":"bgreenwell.doxx","v":"0.1.4","n":"doxx","m":"doxx","t":["rust","cli","tui","terminal","docx","render","msword"]}
@@ -1775,7 +1775,7 @@
 {"id":"Bitwarden.DirectoryConnector","v":"2026.4.0","n":"Bitwarden Directory Connector","t":["bitwarden-for-enterprise","bitwardendirectoryconnector","bitwarden-directory-connector"]}
 {"id":"Bitwarden.DirectoryConnector.CLI","v":"2026.9.0","n":"Bitwarden Directory Connector (CLI)","t":["bitwarden-for-enterprise","bitwardendirectoryconnector","bitwarden-directory-connector","bwdc"]}
 {"id":"bitwig.bitwig","v":"6.1","n":"Bitwig Studio","m":"bitwig","t":["music","daw","midi","vst","vsti"]}
-{"id":"Biyi.Biyi","v":"0.5.0+18","n":"比译","t":["translate","chinese","中文","汉语","translation","google","翻译","baidu","百度","english","translator","英文","英语","词典","dictionary","sogou","搜狗","tencent","腾讯","caiyun","colorfulclouds","deepl","iciba","youdao","彩云","有道","爱词霸","谷歌","金山词霸","比译"]}
+{"id":"Biyi.Biyi","v":"0.6.0+19","n":"比译","t":["translate","chinese","中文","汉语","translation","google","翻译","baidu","百度","english","translator","英文","英语","词典","dictionary","sogou","搜狗","tencent","腾讯","caiyun","colorfulclouds","deepl","iciba","youdao","彩云","有道","爱词霸","谷歌","金山词霸","比译"]}
 {"id":"Bjarneo.Cliamp","v":"2.0.1","n":"Cliamp","t":["m3u","music-player","music","spotify","radio","stream","soundcloud","podcast","jellyfin-client","navidrome","plex-client","navidrome-client","cliamp","icecast","icecast-player","plugin-system"]}
 {"id":"BJLive!.LumineaRemote","v":"1.0.7.2065","n":"Luminea Remote"}
 {"id":"BjoernBoeckle.mqtt-presence","v":"0.2.9","n":"mqtt-presence"}
@@ -1854,7 +1854,7 @@
 {"id":"BobK4CY.Logger32","v":"4.0.311","n":"Logger32"}
 {"id":"BOC.SecEditCtl","v":"3.1.4.2","n":"SecEditCtl.BOC","t":["bank","ebank","网银","银行","bank-of-china","boc","中国银行","中行"]}
 {"id":"Bochs.Bochs","v":"3.1","n":"Bochs","t":["emulator","仿真","virtual-machine","模拟器","vm","virtualization","virtualizer","虚拟","虚拟化","虚拟机"]}
-{"id":"bodaay.hfdownloader","v":"3.2.0","n":"HuggingFace Model Downloader","m":"hfdownloader","t":["huggingface","抱抱脸"]}
+{"id":"bodaay.hfdownloader","v":"3.3.0","n":"HuggingFace Model Downloader","m":"hfdownloader","t":["huggingface","抱抱脸"]}
 {"id":"Boeing.config-file-validator","v":"2.3.0","n":"Config File Validator","m":"config-file-validator","t":["go","files","developer-tools","json","golang","devops","yaml","xml","config","ini","toml","configuration-files","schema","syntax","validator"]}
 {"id":"BogdanCalapod.pdq-cli","v":"0.1.12","n":"pdq-cli","m":"pdq","t":["cli","sysadmin","endpoint-management","pdq","pdq-connect","pdq-detect","vulnerability-management"]}
 {"id":"BohdanKoudelka.FileSearchManager","v":"0.9.6","n":"File Search Manager","m":"file-search-manager","t":["utility","windows","desktop","search","files","ntfs","mft"]}
@@ -1907,7 +1907,7 @@
 {"id":"BPBible.BPBible","v":"0.5.3.1","n":"BPBible","t":["religion","bible","god","jesus","scripture","study","christianity","sword-project"]}
 {"id":"BQN.CBQN","v":"0.12.0","n":"CBQN","m":"bqn","t":["programming","programming-language","language","bqn","array-language","array-languag"]}
 {"id":"brackets-cont.brackets","v":"2.2.1","n":"Brackets","t":["editor","编辑器","编辑","develop","development","programming","开发","编程","electron","代码","code","coding","editing","javascript","html","css"]}
-{"id":"bradygaster.Squad","v":"0.13.0","n":"Squad","m":"squad","t":["copilot","ai","cli","multi-agent","agents"]}
+{"id":"bradygaster.Squad","v":"1.0.0","n":"Squad","m":"squad","t":["copilot","ai","cli","multi-agent","agents"]}
 {"id":"Braillify.Braillify","v":"2.1.2","n":"Braillify","t":["rust","python","hacktoberfest","nodejs","braille","braille-translator","devup-ui","korean","pyo3","wasm"]}
 {"id":"BRAK.beAClientSecurity","v":"4.2.0","n":"beA Client Security"}
 {"id":"BranchBlocks.Branch","v":"1.1","n":"Branch"}
@@ -1971,7 +1971,7 @@
 {"id":"Brotje.ServiceTool","v":"7.4.22.0","n":"Brötje Service Tool (PCST)","m":"PC Servicetool","t":["servicetool","pc servicetool","recom"]}
 {"id":"Brows.App","v":"0.57.0.56","n":"Brows","m":"Brows","t":["file-explorer","ssh","sftp","file-manager","file-browser","scp"]}
 {"id":"Brows3Team.Brows3","v":"0.2.46","n":"Brows3","m":"brows3","t":["rust","tauri","desktop-app","s3","cloudflare-r2","minio","aws-s3","s3-browser","s3-client","wasabi","object-storage","amazon-s3","nextjs"]}
-{"id":"BrowserOS.BrowserClawServer","v":"0.0.63","n":"BrowserClaw Server","t":["浏览器","browser","mcp","智能体","agent","automation","自动化"]}
+{"id":"BrowserOS.BrowserClawServer","v":"0.0.66","n":"BrowserClaw Server","t":["浏览器","browser","mcp","智能体","agent","automation","自动化"]}
 {"id":"BrowserOS.BrowserOS","v":"151.0.8162.137","n":"BrowserOS","t":["浏览器","browser","人工智能","ai","chromium","web","webpage","网页","llm","artificialintelligence","artificial-intelligence","internet","互联网","manifestv2","mv2"]}
 {"id":"BrowserOS.BrowserOS.Neo","v":"151.0.8162.137","n":"BrowserOS neo","t":["浏览器","browser","mcp","人工智能","ai","智能体","agent","agentic","claude","codex"]}
 {"id":"BrowserOS.BrowserOSCLI","v":"0.2.2","n":"BrowserOS","t":["浏览器","browser","人工智能","ai","chromium","web","webpage","网页","llm","internet","互联网"]}
@@ -2157,7 +2157,7 @@
 {"id":"CameronSutter.Plottr","v":"2026.6.3","n":"Plottr","t":["electron"]}
 {"id":"campfirium.Foliole","v":"0.7.12","n":"Foliole","t":["阅读","reading","fsrs","incremental-reading","渐进阅读"]}
 {"id":"Camunda.Modeler","v":"5.51.1","n":"Camunda Modeler","t":["workflow","hacktoberfest","desktop-application","bpmn","camunda","diagram-editor","dmn","modeling-tool"]}
-{"id":"can1357.oh-my-pi","v":"18.4.12","n":"oh-my-pi","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
+{"id":"can1357.oh-my-pi","v":"18.6.0","n":"oh-my-pi","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
 {"id":"CandyCreamAlgorithm.KanatoMell","v":"2.0.0","n":"CeVIO AI Voice Package - 奏兎める"}
 {"id":"canghaicheng.ZhuoMianShiJie","v":"1.0.9","n":"桌面世界","t":["聊天","虚拟","AI","3D","机器人","智能"]}
 {"id":"cangzhang.champ-r","v":"2.0.1","n":"ChampR","t":["electron","react","game","gaming","league-of-legends","lol"]}
@@ -2309,7 +2309,7 @@
 {"id":"chaitanyagiri.MunderDifflin","v":"0.5.5","n":"Munder Difflin","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","multi-agent","agent-team","多智能体"]}
 {"id":"ChangemakerStudios.Papercut-SMTP","v":"7.8.0","n":"Papercut SMTP","m":"papercut-smtp","t":["development","developer-tools","testing","email","mail","电子邮件","邮件","smtp","mail-server"]}
 {"id":"Changepacks.Changepacks","v":"0.3.6","n":"Changepacks"}
-{"id":"ChangeXbc.WorkBuddySwitch","v":"0.1.57","n":"workbuddy-switch","t":["codebuddy","workbuddy"]}
+{"id":"ChangeXbc.WorkBuddySwitch","v":"0.1.58","n":"workbuddy-switch","t":["codebuddy","workbuddy"]}
 {"id":"ChannelCorporation.ChannelTalkforDesktop","v":"12.1.0","n":"Channel Talk for Desktop","m":"channeltalk"}
 {"id":"chanplecai.smarttaskbar","v":"1.4.5","n":"SmartTaskbar","t":["taskbar","smart","enhance","auto"]}
 {"id":"Chaoos404.Hyperlink","v":"0.1.7","n":"Hyperlink","m":"hyperlink","t":["file-transfer","p2p","thunderbolt","usb4"]}
@@ -2356,7 +2356,7 @@
 {"id":"ChemTableSoftware.RegistryLife","v":"5.31","n":"Registry Life","t":["registry","注册表"]}
 {"id":"ChemTableSoftware.RegOrganizer","v":"9.89","n":"Reg Organizer"}
 {"id":"ChemTableSoftware.SoftOrganizer","v":"10.33","n":"Soft Organizer"}
-{"id":"chen08209.FlClash","v":"0.8.98+2026091401","n":"FlClash","t":["proxy","network","网络","代理","vpn","clash","clash-meta","mihomo"]}
+{"id":"chen08209.FlClash","v":"0.8.99+2026100301","n":"FlClash","t":["proxy","network","网络","代理","vpn","clash","clash-meta","mihomo"]}
 {"id":"ChengSoon.Belfry","v":"0.21.8","n":"Belfry","t":["人工智能","ai","terminal","console","command-line","终端","命令行","控制台"]}
 {"id":"chenjia404.go-p2ptunnel","v":"0.2.39","n":"go-p2ptunnel","t":["p2p","tunnel","隧道"]}
 {"id":"Chenqi92.PierX","v":"0.6.6","n":"Pier-X","m":"pier-x","t":["database","tauri","git","ssh","terminal","devtools"]}
@@ -2372,7 +2372,7 @@
 {"id":"ChiaNetwork.GUIforChiaBlockchain","v":"2.7.4","n":"Chia","t":["blockchain","blockchain-network","chaia","farmer","full-node","harvesters","peer","proof-of-space","proof-of-time","timelord","vdf","wallets","chia-blockchain"]}
 {"id":"Chiappina.SafeShot","v":"1.5.0","n":"SafeShot"}
 {"id":"ChidiWilliams.Buzz","v":"1.4.4","n":"Buzz","t":["whisper"]}
-{"id":"Chill-Astro.Lamina","v":"11.28000.18.0","n":"Lamina","t":["utility","windows","csharp","windows-11","microsoft","calculator","windows-10","计算器","工具","scripting","converter","转换器","acrylic","acrylic-material","calculator-application","mica","mica-app","visual-studio","winui"]}
+{"id":"Chill-Astro.Lamina","v":"11.28000.19.0","n":"Lamina","t":["utility","windows","csharp","windows-11","microsoft","calculator","windows-10","计算器","工具","scripting","converter","转换器","acrylic","acrylic-material","calculator-application","mica","mica-app","visual-studio","winui"]}
 {"id":"Chill-Astro.TMM","v":"3.14.1.6","n":"Trust My Msix!","t":["python","python3","code","certificate","证书","python-app","certificates","importer","导入","msix","import","self-signed-certificate","导入器","自签证书","simple-app"]}
 {"id":"Chillblast.CryoClick","v":"1.0.0.6","n":"Chillblast Cryo Click","t":["Chillblast","Cryo","Mouse"]}
 {"id":"Chillblast.CryoSlate","v":"1.0.0.2","n":"Cryo Slate Keyboard","t":["Chillblast","Cryo","Keyboard","Slate"]}
@@ -2401,7 +2401,7 @@
 {"id":"ChrisDreysse.QWERTZ-Bridge","v":"1.0.1","n":"QWERTZ-Bridge","m":"qwertz-bridge","t":["keyboard","ansi","remap","altgr","qwertz"]}
 {"id":"ChrisKlimas.Twine","v":"2.12.0","n":"Twine","t":["story","stoeytelling","故事"]}
 {"id":"ChrisLauinger77.QontrolPanel","v":"2.5.1","n":"QontrolPanel","t":["sound","settings","headset","headsetcontrol"]}
-{"id":"ChrisLauinger77.ToeRings","v":"0.7.0","n":"ToeRings","m":"toerings","t":["tauri","system-monitor","monitoring"]}
+{"id":"ChrisLauinger77.ToeRings","v":"0.7.1","n":"ToeRings","m":"toerings","t":["tauri","system-monitor","monitoring"]}
 {"id":"ChrisLong.EZSignIt","v":"4.1","n":"EZSignIt"}
 {"id":"ChrisLong.NTFSHiddenDataFinder","v":"1.1","n":"Setup"}
 {"id":"ChrisLong.SimpleDataBackup","v":"11.3","n":"Simple Data Backup"}
@@ -2481,7 +2481,7 @@
 {"id":"CitrusSoda.ArcThumb","v":"0.11.0","n":"ArcThumb","m":"arcthumb","t":["explorer","file-explorer","archive","zip","archives","ebook","fileexplorer","epub","shell-extension","cbz","preview","ebook-thumbnails","cbxshell","darkthumbs","thumbnail"]}
 {"id":"Cjcr-Software.EasyBlindScanPro","v":"18.0.0.4","n":"Easy BlindScan Pro"}
 {"id":"cjerrington.net-check","v":"1.0.8","n":"Network-Status-Check","t":["electron","js","network-tools","bootstrap"]}
-{"id":"cjpais.Handy","v":"0.9.7","n":"Handy","m":"handy","t":["cross-platform","accessibility","speech-to-text","tauri-v2","voice-to-text","speechtotext","voicetotext"]}
+{"id":"cjpais.Handy","v":"0.9.8","n":"Handy","m":"handy","t":["cross-platform","accessibility","speech-to-text","tauri-v2","voice-to-text","speechtotext","voicetotext"]}
 {"id":"Cjwdev.ADAccountResetTool","v":"1.4.6","n":"AD Account Reset Tool","t":["active-directory","ad","account","account-reset","账户","账户重置"]}
 {"id":"Cjwdev.ADInfo.Free","v":"1.8.2","n":"AD Info","t":["active-directory","ad"]}
 {"id":"Cjwdev.ADPermissionsReporter.Free","v":"1.1.0","n":"AD Permissions Reporter","t":["active-directory","ad","permission","权限"]}
@@ -2580,7 +2580,7 @@
 {"id":"CNRISTI.MeshLab","v":"2025.07","n":"MeshLab","m":"meshlab","t":["3d","point-cloud","点云","modeling","建模","模型","三维","mesh"]}
 {"id":"CNRISTI.QuteMol","v":"0.4.1","n":"QuteMol"}
 {"id":"CNRISTI.RelightLab","v":"2026.01","n":"RelightLab","m":"relightlab","t":["image-processing","html","imaging","pca","ptm","webgl"]}
-{"id":"co2lab.Anchors","v":"0.1.259","n":"Anchors","m":"anchors","t":["ai","cli","developer-tools","golang","ai-agents","spec-first"]}
+{"id":"co2lab.Anchors","v":"0.1.275","n":"Anchors","m":"anchors","t":["ai","cli","developer-tools","golang","ai-agents","spec-first"]}
 {"id":"co2lab.Polvo","v":"0.3.7","n":"Polvo","m":"polvo","t":["ai","agent","developer-tools","ide","code-editor","spec-first"]}
 {"id":"COAS.Donkey","v":"25.10.20.0","n":"Donkey for Oracle","m":"donkey","t":["editor","database","oracle","pl/sql","plsql","sql","donkey"]}
 {"id":"COAS.SemantaModeler","v":"6.8.4.5319","n":"Semanta Modeler","t":["diagram","database","oracle","sql","draw","database-modeler","semmod","entity-framework","microsoft-sql"]}
@@ -2703,7 +2703,7 @@
 {"id":"ComfortSoftwareGroup.FreeAlarmClock","v":"5.3.1.0","n":"Free Alarm Clock"}
 {"id":"ComfortSoftwareGroup.FreeVirtualKeyboard","v":"5.0.1.0","n":"Free Virtual Keyboard","t":["free-virtual-keyboard","touchkeyboard","touch-keyboard","onscreenkeyboard","on-screen-keyboard","osk","9nblggh35mpc"]}
 {"id":"ComfortSoftwareGroup.HotAlarmClock","v":"6.4.1.0","n":"Hot Alarm Clock","t":["Trial","Clock"]}
-{"id":"Comfy.ComfyUI-Desktop","v":"1.1.5","n":"ComfyUI","m":"comfyui","t":["comfyui","diffusion"]}
+{"id":"Comfy.ComfyUI-Desktop","v":"1.1.6","n":"ComfyUI","m":"comfyui","t":["comfyui","diffusion"]}
 {"id":"ComicCatcher.ComicCatcher","v":"0.7.5","n":"ComicCatcher v0.7.2","t":["self-hosted","desktop-app","codex","client","comic","cbz","opds","cbr","comic-reader","divina","kavita","komga","opds-2","python-pyqt6","stump","ubooquity"]}
 {"id":"ComicTagger.ComicTagger","v":"1.6.0-beta.6","n":"ComicTagger","m":"comictagger","t":["comics"]}
 {"id":"Comix.FastMeeting","v":"3.45.3.7","n":"好视通云会议","t":["collaborate","collaboration","conference","meeting","会议","协作","协同","chat","conferencing","video-conferencing","voice-conferencing","webinar","开会","研讨会","视频会议","聊天","语音会议"]}
@@ -2778,8 +2778,8 @@
 {"id":"Coq.CoqPlatform","v":"2025.08.3","n":"Coq"}
 {"id":"Coq.CoqPlatform.Beta","v":"2025.08.3","n":"Coq Beta"}
 {"id":"Corail44.GoXLRStreamlabsSync","v":"0.5.0","n":"GoXLR Streamlabs Sync","m":"goxlr-streamlabs-sync","t":["audio","streaming","streamlabs","mixer","goxlr","fader","goxlr-utility","mixage"]}
-{"id":"CoralCreek.SQLiteExpert.Personal","v":"6.2.4.738","n":"SQLite Expert Personal","t":["database","db","数据库","sql","sqlite"]}
-{"id":"CoralCreek.SQLiteExpert.Professional","v":"6.2.4.738","n":"SQLite Expert Professional","t":["database","db","数据库","sql","sqlite"]}
+{"id":"CoralCreek.SQLiteExpert.Personal","v":"6.2.5.739","n":"SQLite Expert Personal","t":["database","db","数据库","sql","sqlite"]}
+{"id":"CoralCreek.SQLiteExpert.Professional","v":"6.2.5.739","n":"SQLite Expert Professional","t":["database","db","数据库","sql","sqlite"]}
 {"id":"CorbinDavenport.NexusTools","v":"5.8","n":"Nexus Tools","t":["android","linux","macos","adb","wsl","bash","mac","wsl2","dart","fastboot","script","dartlang"]}
 {"id":"corda.node-explorer","v":"0.1.2","n":"Corda Node Explorer"}
 {"id":"Cordx56.Rustowl","v":"0.4.0","n":"Rustowl","m":"rustowl","t":["rust","visualization","lifetime","ownership"]}
@@ -2856,7 +2856,7 @@
 {"id":"CPUID.powerMAX","v":"1.00","n":"powerMAX","m":"powermax","t":["cpu","gpu","stress"]}
 {"id":"cpvalente.ontime","v":"4.14.0","n":"ontime","m":"ontime","t":["video","stage","entertainment","stage-timer","stage-management"]}
 {"id":"craftablescience.VPKEdit","v":"5.0.0.4","n":"VPKEdit","t":["cpp","source","source-engine","source2","source2-engine","vpk","vpk-editor"]}
-{"id":"Craftbag.Craftbag","v":"0.1.0","n":"craftbag","m":"craftbag","t":["rust","mcp","cli","agents","skills"]}
+{"id":"Craftbag.Craftbag","v":"0.2.1","n":"craftbag","m":"craftbag","t":["rust","mcp","cli","agents","skills"]}
 {"id":"CraftDocs.CraftAgents","v":"0.12.0","n":"Craft Agents","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic"]}
 {"id":"CraftEdge.EasyCutStudio","v":"6.204","n":"Easy Cut Studio","t":["Plotter","Cutter","Cutting","Vinyl"]}
 {"id":"Craftware.Keyhac","v":"1.82","n":"Keyhac"}
@@ -2974,7 +2974,7 @@
 {"id":"CXWorld.CapFrameX","v":"1.9.1.5","n":"CapFrameX","m":"capframex","t":["fps","benchmark","analysis-tool","benchmarking","frametime","rivatuner"]}
 {"id":"CXWorld.CapFrameX.Beta","v":"1.8.4.1","n":"CapFrameX Beta","m":"capframex-beta","t":["fps","benchmark","analysis-tool","benchmarking","frametime","rivatuner"]}
 {"id":"Cyan4973.xxhsum","v":"0.8.4","n":"xxhsum","m":"xxhsum","t":["hash","c","hash-functions","dispersion","hash-checksum","smhasher","xxhash"]}
-{"id":"Cyanfish.NAPS2","v":"8.4.0","n":"NAPS2","m":"naps2","t":["scanner","pdf","scan","naps"]}
+{"id":"Cyanfish.NAPS2","v":"8.4.1","n":"NAPS2","m":"naps2","t":["scanner","pdf","scan","naps"]}
 {"id":"Cyanfish.NAPS2.Prerelease","v":"8.0b3","n":"NAPS2 Prerelease","m":"naps2-prerelease","t":["scanner","pdf","scan","naps"]}
 {"id":"cyanreg.cyanrip","v":"0.9.3.1","n":"cyanrip","t":["ffmpeg","cd","flac","musicbrainz","cdparanoia"]}
 {"id":"Cybelsoft.DriversCloud","v":"12.0.30","n":"Drivers Cloud","t":["systeminformation","driverscanning","computerscanning","offlinedetection","drivers-cloud"]}
@@ -3064,7 +3064,7 @@
 {"id":"Danilov.Soundscape","v":"1.6.0","n":"Soundscape","m":"soundscape","t":["foss","audio","open-source","qt","sound","system-tray","ambient","meditation","nature","noise","soundscape","gpl"]}
 {"id":"DaniRodríguez.Cartero","v":"26.0","n":"Cartero"}
 {"id":"Dankinations.Catboxxer","v":"0.0.1","n":"Danki"}
-{"id":"DanSherwin.DevLogBus","v":"1.3.2","n":"DevLogBus","m":"devlogbus","t":["browser","development","cli","logging"]}
+{"id":"DanSherwin.DevLogBus","v":"1.4.0","n":"DevLogBus","m":"devlogbus","t":["browser","development","cli","logging"]}
 {"id":"danstis.rmstale","v":"1.19.36","n":"rmstale","m":"rmstale","t":["management","hacktoberfest","filesystem","delete","command-line-tool","chocolatey"]}
 {"id":"DanTheMan827.ClassicContext","v":"1.0.1","n":"ClassicContext"}
 {"id":"DanTheMan827.mbf-bridge","v":"0.1.1","n":"MBF Bridge"}
@@ -3125,7 +3125,7 @@
 {"id":"Datto.Workplace","v":"10.5.3.4","n":"Datto Workplace"}
 {"id":"Datto.WorkplaceServer","v":"8.42.34","n":"Datto Workplace Server"}
 {"id":"Daum.PotPlayer","v":"26.08.19.0","n":"PotPlayer","m":"potplayer","t":["video","视频","subtitle","播放器","media-player","audio","媒体","hdr","video-player","自由软件"]}
-{"id":"davegallant.vpngate","v":"0.7.0","n":"vpngate","m":"vpngate","t":["cli","vpn","openvpn"]}
+{"id":"davegallant.vpngate","v":"0.8.0","n":"vpngate","m":"vpngate","t":["cli","vpn","openvpn"]}
 {"id":"david419kr.SteamlessController","v":"260629","n":"SteamlessController"}
 {"id":"DavidAnson.TextAnalysisToolNET","v":"1.0.9456.32311","n":"TextAnalysisTool.NET","t":["textanalysistooldotnet","text-analysis-tool-dot-net"]}
 {"id":"davidegiacometti.EdgeFavoritesForCmdPal","v":"0.1.1","n":"Edge Favorites Extension for Command Palette","t":["windows-commandpalette-extension"]}
@@ -3159,7 +3159,7 @@
 {"id":"DBeaver.DBeaver.Lite","v":"26.2.0","n":"DBeaverLite","t":["database","tool","数据库","oracle","sql","mysql","postgresql","postgres","工具","sqlite","mssql","db2","apache-hive","firebird","phoenix","presto","sybase","teradata"]}
 {"id":"DBeaver.DBeaver.Team","v":"26.1.0","n":"DBeaverTeam","t":["database","tool","数据库","oracle","sql","mysql","postgresql","postgres","工具","sqlite","mssql","db2","apache-hive","firebird","phoenix","presto","sybase","teradata"]}
 {"id":"DBeaver.DBeaver.Ultimate","v":"26.2.0","n":"DBeaverUltimate","t":["database","tool","数据库","oracle","sql","mysql","postgresql","postgres","工具","sqlite","mssql","db2","apache-hive","firebird","phoenix","presto","sybase","teradata"]}
-{"id":"DBMobile.Resonance","v":"3.2.5","n":"Resonance","t":["rust","tauri","api","open-source","javascript","client","graphql","api-rest"]}
+{"id":"DBMobile.Resonance","v":"3.3.0","n":"Resonance","t":["rust","tauri","api","open-source","javascript","client","graphql","api-rest"]}
 {"id":"dbrgn.tealdeer","v":"1.9.0","n":"tealdeer","m":"tealdeer","t":["rust","cli","foss","cheatsheets","guides","tealdeer","tldr"]}
 {"id":"dbtLabs.dbt","v":"2.0.6","n":"dbt Fusion","m":"dbt","t":["cli","analytics","data","sql","dbt"]}
 {"id":"dbtLabs.dbt-core","v":"2.0.5","n":"dbt Core","m":"dbt-core","t":["cli","analytics","data","sql","dbt"]}
@@ -3194,7 +3194,7 @@
 {"id":"deepnight.LDtk","v":"1.5.3","n":"LDtk","m":"ldtk","t":["electron","json","2d","game-development","haxe","level-editor","agnostic"]}
 {"id":"DeepRush.DeepRush","v":"26.721.93921","n":"DeepRush","m":"deeprush","t":["desktop","deeprush"]}
 {"id":"Deezer.Deezer","v":"7.1.340","n":"Deezer","m":"deezer","t":["playlist","music","audio","音频","radio","streaming","song","歌曲","音乐","sound","album","artist","专辑","歌单","歌手","podcast","广播","流媒体","艺人","deezer","music-streaming","播客","episode","节目","9nblggh6j7vv","streaming-service"]}
-{"id":"DefangLabs.Defang","v":"3.15.4","n":"Defang","m":"Defang"}
+{"id":"DefangLabs.Defang","v":"3.15.5","n":"Defang","m":"Defang"}
 {"id":"defendend.ast-index","v":"3.56.0","n":"ast-index","m":"ast-index","t":["Android","claude","gemini","code-search","iOS"]}
 {"id":"DefGuard.Defguard","v":"2.1.2","n":"Defguard","t":["vpn","wireguard","mfa","multi-factor-authentication","2fa","sso"]}
 {"id":"defi.defi","v":"4.2.5","n":"DeFi Wallet","t":["electron","blockchain","defi","defich"]}
@@ -3218,9 +3218,9 @@
 {"id":"Delido.SignalRGBWallpaper","v":"2.5.0","n":"SignalRGB Desktop Wallpaper","m":"signalrgb-wallpaper","t":["desktop","multi-monitor","wallpaper","rgb","wallpaper-engine","widgets","signalrgb","lively"]}
 {"id":"Delinea.DelineaConnectionManager","v":"2.9.0.33","n":"Delinea Connection Manager"}
 {"id":"Delinea.PrivilegeManagerAgents","v":"12.0.5290","n":"Privilege Manager Agents"}
-{"id":"Delinea.ThycoticAgent","v":"13.0.1041","n":"Delinea Privilege Manager Agent"}
+{"id":"Delinea.ThycoticAgent","v":"13.0.1058","n":"Delinea Privilege Manager Agent"}
 {"id":"Delinea.ThycoticApplicationControlAgent","v":"12.0.5290","n":"Thycotic Application Control Agent"}
-{"id":"Delinea.ThycoticDirectoryServicesAgent","v":"13.0.1041","n":"Thycotic Directory Services Agent"}
+{"id":"Delinea.ThycoticDirectoryServicesAgent","v":"13.0.1058","n":"Thycotic Directory Services Agent"}
 {"id":"Delinea.ThycoticLocalSecurityAgent","v":"13.0.1041","n":"Delinea Local Security Agent"}
 {"id":"Deliro.Mt","v":"0.2.1","n":"mt","m":"mt","t":["ham-radio","meshtastic","lora","ble"]}
 {"id":"DeliveryStation.ds","v":"1.6.2","n":"DS (Delivery Station)","m":"ds","t":["cli","registry","oci","plugins","delivery-station"]}
@@ -3355,7 +3355,7 @@
 {"id":"DiegoFagundez.Portify","v":"0.1.0","n":"Portify","m":"portify","t":["rust","developer-tools","network","tray","devops","process","tcp","udp","ports","port","netstat","kill-process","taskkill"]}
 {"id":"DieKeure.MolEnBeer","v":"2.1.472","n":"Mol En Beer","t":["education","教育","educatief"]}
 {"id":"DiekoMA.Anilist","v":"0.0.1.0","n":"Anilist"}
-{"id":"DifferentAI.OpenWork","v":"0.18.55","n":"OpenWork","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic","opencode"]}
+{"id":"DifferentAI.OpenWork","v":"0.18.56","n":"OpenWork","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic","opencode"]}
 {"id":"Diffractor.Diffractor","v":"126.0","n":"Diffractor"}
 {"id":"DIG.PWAutoLogin","v":"0.2.4","n":"PW Auto Login","m":"pw-auto-login"}
 {"id":"DigiDNA.iMazing","v":"3.3.1.0","n":"iMazing","t":["phone","手机","backup","file","备份","文件","manage","管理","data","ios","mobile","数据","apple","ipad","iphone","ipod","苹果","restore","recover","recovery","恢复","还原","manager","transfer","传输","smartphone","智能手机","管家"]}
@@ -3390,7 +3390,7 @@
 {"id":"dillonkearns.mobster","v":"0.0.48","n":"Mobster","m":"mobster","t":["electron","timer","mob"]}
 {"id":"Dilluti0n.DPIBreak","v":"0.6.2","n":"DPIBreak","m":"dpibreak","t":["privacy","network","firewall","tls","dpi","censorship","sni","vpn-alternative"]}
 {"id":"DimisAIO.DindeGDPS","v":"2025.10.13","n":"DindeGDPS"}
-{"id":"DimitarRadenkov.Pointframe","v":"6.7.22","n":"Pointframe","m":"pointframe","t":["windows","wpf","screen-recorder","ocr","annotation","screenshot","screen-capture"]}
+{"id":"DimitarRadenkov.Pointframe","v":"6.7.31","n":"Pointframe","m":"pointframe","t":["windows","wpf","screen-recorder","ocr","annotation","screenshot","screen-capture"]}
 {"id":"DimitarRadenkov.SnippingTool","v":"4.6.1","n":"SnippingTool","m":"snippingtool","t":["windows","wpf","screen-recorder","ocr","annotation","screenshot","screen-capture","snipping-tool"]}
 {"id":"DimitriVanHeesch.Doxygen","v":"1.18.0","n":"doxygen","t":["documentation","document","文档","generator"]}
 {"id":"DimitrovAdrian.RcloneTray","v":"1.0.0","n":"RcloneTray","m":"rclonetray","t":["rclone","rclone-client"]}
@@ -3529,7 +3529,7 @@
 {"id":"Docker.ds","v":"0.20.0","n":"Dash by Docker","m":"ds"}
 {"id":"Docker.sbx","v":"0.46.0","n":"Docker Sandboxes"}
 {"id":"Dockl.Dockl","v":"0.1.3","n":"Dockl","m":"dockl","t":["docker","gui","container","wsl","wsl2"]}
-{"id":"docmirror.dev-sidecar","v":"2.2.0","n":"dev-sidecar","t":["electron","proxy","git","network","网络","代理","internet","github","mitmproxy","fastgit"]}
+{"id":"docmirror.dev-sidecar","v":"2.3.0","n":"dev-sidecar","t":["electron","proxy","git","network","网络","代理","internet","github","mitmproxy","fastgit"]}
 {"id":"DocumizeInc.Zerabase","v":"3.3.0","n":"Zerabase"}
 {"id":"DocuSign.DocusignEdit","v":"2.8.1","n":"Docusign Edit"}
 {"id":"DocuSign.DocusignPKI","v":"26.2.0.0","n":"Docusign PKI"}
@@ -3581,7 +3581,7 @@
 {"id":"Doxim.StriataReader","v":"2.31.2.0","n":"Striata Reader"}
 {"id":"Doxim.StriataReader.EXE","v":"2.31-2","n":"Striata Reader (EXE)"}
 {"id":"dpaulat.supercell-wx","v":"0.6.1","n":"Supercell Wx","m":"supercell","t":["weather","radar"]}
-{"id":"dprint.dprint","v":"0.59.0","n":"dprint","t":["formatter"]}
+{"id":"dprint.dprint","v":"0.60.1","n":"dprint","t":["formatter"]}
 {"id":"DpSoftware.FireflyLuciferin","v":"2.28.4","n":"Firefly Luciferin","m":"luciferin","t":["esp","ambilight","esp32","sk6812","ambient-light","bias-lighting","esp8266","ws2812b"]}
 {"id":"dpzx.dpzxbrowsebeta","v":"1","n":"DpzxbrowseBeta"}
 {"id":"Dr-Noob.cpufetch","v":"1.07","n":"cpufetch","t":["android","linux","macos","windows","amd","intel","arm","cpus","microarchitecture"]}
@@ -3715,7 +3715,7 @@
 {"id":"EA4K.KLog","v":"2.5","n":"KLog","t":["free","amateur-radio","logger","gplv3","qsl","hamradio","lotw","dxcluster","radiomateur"]}
 {"id":"Eagle1.PrettyMark","v":"1.0.0","n":"PrettyMark","t":["markdown","viewer","markdown-viewer"]}
 {"id":"EagleDynamics.DCSWorldOpenBeta","v":"2.9","n":"DCS World OpenBeta"}
-{"id":"EarendilWorks.pi","v":"1.0.0","n":"pi","m":"pi","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
+{"id":"EarendilWorks.pi","v":"1.0.2","n":"pi","m":"pi","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
 {"id":"Earthshine.DashcamViewer","v":"4.0.7","n":"Dashcam Viewer","t":["Viewer","Dashcam"]}
 {"id":"EaseUS.BackupCenter","v":"16.3","n":"EaseUS Backup Center","m":"ebc","t":["Backup","Centralized","Management"]}
 {"id":"EaseUS.ChatTrans","v":"2.1.7","n":"EaseUS ChatTrans","t":["Trial","Restore","Backup","WhatsApp"]}
@@ -3752,7 +3752,7 @@
 {"id":"EasyTier.EasyTierGUI","v":"2.6.4","n":"easytier-gui","t":["network","网络","ethernet","switch","intranet","network-switch","交换机","以太网","内网","内网穿透"]}
 {"id":"eat-pray-ai.yutu","v":"0.11.0","n":"yutu","m":"yutu","t":["mcp","cli","automation","youtube"]}
 {"id":"EazyHood.AppCloner","v":"4.0.0","n":"AppCloner","m":"appcloner","t":["portable","clone","multi-account","multi-instance","sessions"]}
-{"id":"EazyMake.EazyMake","v":"1.4.7","n":"EazyMake","m":"ezmk","t":["package-manager","cpp","compiler","build-tool","c"]}
+{"id":"EazyMake.EazyMake","v":"1.4.8","n":"EazyMake","m":"ezmk","t":["package-manager","cpp","compiler","build-tool","c"]}
 {"id":"EAZYPETITIONLLC.eazyPetition","v":"1.0.0","n":"eazyPetition"}
 {"id":"Ebbflow.Ebbflow","v":"1.1.0","n":"ebbflow","m":"ebbflow","t":["proxy","ebbflow","load-balancer"]}
 {"id":"EberhardWerle.QuickGamma","v":"4.1.0.0","n":"QuickGamma","m":"QuickGamma","t":["utility","tool","monitor","calibration","calibrate","gamma"]}
@@ -3855,6 +3855,7 @@
 {"id":"EEO.ClassInX","v":"6.0.9.1813","n":"ClassIn X","t":["teaching","education","幻灯片","演示","教学","教育","模板","课件","class","classroom","lecture","lesson"]}
 {"id":"eeyzs1.DevWit","v":"0.7.30","n":"DevWit","t":["ai","agent","electron","llm","developer-tools","ide","开发者工具","代码编辑器","code-editor"]}
 {"id":"EFDSoftware.HDTunePro","v":"5.75","n":"HD Tune Pro"}
+{"id":"Efeyamann.Streamlity","v":"0.1.2","n":"Streamlity","m":"streamlity","t":["epg","iptv","iptv-player","m3u","m3u8","media-player","open-source","live-tv","xtream-codes"]}
 {"id":"EFF.Certbot","v":"2.9.0","n":"Certbot","t":["letsencrypt","python","requirescmd","certificate","acme","acme-client","certbot","sshcertificates","httpscertificates"]}
 {"id":"Effekseer.Effekseer","v":"1.7.3","n":"Effekseer"}
 {"id":"EfficientElements.Presentations","v":"4.5.3200.1","n":"Efficient Elements for presentations - Standard Edition"}
@@ -4272,7 +4273,7 @@
 {"id":"FaFaRunner.FaFaRunner","v":"3.2.2.397","n":"FaFa Runner","t":["game","flutter","fafarunner","fafa runner","flame","bonfire"]}
 {"id":"FAForever.FAFClient","v":"2026.7.1","n":"FAF Client","t":["oauth2","java","javafx","frontend","install4j","spring"]}
 {"id":"FahmiRidho.MyPDF","v":"0.2.0","n":"MyPDF","m":"mypdf","t":["compress","privacy","offline","pdf","ocr","open-source","merge","pdf-tools"]}
-{"id":"FahrenheitResearch.ArWen","v":"2.8.4","n":"ArWen","m":"arwen"}
+{"id":"FahrenheitResearch.ArWen","v":"2.8.5","n":"ArWen","m":"arwen"}
 {"id":"FahrenheitResearch.BowEcho","v":"0.35.0","n":"BowEcho","m":"bowecho"}
 {"id":"FahrenheitResearch.Cursdar2","v":"0.5.1","n":"Cursdar2","m":"cursdar2"}
 {"id":"FahrenheitResearch.FFW-BOT","v":"1.0.1","n":"FFW-BOT","m":"ffw-bot"}
@@ -4298,7 +4299,7 @@
 {"id":"Famatech.Radmin.Client","v":"3.5.2.1","n":"Radmin Viewer","t":["remote-desktop","remote-control","remote-access","远程控制","远程桌面","远程连接","远程","远程访问","home-office","远程办公","remote-assistance","远程协助","radmin-viewer","radminviewer","radmin-client","radminclient"]}
 {"id":"Famatech.Radmin.Server","v":"3.52.1.0000","n":"Radmin Server","t":["remote-desktop","remote","remote-control","remote-access","远程控制","远程桌面","远程连接","远程","远程访问","home-office","远程办公","remote-assistance","远程协助"]}
 {"id":"Famatech.RadminVPN","v":"2.1.4951.1","n":"Radmin VPN","m":"radmin-vpn","t":["network","网络","vpn","lan","local-network"]}
-{"id":"fancydirty.MediaryScout","v":"2026.09.30.2","n":"Mediary Scout","t":["人工智能","ai","智能体","agent","cloud-drive","drive","云盘","网盘","大语言模型","large-language-model","llm","media-library","媒体库"]}
+{"id":"fancydirty.MediaryScout","v":"2026.10.04","n":"Mediary Scout","t":["人工智能","ai","智能体","agent","cloud-drive","drive","云盘","网盘","大语言模型","large-language-model","llm","media-library","媒体库"]}
 {"id":"Fangamer.Deltarune","v":"0.6.6.6","n":"Deltarune"}
 {"id":"Fangyuan025.Chaty","v":"2.3.5","n":"Chaty","m":"chaty","t":["ai","chatbot","llm","privacy","offline","coding-agent","gguf","rag","local","llamacpp"]}
 {"id":"Fanis.ClaudeCodeSwitcher","v":"0.3.2","n":"Claude Code Switcher","t":["developer-tools","claude","claude-code","windows-terminal"]}
@@ -4362,7 +4363,7 @@
 {"id":"Ferdium.Ferdium.Beta","v":"6.4.1-beta.2","n":"Ferdium Beta","m":"ferdium-beta"}
 {"id":"Ferdium.Ferdium.Nightly","v":"7.2.4-nightly.3","n":"Ferdium Nightly","m":"ferdium-nightly","t":["hacktoberfest","hacktoberfest-accepted"]}
 {"id":"FernandoMaclen.Hollama","v":"0.35.1","n":"Hollama","t":["ai","chatbot","llm","local-ai","ollama"]}
-{"id":"FernandoTonon.QtMeshEditor","v":"3.47.0","n":"QtMeshEditor","m":"qtmesheditor","t":["3d","animation","game-development","mesh-editor","fbx","gltf","ogre3d","material-editor"]}
+{"id":"FernandoTonon.QtMeshEditor","v":"3.48.0","n":"QtMeshEditor","m":"qtmesheditor","t":["3d","animation","game-development","mesh-editor","fbx","gltf","ogre3d","material-editor"]}
 {"id":"FernloopTechnologies.WhatsAppAIPro","v":"2.0.14","n":"WhatsApp AI Pro","m":"whatsapp-ai-pro","t":["productivity","ai","chatbot","automation","translation","messaging","whatsapp","sales","auto-reply","customer-support"]}
 {"id":"FerroSoftware.FtpUse","v":"2.2","n":"FtpUse"}
 {"id":"FerumLanguage.ferrumc","v":"0.3.0","n":"ferrumc","t":["language","compiler","llvm","systems-programming","memory-safety"]}
@@ -4405,7 +4406,7 @@
 {"id":"FineprintSoftware.FinePrint","v":"12.33","n":"FinePrint","t":["driver","printer","print","打印","打印机","fp12_x64_driver.inf"]}
 {"id":"FineprintSoftware.pdfFactory","v":"9.33","n":"pdfFactory","t":["pdf"]}
 {"id":"FineprintSoftware.pdfFactory.Pro","v":"9.33","n":"pdfFactory Pro","t":["pdf"]}
-{"id":"Finesssee.Win-CodexBar","v":"0.56.8","n":"Win-CodexBar","m":"win-codexbar","t":["windows","desktop","tauri","claude-code","codex","usage"]}
+{"id":"Finesssee.Win-CodexBar","v":"0.70.0","n":"Win-CodexBar","m":"win-codexbar","t":["windows","desktop","tauri","claude-code","codex","usage"]}
 {"id":"Fing.Fing","v":"4.0.4","n":"Fing","t":["security","安全","monitor","network","网络","监控","lan","device","设备","scan","局域网","扫描"]}
 {"id":"fio.fio","v":"3.43","n":"fio"}
 {"id":"Fioooooooo.FylloCode","v":"0.15.5","n":"FylloCode","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
@@ -4449,7 +4450,7 @@
 {"id":"flawiddsouza.Restfox","v":"0.40.0","n":"Restfox","t":["vue","hacktoberfest","developer-tools","pwa","http","websocket","api-client","api-testing","rest-api","http-client","testing-tools","rest-client","graphql-client"]}
 {"id":"FlawlessWidescreen.FlawlessWidescreen","v":"1.0.15","n":"Flawless Widescreen","m":"flawlesswidescreen","t":["flawless-widescreen","ultrawide-gaming","ultrawidegaming","ultrawide-monitors","ultrawidemonitors","ultrawidescreens","nvidia-surround","eyefinity"]}
 {"id":"FlaxEngine.Flax","v":"1.0","n":"Flax"}
-{"id":"Fleet.fleetctl","v":"4.92.2","n":"fleetctl","t":["fleet"]}
+{"id":"Fleet.fleetctl","v":"4.92.3","n":"fleetctl","t":["fleet"]}
 {"id":"FleetingClarityStudios.QuickFixMyPic","v":"1.0.3","n":"QuickFixMyPic"}
 {"id":"FleetingClarityStudios.RipShout","v":"1.2","n":"RipShout"}
 {"id":"Fleex255.PolicyPlus","v":"June2021","n":"Policy Plus","t":["registry","gpo","grouppolicies","localgrouppolicy","pol"]}
@@ -4510,7 +4511,7 @@
 {"id":"FlorinZamfir.Weather","v":"1.0.2","n":"Weather","t":["temperature","precipitation","wind-speed","hourly-forecast"]}
 {"id":"flos-freeware.Notepad2","v":"4.2.25","n":"Notepad2"}
 {"id":"Flow-Launcher.Flow-Launcher","v":"2.1.3","n":"Flow Launcher","t":["productivity","search","calculator","bookmarks","launcher","plugins"]}
-{"id":"FlowDevs.PrimeDictate","v":"6.1.0","n":"PrimeDictate","m":"primedictate","t":["productivity","speech-to-text","transcription","dictation"]}
+{"id":"FlowDevs.PrimeDictate","v":"6.1.1","n":"PrimeDictate","m":"primedictate","t":["productivity","speech-to-text","transcription","dictation"]}
 {"id":"Floweb.Floweb","v":"2.0.8","n":"Floweb","t":["浏览器","browser","web","webpage","网页","china","prc","internet","互联网"]}
 {"id":"Flowersauce.FSClicker","v":"1.4.0","n":"Flori Input","t":["windows","automation","keyboard","mouse","clicker","auto-clicker","input"]}
 {"id":"Flowify.Flowify","v":"0.0.5","n":"Flowify"}
@@ -4527,8 +4528,8 @@
 {"id":"FlutterGitUI.FlutterGitUI","v":"0.1.0","n":"Flutter GitUI","t":["developer-tools","git","version-control","gui","flutter"]}
 {"id":"flux.flux","v":"4.141","n":"f.lux","m":"flux","t":["display","lighting","显示","hue","颜色","night-light","night-mode","光线","夜览","夜间模式","护眼","护眼模式"]}
 {"id":"FluxCD.Flux","v":"2.9.6","n":"Flux","t":["kubernetes","continuous-delivery","gitops","gitops-toolkit","helm","kustomize"]}
-{"id":"Fluxer.Fluxer","v":"2026.1001.230522","n":"Fluxer","m":"fluxer","t":["chat","messaging","voice","discord","fluxer"]}
-{"id":"Fluxzero.FluxzeroCLI","v":"1.19.3","n":"Fluxzero CLI","m":"fz","t":["cli","developer-tools","java","kotlin","fluxzero"]}
+{"id":"Fluxer.Fluxer","v":"2026.1003.155758","n":"Fluxer","m":"fluxer","t":["chat","messaging","voice","discord","fluxer"]}
+{"id":"Fluxzero.FluxzeroCLI","v":"1.19.5","n":"Fluxzero CLI","m":"fz","t":["cli","developer-tools","java","kotlin","fluxzero"]}
 {"id":"Fluxzy.Fluxzy","v":"1.39.48.18975","n":"Fluxzy","t":["proxy","csharp","http","dotnet","https","mitm","pcap","mitmproxy","http-archive","http2","impersonate"]}
 {"id":"flxzt.rnote","v":"0.14.2","n":"Rnote","m":"rnote","t":["utility","rust","tool","notes","foss","gtk","note-taking","drawing","open source"]}
 {"id":"Fly-io.flyctl","v":"0.4.111","n":"flyctl","t":["cli","fly","heroku"]}
@@ -4658,8 +4659,8 @@
 {"id":"FSPProductions.FileHasher","v":"0.4.0","n":"FileHasher","m":"filehasher","t":["checksum","hash","integrity","sha256","verification"]}
 {"id":"fsprojects.Paket","v":"10.3.1","n":"Paket","t":["git","requirescmd","dotnet","nuget","dependency-manager",".net","dependencymanager","paketmanager"]}
 {"id":"fstl.fstl","v":"0.11.0","n":"fstl","m":"fstl","t":["STL"]}
-{"id":"fstubner.netscli","v":"0.3.3","n":"netscli","m":"netscli","t":["rust","mcp","cli","tui","scanner","network","dns","mdns","arp","port-scan"]}
-{"id":"fstubner.netscli.gui","v":"0.3.3","n":"NetsCLI Desktop","m":"netscli-gui","t":["rust","desktop","tauri","scanner","network","dns","port-scanner","arp"]}
+{"id":"fstubner.netscli","v":"0.3.4","n":"netscli","m":"netscli","t":["rust","mcp","cli","tui","scanner","network","dns","mdns","arp","port-scan"]}
+{"id":"fstubner.netscli.gui","v":"0.3.4","n":"NetsCLI Desktop","m":"netscli-gui","t":["rust","desktop","tauri","scanner","network","dns","port-scanner","arp"]}
 {"id":"FTB.App","v":"1.27.3","n":"FTB Electron App","t":["minecraft","curseforge","mc","我的世界","mod","ftb","modpack"]}
 {"id":"FujiApple.Claptrap","v":"0.3.0","n":"Claptrap","t":["rust","cli","powershell","shell","clap","getopt"]}
 {"id":"FujiApple.Trippy","v":"0.13.0","n":"Trippy","t":["rust","cli","tui","network","traceroute","networking","ping","mtr","dns","icmp","tui-rs"]}
@@ -4776,7 +4777,7 @@
 {"id":"gdiObjects.xBar","v":"2.0.2511.16","n":"xBar","m":"xbar","t":["windows-11","cpu","temperature","windows-10","battery","sensors","memory","sidebar","appbar"]}
 {"id":"gdman.GDMan","v":"0.5.0","n":"GDMan","m":"gdman"}
 {"id":"GDQuest.GDScript.Formatter","v":"0.25.0","n":"GDScript Formatter","t":["rust","tree-sitter","formatter","godot","godot-engine","gdscript"]}
-{"id":"GDRETools.gdsdecomp","v":"2.6.4","n":"Godot RE Tools","m":"gdre_tools","t":["GDScript","Godot"]}
+{"id":"GDRETools.gdsdecomp","v":"2.7.0","n":"Godot RE Tools","m":"gdre_tools","t":["GDScript","Godot"]}
 {"id":"Geany.Geany","v":"2.1.0","n":"Geany","m":"geany","t":["editor","ide","text","geany","scintilla","texteditor"]}
 {"id":"gedejong.AutoRotate","v":"0.1.1","n":"Auto-Rotate","m":"auto-rotate","t":["document","pdf","ocr","scan","deskew"]}
 {"id":"GeekCorner.threema","v":"2.5.1","n":"Threema For Desktop","m":"threema-unofficial","t":["linux","macos","windows","electron","typescript","desktop","hacktoberfest","cross-platform","hacktoberfest2021"]}
@@ -4830,9 +4831,9 @@
 {"id":"getzola.zola","v":"0.23.6","n":"zola","m":"zola","t":["documentation","content-management-system","documentation-tool","static-site","static-site-generator"]}
 {"id":"GeziP.KBIntake","v":"2.1.1","n":"KBIntake","m":"kbintake","t":["windows","cli","tui","knowledge-base","obsidian","templates","watch-mode"]}
 {"id":"gfgRoyal.gfgLock","v":"3.0.1","n":"gfgLock","t":["encryption","open-source","file-encryption","inno-setup","folder-lock","file-lock","gui-application","python-gui","file-encryption-decryption","folder-encryption","gui-tool"]}
-{"id":"gg.ai.ggcode-cli","v":"1.3.251","n":"ggcode","m":"ggcode","t":["mcp","ai","cli","developer-tools","coding","terminal"]}
-{"id":"gg.ai.ggcode-desktop","v":"1.3.251","n":"GGCode Desktop","t":["mcp","ai","desktop","developer-tools","coding","terminal"]}
-{"id":"ggml.llamacpp","v":"b11193","n":"llama.cpp","t":["llama","ggml"]}
+{"id":"gg.ai.ggcode-cli","v":"1.3.252","n":"ggcode","m":"ggcode","t":["mcp","ai","cli","developer-tools","coding","terminal"]}
+{"id":"gg.ai.ggcode-desktop","v":"1.3.252","n":"GGCode Desktop","t":["mcp","ai","desktop","developer-tools","coding","terminal"]}
+{"id":"ggml.llamacpp","v":"b11382","n":"llama.cpp","t":["llama","ggml"]}
 {"id":"ghchinoy.a2acli","v":"2.1.1","n":"a2acli","m":"a2acli"}
 {"id":"ghdl.ghdl.ucrt64.mcode","v":"6.0.0","n":"GHDL","t":["hacktoberfest","hardware","compiler","gcc","llvm","simulator","vhdl","ghdl","testbench"]}
 {"id":"ghimiresdp.furl","v":"0.8.1","n":"furl-cli","t":["downloader","download-manager","file-downloader","network-util"]}
@@ -4910,7 +4911,7 @@
 {"id":"GitHub.GitLFS","v":"3.8.0","n":"Git LFS","m":"gitlfs","t":["go","git","golang","command-line","github","file-storage"]}
 {"id":"GitHub.hub","v":"2.14.2","n":"hub"}
 {"id":"GitHub.smimesign","v":"0.2.0","n":"smimesign","t":["git","signing","smime"]}
-{"id":"Gitify.Gitify","v":"7.8.0","n":"Gitify","t":["electron","react","github","notification"]}
+{"id":"Gitify.Gitify","v":"7.9.0","n":"Gitify","t":["electron","react","github","notification"]}
 {"id":"GitKraken.cli","v":"3.1.76","n":"GitKraken CLI","m":"GitKraken CLI","t":["productivity","utility","mcp","tool","cli","version-control","command-line","git-tool","efficiency","repository-management","gitkraken"]}
 {"id":"Gitlab.Runner","v":"19.4.1","n":"GitLab Runner","m":"gitlab-runner","t":["cd","ci","pipeline"]}
 {"id":"Gitleaks.Gitleaks","v":"8.30.1","n":"Gitleaks","m":"gitleaks","t":["go","security","hacktoberfest","git","golang","security-tools","devsecops","gitleaks","secret"]}
@@ -5059,7 +5060,7 @@
 {"id":"Google.AndroidStudio.Beta","v":"2026.2.1.7","n":"Android Studio Beta","m":"android-studio-beta","t":["debug","android","development","adb","emulator","ide","app","apk","studio","fastboot","aab","intellij","android-studio","android-development","beta","androidstudiobeta"]}
 {"id":"Google.AndroidStudio.Canary","v":"2026.2.2.3","n":"Android Studio Canary","m":"android-studio-canary","t":["debug","android","development","adb","emulator","ide","app","apk","studio","fastboot","aab","intellij","android-studio","android-development","canary","androidstudiocanary"]}
 {"id":"Google.Antigravity","v":"2.19.1","n":"Antigravity","t":["人工智能","ai","智能体","agent","develop","development","programming","开发","编程","大语言模型","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
-{"id":"Google.AntigravityCLI","v":"1.2.15","n":"Antigravity CLI","t":["人工智能","ai","智能体","agent","develop","development","programming","开发","编程","大语言模型","large-language-model","llm","自主智能","agentic","代码","code","coding","gemini"]}
+{"id":"Google.AntigravityCLI","v":"1.2.16","n":"Antigravity CLI","t":["人工智能","ai","智能体","agent","develop","development","programming","开发","编程","大语言模型","large-language-model","llm","自主智能","agentic","代码","code","coding","gemini"]}
 {"id":"Google.AntigravityIDE","v":"2.5.5","n":"Antigravity IDE","t":["editor","编辑器","编辑","develop","development","programming","开发","编程","代码","code","coding","editing"]}
 {"id":"Google.Brotli","v":"1.2.0","n":"Brotli"}
 {"id":"Google.Chrome","v":"154.0.8037.98","n":"Google Chrome","m":"chrome","t":["浏览器","browser","chromium","web","webpage","网页","安全","search","internet","互联网","搜索","manifestv3","mv3","safe","internett","nettet","nettleser","rask","søk","trygg","快捷"]}
@@ -5214,7 +5215,7 @@
 {"id":"Greenshot.Greenshot.Preview","v":"1.3.277","n":"Greenshot Preview","m":"greenshot-preview","t":["foss","open-source","screenshot","screen-capture"]}
 {"id":"GreenYogaInc.PDFLiteViewer","v":"1.0.14","n":"PDF Lite Viewer","m":"pdf-lite-viewer","t":["viewer","pdf","reader","freeware","pdf-viewer"]}
 {"id":"GregGalloway.OLAPPivotTableExtensions","v":"0.9.7","n":"OLAP PivotTable Extensions","t":["excel","pivot-table","透视表"]}
-{"id":"GregorDadera.AIContextBuilder","v":"0.5.465.11","n":"AI Context Builder","m":"aicb","t":["mcp","ai","llm","dotnet","context","code-analysis","roslyn"]}
+{"id":"GregorDadera.AIContextBuilder","v":"0.5.500.1","n":"AI Context Builder","m":"aicb","t":["mcp","ai","llm","dotnet","context","code-analysis","roslyn"]}
 {"id":"GregOrigin.CleanerSuite","v":"1.0.0","n":"Cleaner Suite"}
 {"id":"GregOrigin.LogicAtlasCLI","v":"1.0.0","n":"LogicAtlas CLI"}
 {"id":"GregoryKieffer.MarkdownBlaze","v":"1.0.23","n":"MarkdownBlaze"}
@@ -5295,7 +5296,7 @@
 {"id":"HaBaDEDE.Peek","v":"0.1.0","n":"Peek","t":["windows","portable","win32","process-monitor","windows-utility","file-lock","ui-automation","file-unlocker","文件占用","进程监控","界面探查","便携软件","系统工具"]}
 {"id":"haberwooki.LiveCaptions","v":"0.4.3","n":"Live Captions","m":"livecaptions","t":["accessibility","subtitles","speech-to-text","transcription","whisper","captions"]}
 {"id":"habrmnc.bilet","v":"1.3.1","n":"bilet"}
-{"id":"hadc188.Reader","v":"1.4.6","n":"Reader","t":["notes","笔记","reader","阅读器","ebook","read","电子书","阅读","epub","rss"]}
+{"id":"hadc188.Reader","v":"1.5.0","n":"Reader","t":["notes","笔记","reader","阅读器","ebook","read","电子书","阅读","epub","rss"]}
 {"id":"hadolint.hadolint","v":"2.15.1","n":"Haskell Dockerfile Linter","m":"hadolint","t":["docker","cli","portable","static-analysis","devops-tools","linter","haskell","dockerfile","shellcheck"]}
 {"id":"hadufer.ClaudeCodeUsageMonitor","v":"1.5.3","n":"Claude Code Usage Monitor (hadufer fork)","t":["monitor","claude","taskbar","tray","usage"]}
 {"id":"HagelTechnologiesLtd.DUMeter","v":"9.01","n":"DU Meter"}
@@ -5352,7 +5353,7 @@
 {"id":"HarjotSinghRana.Reinstate","v":"0.6.0","n":"Reinstate","t":["sync","cli","encryption","claude","codex","coding-agent","session"]}
 {"id":"HARMAN.AdobeAIR","v":"51.3.3.1","n":"Adobe AIR"}
 {"id":"Harmonoid.Harmonoid","v":"0.3.22","n":"Harmonoid","t":["android","linux","windows","cross-platform","audio-player","music-player","media","media-player","music","audio","metadata","lyrics","youtube-music","music-library","local-music","synced-lyrics","pitch-shift","volume-boost","tag-parsing"]}
-{"id":"HarryBMa.PCGamePak","v":"1.0.0","n":"PC GamePak","m":"pc-gamepak","t":["portable","usb","games","steam","launcher","nvme","cartridge"]}
+{"id":"HarryBMa.PCGamePak","v":"1.1.0","n":"PC GamePak","m":"pc-gamepak","t":["portable","usb","games","steam","launcher","nvme","cartridge"]}
 {"id":"HarshJha.YTuff","v":"1.0.4","n":"YTuff","m":"ytuff","t":["tui","player","music","terminal","youtube"]}
 {"id":"HarshKhandeparkar.RainbowBoard","v":"0.8.1","n":"Rainbow Board","t":["electron","react","whiteboard","svg","rainbow-board"]}
 {"id":"HarumiWeb.Eitango","v":"0.8.0","n":"eitango","m":"eitango","t":["go","cli","learning","english","vocabulary"]}
@@ -5495,14 +5496,14 @@
 {"id":"hhdtc.LNReaderTUI","v":"1.1.5","n":"LNReaderTUI","m":"lnreadertui","t":["go","tui","reader","terminal","epub","light-novel"]}
 {"id":"hhktony.rust-iproute2","v":"0.1.0","n":"rust-iproute2","m":"rust-iproute2","t":["rust","cli","network","ip","iproute2"]}
 {"id":"hiadamhere.spm","v":"0.4.0","n":"spm"}
-{"id":"Hibbiki.Chromium","v":"154.0.8037.93","n":"Chromium","t":["browser","chromium","manifestv3","mv3"]}
+{"id":"Hibbiki.Chromium","v":"154.0.8037.98","n":"Chromium","t":["browser","chromium","manifestv3","mv3"]}
 {"id":"HiBitSoftware.HiBitUninstaller","v":"4.0.10","n":"HiBit Uninstaller","m":"hibituninstaller","t":["uninstaller"]}
 {"id":"HiBitSoftware.StartUpManager","v":"2.6.60.100","n":"HiBit Startup Manager"}
 {"id":"hickford.git-credential-azure","v":"0.3.1","n":"git-credential-azure","t":["git","git-credential-helper","usable-security"]}
 {"id":"hickford.git-credential-oauth","v":"0.17.2","n":"git-credential-oauth","t":["git","git-credential-helper","usable-security"]}
 {"id":"Hiddify.Next","v":"4.1.1","n":"Hiddify Next","m":"hiddify","t":["proxy","vpn"]}
 {"id":"Hiddify.Next.Beta","v":"2.5.7","n":"Hiddify Next Beta","t":["proxy","v2ray","vless","vmess","xray","ssh","clash","sing-box","clashmeta","ech","hysteria","hysteria2","reality","shadowtls","singbox","tuic"]}
-{"id":"hidecode365.WinLauncher","v":"0.17.0","n":"WinLauncher"}
+{"id":"hidecode365.WinLauncher","v":"0.18.0","n":"WinLauncher"}
 {"id":"HidemyNetworkLtd.HidemyNameVPN","v":"2.1.915","n":"HidemyNameVPN"}
 {"id":"HiggX.QFCLI","v":"0.3.8-beta","n":"HiggX - Quotation Factory CLI","m":"qfc","t":["cli","api","manufacturing","quotation-factory","rhodium24","qfcli","higgx"]}
 {"id":"High-Logic.FontCreator","v":"16.0.0.3082","n":"High-Logic FontCreator","t":["font","字体"]}
@@ -5614,9 +5615,9 @@
 {"id":"HR.Crypter","v":"4.0.0","n":"Crypter","m":"crypter","t":["electron","security","cross-platform","cryptography","decryption","data-encryption","portability"]}
 {"id":"hrkfdn.ncspot","v":"1.5.0","n":"ncspot","m":"ncspot","t":["spotify","ncspot","hrkfdn"]}
 {"id":"Hrt0x.NudgeMug","v":"1.0.1","n":"NudgeMug","m":"nudgemug","t":["portable","tray","keep-awake","prevent-sleep","mouse","caffeine"]}
-{"id":"hrzlgnm.mdns-browser","v":"2.5.4","n":"mdns-browser","t":["rust","tauri","svelte","mdns","sveltekit","mdns-sd","auto-update","leptos","thaw"]}
+{"id":"hrzlgnm.mdns-browser","v":"2.5.5","n":"mdns-browser","t":["rust","tauri","svelte","mdns","sveltekit","mdns-sd","auto-update","leptos","thaw"]}
 {"id":"hrzlgnm.mdns-tui-browser","v":"v1.37.2","n":"mDNS TUI Browser","t":["rust","ratatui","terminal-ui","mdns-sd"]}
-{"id":"hrzlgnm.zux","v":"1.19.2","n":"zux","t":["tauri-app","tauri-v2","mdns-sd","sveltejs","vis-network"]}
+{"id":"hrzlgnm.zux","v":"1.19.3","n":"zux","t":["tauri-app","tauri-v2","mdns-sd","sveltejs","vis-network"]}
 {"id":"HTACG.tidy","v":"5.8.0","n":"tidy-html5"}
 {"id":"HTH.TranslationManager","v":"1.1.0","n":"Translation Manager","m":"translation-manager","t":["gaming","translation","games","launcher","localization","mods","rtl","hebrew"]}
 {"id":"htrb.ngraph-gtk","v":"6.09.11","n":"ngraph-gtk"}
@@ -5977,7 +5978,7 @@
 {"id":"InterfaceFluidics.Autobench.Beta","v":"0.96.5.0","n":"Autobench Beta"}
 {"id":"InterfaceFluidics.Autobench.Release-Candidate","v":"0.96.1.0","n":"Autobench Release-Candidate"}
 {"id":"InterlinkGlobal.Interly","v":"0.5.0","n":"Interly","t":["windows","agent","automation","command-line","groq"]}
-{"id":"Interlynk.lynk-mcp","v":"0.2.5","n":"lynk-mcp","m":"lynk-mcp","t":["mcp","sbom","vulnerability-management","software-supply-chain"]}
+{"id":"Interlynk.lynk-mcp","v":"0.2.6","n":"lynk-mcp","m":"lynk-mcp","t":["mcp","sbom","vulnerability-management","software-supply-chain"]}
 {"id":"Intermedia.Unite","v":"2.33.58","n":"Intermedia Unite","t":["video","视频","电话","collaborate","collaboration","meeting","team","会议","协作","协同","团队","chat","conferencing","video-conferencing","webinar","开会","研讨会","视频会议","聊天","call","voice","语音","通话","calling","meet"]}
 {"id":"Intermedia.UniteTeamsDesktopPlugin","v":"1.0.302","n":"Unite Teams Desktop plugin","t":["teams","unite"]}
 {"id":"Internxt.Drive","v":"2.6.12","n":"Internxt Drive","m":"internxt-drive","t":["cloud","cross-platform","storage","blockchain","decentralized","cloud-storage"]}
@@ -5989,7 +5990,7 @@
 {"id":"IntraManagementSoftware&Tech.ScheduleInspector","v":"2.4.25262.1","n":"Intra Management Software & Technologies Inc., Schedule Inspector"}
 {"id":"intxcc.pyaudio","v":"0.2.11","n":"PyAudio","t":["python","music","audio","portaudio"]}
 {"id":"Inukollu.ScreenMirror","v":"0.2.1","n":"ScreenMirror","m":"screenmirror","t":["webrtc","screen-mirroring","hardware-acceleration","remote-display"]}
-{"id":"Invantive.InvantiveAuthenticator","v":"25.0.211","n":"Invantive Authenticator"}
+{"id":"Invantive.InvantiveAuthenticator","v":"27.0.19","n":"Invantive Authenticator"}
 {"id":"Invantive.InvantiveBridgeForDevelopers","v":"25.0.190","n":"Invantive Authenticator"}
 {"id":"Invantive.InvantiveBusinessForOutlook","v":"25.0.211","n":"Invantive Business for Outlook"}
 {"id":"Invantive.InvantiveBusinessForWindows","v":"25.0.233","n":"Invantive Business for Windows"}
@@ -6002,7 +6003,7 @@
 {"id":"Invantive.InvantiveOptimizer","v":"25.0.211","n":"Invantive Optimizer"}
 {"id":"Invantive.InvantiveQueryTool","v":"25.0.233","n":"Invantive Query Tool"}
 {"id":"Invantive.InvantiveRuntime","v":"25.0.233","n":"Invantive Runtime"}
-{"id":"Invantive.InvantiveStudio","v":"25.0.233","n":"Invantive Studio"}
+{"id":"Invantive.InvantiveStudio","v":"27.0.19","n":"Invantive Studio"}
 {"id":"Invantive.InvantiveSupportAssistant","v":"25.0.211","n":"Invantive Support Assistant"}
 {"id":"Invantive.InvantiveWebService","v":"24.0.389","n":"Invantive Web Service"}
 {"id":"invcble.NoMoreBorder","v":"1.3.7","n":"NoMoreBorder","m":"nomoreborder","t":["nomoreborder","borderless-gaming"]}
@@ -6122,7 +6123,7 @@
 {"id":"ItTiger.TigerWrap","v":"0.9.1","n":"TigerWrap CLI","m":"tiger-wrap","t":["database","cli","csharp","dotnet","sql-server","code-generation","stored-procedures"]}
 {"id":"ITU.BRSpaceApplications","v":"10.0.0.69","n":"BR Space Applications","t":["sam","ap7capture","brsis","gibc","gims","spacecap","spacecom","sps"]}
 {"id":"ITWCreativeWorks.Somiibo","v":"1.2.32","n":"Somiibo"}
-{"id":"ITWORX.CtrlVTerminal","v":"1.2.5","n":"Ctrl-V Terminal","m":"ctrl-v-terminal","t":["ssh","sysadmin","terminal","sftp","vnc","remote-access","scp"]}
+{"id":"ITWORX.CtrlVTerminal","v":"1.2.10","n":"Ctrl-V Terminal","m":"ctrl-v-terminal","t":["ssh","sysadmin","terminal","sftp","vnc","remote-access","scp"]}
 {"id":"iuikj.DSHDesktop","v":"0.2.0","n":"DeepSeek Harness","t":["ai","智能体","大语言模型","large-language-model","llm","自主智能","大模型","deepseek","deepseek-harness","dsh"]}
 {"id":"IvanCharapanau.Harbor","v":"0.5.14","n":"Harbor","t":["人工智能","ai","大语言模型","large-language-model","llm","ollama"]}
 {"id":"IvanIsCoding.celq","v":"0.7.1","n":"celq","t":["rust","cli","json","cel","common-expression-language","jq","json5","yq"]}
@@ -6161,7 +6162,7 @@
 {"id":"Jackbox.Utility","v":"1.5.1","n":"Jackbox Utility","m":"jackboxutility","t":["utility","flutter","translation","launcher","patcher","jackbox","jackbox-party-pack","jackbox-tv","jackboxgames","utility-application"]}
 {"id":"JackDevey.Lux","v":"1.1.1","n":"Lux","m":"lux","t":["govee","govee-api","lighting-controller","lighting-strips","smart-home"]}
 {"id":"JackenWu.MSearcher","v":"1.6.2","n":"MSearcher","t":["搜索","图片","复制","meme","梗图","meme图"]}
-{"id":"Jackett.Jackett","v":"0.24.2780","n":"Jackett","m":"jackett","t":["proxy","torrent","p2p","rss","indexer","sonarr","torent-management","torrent-search-engine","trackers"]}
+{"id":"Jackett.Jackett","v":"0.24.2788","n":"Jackett","m":"jackett","t":["proxy","torrent","p2p","rss","indexer","sonarr","torent-management","torrent-search-engine","trackers"]}
 {"id":"JackHumphries.Socially","v":"1.0.0","n":"Socially"}
 {"id":"JackieLiu.NotepadsApp","v":"1.5.6.0","n":"Notepads","t":["markdown","text-editor","foss","open-source","notepad","uwp","fluent-design","texteditor","notepadsapp"]}
 {"id":"jacking75.TabBouncer","v":"1.1.0","n":"TabBouncer","t":["privacy","chrome","ad-blocker","popup-blocker","팝업차단","광고차단"]}
@@ -6305,7 +6306,7 @@
 {"id":"jbreland.uniextract","v":"1.6.1","n":"Universal Extractor","t":["archive","extract","installer"]}
 {"id":"jbwautier.Lanceur","v":"3.11.0","n":"Lanceur"}
 {"id":"jcalado.VoxDMR","v":"0.15.3","n":"VoxDMR","t":["dmr","brandmeister"]}
-{"id":"jcardama.LeopardWM","v":"0.2.12","n":"LeopardWM","m":"leopardwm","t":["rust","windows","tiling","window-manager","workspace","scrollable","niri","paperwm"]}
+{"id":"jcardama.LeopardWM","v":"0.2.13","n":"LeopardWM","m":"leopardwm","t":["rust","windows","tiling","window-manager","workspace","scrollable","niri","paperwm"]}
 {"id":"jcv8000.Codex","v":"2.0.5","n":"Codex","t":["electron","developer","note","programmer"]}
 {"id":"JD.HiOffice","v":"3.1.1.9","n":"HiOffice","t":["docs","document","文档","bussiness","collaborate","collaboration","comunication","conference","enterprise","meeting","oa","office","saas","team","企业","会议","公司","办公","协作","协同","商务","团队","沟通","work","working","工作","jd","京东","海鸥"]}
 {"id":"JD.JoyClaw","v":"0.2.1","n":"JoyClaw","t":["人工智能","ai","智能体","agent","大语言模型","聊天机器人","chatbot","large-language-model","llm","openclaw","自主智能","龙虾","agentic","claw"]}
@@ -6378,7 +6379,7 @@
 {"id":"JetBrains.LicenseService","v":"1.0.53616","n":"JetBrains License Service","t":["jetbrains"]}
 {"id":"JetBrains.MPS","v":"2026.1.1","n":"JetBrains MPS","t":["develop","development","programming","开发","编程","代码","code","coding"]}
 {"id":"JetBrains.MPS.EAP","v":"MPS-262.9437.166","n":"JetBrains MPS (EAP)","t":["develop","development","programming","开发","编程","代码","code","coding","metaprogramming","jetbrains","domain-specific","mps"]}
-{"id":"JetBrains.PhpStorm","v":"2026.2.2","n":"PhpStorm","m":"phpstorm","t":["web","webpage","网页","develop","development","programming","开发","编程","代码","code","coding","ide","javascript","html","js","php","css","集成开发环境","htm"]}
+{"id":"JetBrains.PhpStorm","v":"2026.2.3","n":"PhpStorm","m":"phpstorm","t":["web","webpage","网页","develop","development","programming","开发","编程","代码","code","coding","ide","javascript","html","js","php","css","集成开发环境","htm"]}
 {"id":"JetBrains.PhpStorm.EAP","v":"263.6259.29","n":"PhpStorm (EAP)","t":["web","webpage","网页","develop","development","programming","开发","编程","代码","code","coding","ide","javascript","html","js","php","css","集成开发环境","htm"]}
 {"id":"JetBrains.PyCharm","v":"2026.2.3","n":"PyCharm","m":"pycharm-pro","t":["develop","development","programming","python","开发","编程","代码","code","coding","集成开发环境","django"]}
 {"id":"JetBrains.PyCharm.Community","v":"2025.2.6.1","n":"PyCharm Community Edition","m":"pycharm-community","t":["develop","development","programming","python","开发","编程","代码","code","coding","ide","集成开发环境","django","pycharm","python-development"]}
@@ -6600,7 +6601,7 @@
 {"id":"JVElectromech.GekkoProIDE","v":"0.1.0","n":"Gekko Pro IDE","m":"gekko","t":["ide","arduino","hardware","electronics","embedded","microcontroller","iot","esp32"]}
 {"id":"jvondev.apposition","v":"1.1.5","n":"apposition","m":"apposition","t":["productivity","browser","electron","workspace","multitasking"]}
 {"id":"jvonscheidt.ibkr-etaxstatement","v":"0.3.1","n":"IBKR eTax Statement","t":["ech-0196","ech-0270","ibkr","swiss-tax"]}
-{"id":"jvonscheidt.m3u-viewer","v":"0.9.1","n":"m3u-viewer","m":"m3u-viewer","t":["cli","tui","m3u","playlist","terminal"]}
+{"id":"jvonscheidt.m3u-viewer","v":"0.9.2","n":"m3u-viewer","m":"m3u-viewer","t":["cli","tui","m3u","playlist","terminal"]}
 {"id":"JYH1878.KimiCodeBar","v":"1.11.1","n":"KimiCodeBar","m":"kimicodebar","t":["tauri","kimi","system-tray","usage-monitor","quota","kimi-code"]}
 {"id":"jzbz.rPGP","v":"0.1.3","n":"rPGP","m":"rpgp","t":["security","encryption","gpg","cryptography","pgp","openpgp"]}
 {"id":"jziolkowski.tdm","v":"2024.9.3","n":"Tasmota Device Manager","t":["management","esp8266","mqtt","discovery","mqtt-client","sonoff","sonoff-tasmota","tasmoadmin","tasmota"]}
@@ -6656,7 +6657,7 @@
 {"id":"KaringX.Karing","v":"1.2.25+2802","n":"Karing","t":["proxy","network","网络","代理","vpn","singbox"]}
 {"id":"KarlLenz.gptgen","v":"1.3","n":"gptgen","t":["requirescmd","gptpartitions","mbrpartitions","partitionschemes","guidpartitiontable","xorangekiller","GáborAStefanik","GaborAStefanik","harddiskconversion","harddriveconverting","masterbootrecord"]}
 {"id":"karlstav.cava","v":"1.0.0","n":"cava","m":"cava","t":["linux","macos","windows","norway","audio-visualizer","sdl2","freebsd","pipewire","glsl-shaders","portaudio","alsa","ncurses","pulseaudio","sndio","audiovisualizer","audiovisualiser","audio-visualiser"]}
-{"id":"karnyadavdev.FontWizard","v":"4.0.0","n":"Font Wizard","t":["windows","windows-11","windows-font-changer","windows-10","font","windows-customization","font-wizard","font-changer","system-font","segoe-ui","windows-11-font-changer","windows-10-font-changer","complete-windows-font-changer","change-font-in-windows","windows-ui-font","font-customization","system-font-changer","winui-font-changer","winaero-font","wizard","fontswizard","font-replace","font-replacer","font-changing","system-fonts","custom-font"]}
+{"id":"karnyadavdev.FontWizard","v":"5.0.0","n":"Font Wizard","t":["windows","windows-11","windows-font-changer","windows-10","font","windows-customization","font-wizard","font-changer","system-font","segoe-ui","windows-11-font-changer","windows-10-font-changer","complete-windows-font-changer","change-font-in-windows","windows-ui-font","font-customization","system-font-changer","winui-font-changer","winaero-font","wizard","fontswizard","font-replace","font-replacer","font-changing","system-fonts","custom-font"]}
 {"id":"Karoterra.Aulua","v":"0.14.0","n":"aulua","t":["aviutl2"]}
 {"id":"Karuzip.Karuzip","v":"2.2.6","n":"Karuzip","m":"karuzip","t":["archive","archiver","compression","extract","unzip","zip","rar","7z","japanese","file-archiver","圧縮","解凍"]}
 {"id":"Kaseya.LiveConnect","v":"9.5.9368.10610","n":"Live Connect"}
@@ -6669,7 +6670,7 @@
 {"id":"KaufmannNO.ProgrammerDvorak","v":"1.2.9","n":"Programmer Dvorak","m":"kbddvp","t":["programming","keyboard","keyboard-layout","keymap","input","layout","dvorak","ergonomic"]}
 {"id":"kaushiksrini.parqeye","v":"0.2.0","n":"parqeye","m":"parqeye"}
 {"id":"kawaiiDango.pano-scrobbler","v":"4.46","n":"Pano Scrobbler","t":["music","discord-rich-presence","lastfm","librefm","listenbrainz","scrobbler"]}
-{"id":"kawayiYokami.P-ai","v":"0.96.2","n":"P-ai","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic"]}
+{"id":"kawayiYokami.P-ai","v":"0.96.4","n":"P-ai","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic"]}
 {"id":"kay-ou.SimTradeDesk","v":"0.7.11","n":"SimTradeDesk","t":["finance","财经","金融","trade","交易"]}
 {"id":"kayapater.Kayauth","v":"1.0.0","n":"Kayauth","m":"kayauth","t":["security","2fa","authenticator","totp"]}
 {"id":"kayapater.VideoDownloader","v":"2.0.1","n":"Video Downloader","m":"video-downloader","t":["video","downloader","ffmpeg","yt-dlp","youtube","twitch","media-downloader","tiktok","instagram","twitter","kick","video-converter","4k","indirici","video-dönüştürücü","medya-indirici"]}
@@ -6755,7 +6756,7 @@
 {"id":"KDE.KSnakeDuel","v":"master","n":"ksnakeduel","t":["game","游戏"]}
 {"id":"KDE.KSpaceDuel","v":"master","n":"kspaceduel","t":["game","游戏"]}
 {"id":"KDE.KSquares","v":"master","n":"ksquares","t":["游戏","videogame","dots-and-boxes","localmultiplayer"]}
-{"id":"KDE.KStars","v":"3.8.4","n":"KStars Desktop Planetarium","t":["astronomy","sky","telescope","space","planetarium","celestial","galaxy","nebulae","planet","star","universe","天体","天文","天文馆","天空","太空","宇宙","恒星","星云","星系","望远镜","行星"]}
+{"id":"KDE.KStars","v":"3.8.5","n":"KStars Desktop Planetarium","t":["astronomy","sky","telescope","space","planetarium","celestial","galaxy","nebulae","planet","star","universe","天体","天文","天文馆","天空","太空","宇宙","恒星","星云","星系","望远镜","行星"]}
 {"id":"KDE.KStars.AppX","v":"0.0.9438.0","n":"KStars Desktop Planetarium (AppX)","t":["astronomy","sky","telescope","space","stars","planetarium","galaxy","nebulae","universe","kde-kstars-desktop-planetarium","kdekstarsdesktopplanetarium","9pprz2qhlxtg"]}
 {"id":"KDE.KSudoku","v":"master","n":"ksudoku","t":["game","游戏","sudoku","数独"]}
 {"id":"KDE.KTimeTracker","v":"6.0.0","n":"KTimeTracker","t":["timer","计时器","tracker","time","时间","跟踪器"]}
@@ -6818,7 +6819,7 @@
 {"id":"kerinlin.OrangePlayer","v":"0.2.7","n":"OrangePlayer","m":"orangeplayer","t":["music-player","music","local-music-player","orange-player"]}
 {"id":"KerioTechnologiesInc.KerioOutlookConnector.OfflineEdition","v":"10.0.9507","n":"Kerio Outlook Connector (Offline Edition)"}
 {"id":"KernelWanderers.OCSysInfo","v":"1.1.0","n":"OCSysInfo","t":["hardware","hackintosh","hardware-detection","opencore","system-info"]}
-{"id":"Kesomannen.Gale","v":"1.23.0","n":"Gale","m":"gale","t":["modding","mod-manager"]}
+{"id":"Kesomannen.Gale","v":"1.23.1","n":"Gale","m":"gale","t":["modding","mod-manager"]}
 {"id":"Kessriga.Flamberge","v":"0.1.1","n":"flamberge","m":"flamberge","t":["ebook","kindle","epub","drm","calibre"]}
 {"id":"Kethsar.ytarchive","v":"0.5.0","n":"ytarchive"}
 {"id":"kevin.Astral","v":"2.9.60","n":"Astral","m":"astral","t":["astral"]}
@@ -6841,7 +6842,7 @@
 {"id":"KGSAI.CGoban","v":"3.5.143","n":"CGoban"}
 {"id":"KGSOnline.CGoban","v":"3.5.23","n":"CGoban"}
 {"id":"KhanhKit.PxGo","v":"0.7.1","n":"PxGo","m":"pxgo","t":["proxy","ntlm","kerberos","spnego","pac"]}
-{"id":"khanhtd36.herdr-khanhtd36","v":"0.9.3-khanhtd36.1","n":"herdr-khanhtd36","m":"herdr-khanhtd36","t":["ai","tui","terminal","agents","fork","multiplexer"]}
+{"id":"khanhtd36.herdr-khanhtd36","v":"0.9.3-khanhtd36.2","n":"herdr-khanhtd36","m":"herdr-khanhtd36","t":["ai","tui","terminal","agents","fork","multiplexer"]}
 {"id":"Khoj.Khoj","v":"1.33.1","n":"Khoj","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","chatgpt","claude","gemini","llama","mistral","qwen","通义千问","ollama","gpt","lmstudio"]}
 {"id":"KhronosGroup.VulkanRT","v":"1.4.363.0","n":"Vulkan Runtime","m":"vulkanrt"}
 {"id":"KhronosGroup.VulkanSDK","v":"1.4.363.0","n":"Vulkan SDK","m":"vulkansdk","t":["vulkan-api"]}
@@ -7017,7 +7018,7 @@
 {"id":"Kukisama.gh-usage","v":"1.2.3","n":"gh-usage","m":"gh-usage","t":["rust","vscode","cli","json","github-copilot","csv","usage-tracking"]}
 {"id":"kukuruzka165.materialgram","v":"7.0.5.1","n":"materialgram","t":["telegram","material","messenger","telegram-desktop","telegram-desktop-client","material-design","material-ui","telegram-client"]}
 {"id":"kulkamKakarot.DriveLens","v":"1.0.0","n":"DriveLens","m":"drivelens","t":["cleanup","disk-space","disk-usage","open-source","disk-analyzer","treemap"]}
-{"id":"Kumospace.Kumospace","v":"7.0.0","n":"Kumospace"}
+{"id":"Kumospace.Kumospace","v":"7.3.0","n":"Kumospace"}
 {"id":"KunLabAI.KunAvatar","v":"0.0.17","n":"Kun Avatar","t":["mcp","人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","deepseek","kimi","llama","mistral","qwen","通义千问","ollama","深度求索","智谱清言","chatglm","glm"]}
 {"id":"kunobi-ninja.kache","v":"0.28.1","n":"kache","m":"kache","t":["rust","developer-tools","compiler","build","cache","ci","rustc","build-cache"]}
 {"id":"kunobi-ninja.kache.Unstable","v":"0.15.0-rc.3","n":"kache (Unstable)","m":"kache","t":["rust","developer-tools","compiler","build","cache","ci","rustc","build-cache"]}
@@ -7337,7 +7338,7 @@
 {"id":"llt22.Talkio","v":"2.16.1","n":"talkio","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm"]}
 {"id":"LLVM.clangd","v":"23.1.0","n":"clangd","t":["ide","language-server","clang","cplusplus"]}
 {"id":"LLVM.LLVM","v":"23.1.2","n":"LLVM","m":"llvm","t":["compiler","c++","c","编译器","clang","llvm","lld","lldb","objective-c","compile","toolchain","kompilieren","kompilierer","werkzeugkette","工具链","编译"]}
-{"id":"LMCP.LocalMCP","v":"3.0.415","n":"LMCP","t":["productivity","mcp","ai","privacy","automation","excel","email","teams","onedrive","outlook","local"]}
+{"id":"LMCP.LocalMCP","v":"3.0.417","n":"LMCP","t":["productivity","mcp","ai","privacy","automation","excel","email","teams","onedrive","outlook","local"]}
 {"id":"LMMS.LMMS","v":"1.2.2","n":"LMMS","m":"lmms","t":["music","audio","音频","mixing","混音","音乐","sound","daw","synth","synthesizer","合成器","music-production","midi","digital-audio-workstation","vst","声音","数字音频工作站","音乐制作","fl-studio","vsti"]}
 {"id":"LN-Zap.zap","v":"0.7.7-beta","n":"Zap"}
 {"id":"LobeHub.LobeHub","v":"2.2.18","n":"LobeHub","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","artificial-intelligence","chatgpt","claude","deepseek","doubao","gemini","kimi","llama","mistral","qwen","豆包","通义千问","rag","ollama","google-gemini"]}
@@ -7370,7 +7371,7 @@
 {"id":"Logitech.MyHarmony","v":"1.0.308","n":"MyHarmony"}
 {"id":"Logitech.OnboardMemoryManager","v":"2.6.1749","n":"Logitech Onboard Memory Manager","m":"logitech-omm","t":["mouse","logitech"]}
 {"id":"Logitech.Options","v":"10.26.14","n":"Logitech Options","m":"logitechoptions","t":["keyboard","mouse","logitech","logi","options","logicool","logitech-options-logi-mouse-keyboard"]}
-{"id":"Logitech.OptionsPlus","v":"2.7.961922","n":"Logi Options+","m":"logi-options-plus","t":["workflow","office","audio","keyboard","business","mouse","logi","meetings","presentations","webcam-controls","options","lights","logioptions"]}
+{"id":"Logitech.OptionsPlus","v":"2.8.981479","n":"Logi Options+","m":"logi-options-plus","t":["workflow","office","audio","keyboard","business","mouse","logi","meetings","presentations","webcam-controls","options","lights","logioptions"]}
 {"id":"Logitech.Presentation","v":"2.10.34","n":"Logitech Presentation","t":["logitech"]}
 {"id":"Logitech.SetPoint","v":"6.90.66","n":"Logitech SetPoint"}
 {"id":"Logitech.Solar","v":"1.20.28","n":"Logitech Solar App","m":"logitechsolar","t":["keyboard","logitech","logi","solar"]}
@@ -7382,7 +7383,7 @@
 {"id":"LogTag.LogTagXpress","v":"1.2.6.2","n":"LogTag Xpress"}
 {"id":"Logtalk.Logtalk","v":"3.102.0","n":"Logtalk","t":["programming","编程","language","语言","logic","prolog","逻辑"]}
 {"id":"Loickal.NewsletterCLI","v":"1.0.0-BETA-1","n":"newsletter-cli","m":"newsletter-cli","t":["cli","tui","golang","terminal","email","imap","newsletter"]}
-{"id":"Loko.OnyxCode","v":"2.3.0","n":"Onyx Code","m":"onyxcode","t":["ai","editor","llm","developer-tools","coding","ide","assistant"]}
+{"id":"Loko.OnyxCode","v":"2.4.1","n":"Onyx Code","m":"onyxcode","t":["ai","editor","llm","developer-tools","coding","ide","assistant"]}
 {"id":"lollapalooza.usage","v":"0.29.19","n":"usage","m":"usage","t":["claude","claude-code","codex","antigravity","system-tray","usage","quota"]}
 {"id":"Lolle2000la.ImageSort","v":"2.14.8.0","n":"Image Sort","t":["Management","Image","Utilities","Images","Image Sorting","Image Sorter","Sort Images","Utility","Image Utility","Image Management","Image Manager","Image Organizer","Image Organization","Sort","Organize","Manage","Bildsortierung","Bildsortierer","Bilder sortieren","Dienstprogramm","Dienstprogramme","Bild-Dienstprogramm","Bildverwaltung","Bildverwalter","Bildorganisator","Bildorganisation","Bilder","Bild","Sortieren","Organisieren","Verwalten","Verwaltung"]}
 {"id":"Lonestill.OnyxLauncher","v":"1.6.3","n":"Onyx Launcher","m":"onyx-launcher","t":["minecraft","game-launcher","minecraft-launcher","fabric","forge","modrinth","quilt","neoforge"]}
@@ -7487,7 +7488,7 @@
 {"id":"Lugrain.PingTool","v":"5.0.0.98","n":"PingTool"}
 {"id":"LuigiElleBalotta.AIUsageNET","v":"0.4.1","n":"AIUsage.NET","m":"aiusage","t":["copilot","ai","wpf","claude","codex","open-source","tray","cursor","dotnet","usage-tracking"]}
 {"id":"LuisPater.anyAIProxyAPI","v":"2.6.4","n":"Any AI Proxy API","t":["人工智能","ai","proxy","大语言模型","聊天机器人","chatbot","large-language-model","llm","代理"]}
-{"id":"LuisPater.CLIProxyAPI","v":"8.0.12","n":"CLI Proxy API","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","chatgpt","claude","gemini","claude-code","codex","openai"]}
+{"id":"LuisPater.CLIProxyAPI","v":"8.0.13","n":"CLI Proxy API","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","chatgpt","claude","gemini","claude-code","codex","openai"]}
 {"id":"luizzak.GIFViewer","v":"1.7.0","n":"GIF Viewer","t":["gif","c#","animated-gif"]}
 {"id":"LukasBach.Yana","v":"1.0.16","n":"Yana"}
 {"id":"LukasHermann.stagetimer-io","v":"3.5.6","n":"stagetimer.io","t":["timer","计时器","time","时间","countdown","倒计时"]}
@@ -7730,7 +7731,7 @@
 {"id":"matchmycolor.ColibriAlpha","v":"26.3.0.346","n":"Colibri Alpha"}
 {"id":"matchmycolor.ColibriBeta","v":"26.2.0.3139","n":"Colibri Beta"}
 {"id":"MatchWare.MindView.9","v":"9.0.60114.1","n":"MatchWare MindView 9","t":["mind-map","mind-mapping","mindmap","思维导图","脑图"]}
-{"id":"Materializr.Materializr","v":"1.6.4","n":"Materializr","m":"materializr","t":["3d","modeling","cad","3d-printing","svg","engineering","opencascade","laser"]}
+{"id":"Materializr.Materializr","v":"1.7.2","n":"Materializr","m":"materializr","t":["3d","modeling","cad","3d-printing","svg","engineering","opencascade","laser"]}
 {"id":"Mateuscruz19.BATorrent","v":"4.8.0","n":"BATorrent","m":"batorrent","t":["webui","download","bittorrent","torrent","privacy","p2p","qt","rss","torrent-client"]}
 {"id":"MathiasCodes.Winstow","v":"0.3.0","n":"Winstow","m":"winstow","t":["windows","configuration","symlink","dotfiles","stow","symlink-manager","dotfile-manager"]}
 {"id":"MathiasSvensson.MultiCommander","v":"16.5.0.3221","n":"MultiCommander","t":["viewer","file","文件","explorer","文件资源管理器","archive","归档","files","查看器","file-manager","比较","comparison","manager","管理器","commander","文件管理器","压缩包"]}
@@ -7914,7 +7915,7 @@
 {"id":"Mew.Wrec","v":"0.3.1","n":"Wrec"}
 {"id":"MF.NexusShell","v":"4.0.0","n":"NexusShell","t":["cli","accessibility","terminal","shell","screen-reader","command-line","navigation","blind","visually-impaired","accessible-terminal"]}
 {"id":"mfontanini.presenterm","v":"0.16.1","n":"presenterm","m":"presenterm","t":["markdown","rust","cli","presentation","terminal","slideshow","slides","markdown-slides"]}
-{"id":"mg-chao.snow-shot","v":"1.2.1","n":"Snow Shot","m":"snowshot","t":["translate","chatbot","screen-recorder","ocr","annotation","screenshot","screen-capture","tools","image-viewer","snowshot"]}
+{"id":"mg-chao.snow-shot","v":"1.2.2","n":"Snow Shot","m":"snowshot","t":["translate","chatbot","screen-recorder","ocr","annotation","screenshot","screen-capture","tools","image-viewer","snowshot"]}
 {"id":"MGTEK.SmartCardTools","v":"1.2.1104","n":"SmartCard Tools"}
 {"id":"mgth.LittleBigMouse","v":"5.2.3.0","n":"Little Big Mouse","m":"littlebigmouse","t":["multi-monitor","screen","mouse","crossover","multi-dpi","multi-screen"]}
 {"id":"mguessan.davmail","v":"7.0.0-4403","n":"DavMail","t":["ldap","microsoft-exchange","microsoftexchange","exchange","smtp","imap","gateway","office365","caldav","pop","carddav"]}
@@ -8233,7 +8234,7 @@
 {"id":"Microsoft.RemoteHelp","v":"5.2.1040.0","n":"Remote help","t":["enterprise","intune","remote","remote-control","microsoft","support","remote-assistance","help","assistance","remote-help"]}
 {"id":"Microsoft.ReportBuilder","v":"15.1.30001.02","n":"Microsoft Report Builder"}
 {"id":"Microsoft.RMSClient","v":"1.0.5406.9","n":"Active Directory Rights Management Services Client 2.1","t":["activedirectory","azureinformationprotection","azure-information-protection","adrms","on-premises","rightsmanagementserviceclient"]}
-{"id":"Microsoft.SafetyScanner","v":"1.459.530.0","n":"Microsoft Safety Scanner","t":["microsoft-safety-scanner","windows-security","microsoft-defender-antivirus","msert"]}
+{"id":"Microsoft.SafetyScanner","v":"1.459.546.0","n":"Microsoft Safety Scanner","t":["microsoft-safety-scanner","windows-security","microsoft-defender-antivirus","msert"]}
 {"id":"Microsoft.SaRACmd","v":"17.01.3954.000","n":"Microsoft Support and Recovery Assistant Command Line","m":"SaRAcmd.exe","t":["teams","outlook","Outlook","Office","microsoft365","microsoftoffice","onenote","Microsoft365","Teams","microsoftsupportandrecoveryassistant","support-and-recovery-assistant"]}
 {"id":"Microsoft.SBOMTool","v":"4.1.5","n":"SBOM Tool","t":["sbom","sbom-generator"]}
 {"id":"Microsoft.ScoutAgent","v":"0.23.578","n":"Microsoft Scout","m":"scout","t":["artificialintelligence","artificial-intelligence","microsoft-scout-agent","microsoftscoutagent"]}
@@ -8436,7 +8437,7 @@
 {"id":"MihovilRak.photorg","v":"0.1.0","n":"photorg","m":"photorg","t":["cli","files","photos","organize","exif","geocoding"]}
 {"id":"MikeFarah.yq","v":"4.53.6","n":"yq","m":"yq","t":["cli","portable","json","golang","yaml","bash","xml","csv","devops-tools","yaml-processor","properties","splat"]}
 {"id":"MikeWyatt.BeebEm","v":"4.19.0.0","n":"BeebEm"}
-{"id":"mikf.gallery-dl","v":"1.32.14","n":"gallery-dl","t":["download","下载","image","图像","downloader","requirescmd","photo","gallery","picture","图片","下载器","照片","画廊","photo-downloader","gallerydl","image-downloader","imagedownloader","photodownloader","picture-downloader","picturedownloader","ugoira"]}
+{"id":"mikf.gallery-dl","v":"1.32.15","n":"gallery-dl","t":["download","下载","image","图像","downloader","requirescmd","photo","gallery","picture","图片","下载器","照片","画廊","photo-downloader","gallerydl","image-downloader","imagedownloader","photodownloader","picture-downloader","picturedownloader","ugoira"]}
 {"id":"mikf.gallery-dl.Nightly","v":"2026.09.30","n":"gallery-dl","t":["downloader","gallery","twitter","tumblr","pixiv","danbooru","deviantart","flickr","kemono","mangadex"]}
 {"id":"Mikrotik.Netinstall","v":"7.24.5","n":"MikroTik Netinstall","m":"netinstall","t":["Tool","MikroTik","RouterOS"]}
 {"id":"Mikrotik.TheDude","v":"7.20.5","n":"The Dude","m":"thedude","t":["utility","tool","network","monitoring"]}
@@ -8497,7 +8498,7 @@
 {"id":"MissionLabs.CircleLoop","v":"4.24.3","n":"CircleLoop"}
 {"id":"MisterTea.EternalTerminal","v":"7.0.0","n":"Eternal Terminal","t":["ssh","terminal","tmux","mosh","remote-shell"]}
 {"id":"MistralAI.MistralVibe.ACP","v":"2.25.8","n":"Mistral Vibe (ACP mode)","t":["ai","智能体","agent","develop","development","programming","开发","编程","自主智能","agentic","代码","code","coding"]}
-{"id":"misxzaiz.Polaris","v":"10.6.0","n":"polaris","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","claude-code","codex"]}
+{"id":"misxzaiz.Polaris","v":"10.6.1","n":"polaris","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","claude-code","codex"]}
 {"id":"MIT.CertAid","v":"2.2.6.0","n":"CertAid for Windows","m":"mit-certaid","t":["certificate","certificates","certs","mit"]}
 {"id":"MIT.Kerberos","v":"4.1.0","n":"MIT Kerberos for Windows","m":"kerberos"}
 {"id":"MIT.XFOIL","v":"6.99","n":"XFOIL"}
@@ -8629,7 +8630,7 @@
 {"id":"Moonfin.Moonfin","v":"2.6.0","n":"Moonfin","t":["cross-platform","flutter","media-player","jellyfin","jellyfin-client","emby","emby-client"]}
 {"id":"MoonlightGameStreamingProject.Moonlight","v":"6.1.0.0","n":"Moonlight Game Streaming Client","m":"moonlight","t":["foss","open-source","nvidia","client","gamestream","games-stream"]}
 {"id":"MoonlightOS.Helios","v":"0.5.2","n":"Helios","m":"helios","t":["moonlight","game-streaming","remote-play","selene"]}
-{"id":"MoonshotAI.Kimi","v":"3.2.14","n":"Kimi","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm"]}
+{"id":"MoonshotAI.Kimi","v":"3.2.15","n":"Kimi","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm"]}
 {"id":"MoonshotAI.KimiCLI","v":"1.52.0","n":"Kimi CLI","m":"kimi-cli","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","kimi"]}
 {"id":"MoonshotAI.KimiCodeCLI","v":"2.1.1","n":"Kimi Code CLI","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","kimi"]}
 {"id":"Moonsworth.LunarClient","v":"3.4.9","n":"Lunar Client","m":"lunarclient","t":["minecraft","modpack","mods"]}
@@ -9122,7 +9123,7 @@
 {"id":"Mozilla.Thunderbird.ru","v":"157.0.1","n":"Mozilla Thunderbird (ru)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
 {"id":"Mozilla.Thunderbird.sk","v":"157.0.1","n":"Mozilla Thunderbird (sk)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
 {"id":"Mozilla.Thunderbird.sl","v":"157.0.1","n":"Mozilla Thunderbird (sl)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
-{"id":"Mozilla.Thunderbird.sq","v":"157.0","n":"Mozilla Thunderbird (sq)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
+{"id":"Mozilla.Thunderbird.sq","v":"157.0.1","n":"Mozilla Thunderbird (sq)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
 {"id":"Mozilla.Thunderbird.sr","v":"157.0.1","n":"Mozilla Thunderbird (sr)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
 {"id":"Mozilla.Thunderbird.sv-SE","v":"157.0.1","n":"Mozilla Thunderbird (sv-SE)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
 {"id":"Mozilla.Thunderbird.th","v":"157.0.1","n":"Mozilla Thunderbird (th)","m":"thunderbird","t":["email","mail","电子邮件","邮件"]}
@@ -9266,7 +9267,7 @@
 {"id":"N3uronConnectivitySystems.N3uron","v":"1.22.6","n":"n3uron"}
 {"id":"n457.uncolored","v":"0.10.2","n":"Uncolored","m":"uncolored","t":["markdown","editor","electron","html","wysiwyg"]}
 {"id":"naaive.Orange","v":"0.6.5","n":"Orange","t":["file","文件","directory","folder","文件夹","目录","search","find","搜索","查找"]}
-{"id":"nabdev.iloader","v":"2.3.4","n":"iloader","m":"iloader","t":["ios","sideloading","sidestore","idevice"]}
+{"id":"nabdev.iloader","v":"2.3.5","n":"iloader","m":"iloader","t":["ios","sideloading","sidestore","idevice"]}
 {"id":"Nabukodonozor.NabuSQL","v":"1.0.110","n":"NabuSQL","m":"nabusql","t":["database","developer-tools","sql","mysql","postgresql","mariadb","sqlite","mssql","sql-client","database-manager"]}
 {"id":"NachoSC.ScreenTuner","v":"1.1.0","n":"ScreenTuner","m":"screentuner","t":["gaming","monitor","display","nvidia","saturation","color","gamma","vibrance"]}
 {"id":"Nadeo.ManiaPlanet","v":"4.1","n":"ManiaPlanet","t":["shooter","videogame","games","racing","trackmania2","tm2","canyon","stadium","valley","lagoon","shootmaniastorm","ubisoft"]}
@@ -9289,7 +9290,7 @@
 {"id":"NamecoinProject.Electrum-NMC","v":"nc4.0.6","n":"Electrum-NMC"}
 {"id":"NamecoinProject.NamecoinCore","v":"0.21.0.1","n":"Namecoin Core Client"}
 {"id":"NamelessSaint.EntraChecks","v":"1.9.0","n":"EntraChecks","m":"entrachecks","t":["security","powershell","azure","audit","compliance","microsoft365","m365","entra","soc2"]}
-{"id":"Namespace.nsc","v":"0.0.585","n":"nsc","m":"nsc","t":["ci","ci-cd","namespace"]}
+{"id":"Namespace.nsc","v":"0.0.586","n":"nsc","m":"nsc","t":["ci","ci-cd","namespace"]}
 {"id":"namidaco.Namida","v":"7.1.2","n":"Namida","m":"namida","t":["video","player","flutter","music-player","media-player","music","audio","youtube","jellyfin","lyrics","video-player","subsonic"]}
 {"id":"NanJingWangYa.OsMonitor","v":"10.6.23","n":"OsMonitor Management Console","m":"OsMonitor","t":["dlp","network-security","employee-monitoring-software","web-filtering","computer-monitoring-software"]}
 {"id":"Nanoleaf.NanoleafDesktop","v":"2.5.0","n":"Nanoleaf Desktop","t":["lighting","smart-home","nanoleaf"]}
@@ -9441,7 +9442,7 @@
 {"id":"Netrust.nSignDesktop","v":"3.3.8","n":"nSign Desktop"}
 {"id":"NetSarangComputer.PortX","v":"2.3.0","n":"PortX","t":["ssh","terminal","sftp","putty","shell","bash","telnet","zsh","iterm","xshell"]}
 {"id":"Netsdk.RdpGuard","v":"10.0.5","n":"RdpGuard"}
-{"id":"Netsdk.S3Browser","v":"13.5.7","n":"CS Browser","t":["aws","s3","cloudfront"]}
+{"id":"Netsdk.S3Browser","v":"13.6.3","n":"CS Browser","t":["aws","s3","cloudfront"]}
 {"id":"NetSentinel.NetSentinel","v":"2.4.0","n":"NetSentinel","m":"netsentinel","t":["security","scanner","network","diagnostics","monitoring","dns","iot","lan","wifi","port-scanner","cve","mqtt","packet-capture","stp","arp","home-assistant","speed-test","network-health","rogue-device","broadcast-storm"]}
 {"id":"NetSetMan.NetSetMan","v":"5.4.0","n":"NetSetMan","t":["network","网络"]}
 {"id":"Netsoft.Hubstaff","v":"1.9.6","n":"Hubstaff","t":["timer","计时器","work","工作","tracker","time","时间","跟踪器"]}
@@ -9454,8 +9455,8 @@
 {"id":"NetworkOptix.NxWitness.Bundle","v":"6.1.2.42921","n":"Nx Witness Bundle","t":["camera","surveillance","摄像头","监控"]}
 {"id":"NetworkOptix.NxWitness.Client","v":"6.1.2.42921","n":"Nx Witness Client","t":["camera","surveillance","摄像头","监控"]}
 {"id":"NetworkOptix.NxWitness.Server","v":"6.1.2.42921","n":"Nx Witness Server","t":["camera","surveillance","摄像头","监控"]}
-{"id":"Neumetrix.HttpWatch.Basic","v":"16.2.5","n":"HttpWatch Basic","t":["debug","调试","web","webpage","网页","performance","性能"]}
-{"id":"NeuralNomadsAI.CodeNomad","v":"0.20.0","n":"CodeNomad","t":["ai","development","code","coding"]}
+{"id":"Neumetrix.HttpWatch.Basic","v":"16.0.15","n":"HttpWatch Basic","t":["debug","调试","web","webpage","网页","performance","性能"]}
+{"id":"NeuralNomadsAI.CodeNomad","v":"0.20.1","n":"CodeNomad","t":["ai","development","code","coding"]}
 {"id":"neurocyte.flow","v":"0.7.2","n":"Flow Control","t":["tui","text-editor","zig","language-server-protocol","tree-sitter","language-server-client"]}
 {"id":"NeuronWorkspace.Neuron","v":"0.4.5","n":"Neuron","m":"neuron","t":["markdown","notes","local-first","knowledge-base"]}
 {"id":"Neux.OneMark","v":"1.0.2","n":"OneMark","t":["markdown","Markdown","onenote","OneNote","Neux"]}
@@ -9471,7 +9472,7 @@
 {"id":"NewCloud.NewSSTeacher","v":"1.03.1236","n":"NewSS Teacher","m":"newssteacher","t":["education","teach","classroom","teacher","newcloud","smart room"]}
 {"id":"NewCloud.ScreenCaptureRecorder","v":"0.13.3","n":"NewCloud.ScreenCapturerRecorder","m":"screencapturter","t":["china","prc"]}
 {"id":"NewCloud.WakeOnLan","v":"1.0.2","n":"WakeOnLan"}
-{"id":"newdee.Magpie","v":"0.5.6","n":"magpie","t":["mcp","search","搜索","local-search","launcher","启动器","spotlight","本地搜索"]}
+{"id":"newdee.Magpie","v":"0.6.1","n":"magpie","t":["mcp","search","搜索","local-search","launcher","启动器","spotlight","本地搜索"]}
 {"id":"Newforma.Konekt.Addin.Autodesk","v":"1.164.0","n":"Newforma Konekt Add-ins for Autodesk products"}
 {"id":"Newgrounds.NewgroundsPlayer","v":"1.0.0","n":"Newgrounds Player","t":["games"]}
 {"id":"Newlineinteractive.NewlineassistantX689","v":"1.0","n":"Newline Assistant for X689"}
@@ -9503,7 +9504,7 @@
 {"id":"Nexus.OmniGet","v":"1.0.6","n":"OmniGet","t":["winget","powershell","package-manager","scoop","wrapper"]}
 {"id":"Nexusbird.Motion","v":"0.117.0","n":"Motion","t":["manage","management","管理","collaborate","collaboration","office","team","办公","协作","协同","团队","task","任务","project","work","working","工作","项目"]}
 {"id":"NexusMods.Vortex","v":"2.6.3","n":"Vortex","m":"vortex","t":["launcher","mod","mods","nexus","mod-launcher","nexus-mods"]}
-{"id":"neyham.AIUsageDashboard","v":"0.8.7","n":"AI Usage Dashboard","m":"ai-usage-dashboard","t":["ai","claude","deepseek","claude-code","codex","cursor","antigravity","usage","dashboard","grok"]}
+{"id":"neyham.AIUsageDashboard","v":"0.8.8","n":"AI Usage Dashboard","m":"ai-usage-dashboard","t":["ai","claude","deepseek","claude-code","codex","cursor","antigravity","usage","dashboard","grok"]}
 {"id":"NFC21.Writer.Portable","v":"4.0.0.0","n":"NFC21 Writer für Windows","t":["nfcwriter","ntag","nfcreader","nfctagswriting","nfcgeschrieben","nearfieldcommunication","acr","d-logic","dlogic","dl533r"]}
 {"id":"NFON.Cloudya","v":"2.3.0","n":"Cloudya (without CRM)","t":["sip","softphone","telephone","telephony","电话"]}
 {"id":"NFON.Cloudya.CRM","v":"2.3.0","n":"Cloudya (with CRM)","t":["sip","softphone","telephone","telephony","电话"]}
@@ -9556,7 +9557,7 @@
 {"id":"Nicotine+.Nicotine+","v":"3.3.11","n":"Nicotine+","m":"Nicotine+","t":["python","files","p2p","chat","messaging","gtk","peer-to-peer","gtk4","gtk3","soulseek"]}
 {"id":"Nidzoki.win-alias","v":"1.0.1","n":"win-alias"}
 {"id":"NightHammer1000.sc2dsu","v":"0.2.0","n":"sc2dsu"}
-{"id":"NightmareTv.NightmareTV","v":"2.1.86","n":"Nightmare TV","m":"nightmare-tv","t":["epg","iptv","iptv-player","m3u","m3u8","media-player","mpv","recorder","hdr","video-player","dvr","xmltv","live-tv","xtream","xtream-codes"]}
+{"id":"NightmareTv.NightmareTV","v":"2.1.87","n":"Nightmare TV","m":"nightmare-tv","t":["epg","iptv","iptv-player","m3u","m3u8","media-player","mpv","recorder","hdr","video-player","live-tv","xtream-codes","dvr","xmltv","xtream"]}
 {"id":"Nihitdev.yoo","v":"1.0.0","n":"yoo","t":["productivity","rust","linux","windows","cli","developer-tools","git","terminal","yaml","project","mac","cargo","environment","fun"]}
 {"id":"Niimbot.NIIMBOT","v":"3.12.7","n":"NIIMBOT for Windows","m":"niimbot"}
 {"id":"NikhilRaj.Purrpeek","v":"0.1.0","n":"Purrpeek"}
@@ -9576,10 +9577,10 @@
 {"id":"Nimbalyst.Nimbalyst","v":"0.77.5","n":"Nimbalyst","m":"nimbalyst","t":["markdown","mcp","人工智能","ai","智能体","agent","editor","编辑器","develop","development","开发","electron","自主智能","agentic","developer-tools","ide","claude-code","codex","opencode","开发者工具","markdown-editor","developer-tool","multi-agent-system","wysiwyg-editor","可视化编辑器"]}
 {"id":"nimblenote.nimblenote","v":"3.2.2","n":"nimblenote","t":["windows","electron","react","application","notes","app","utilities","notetaking","keyboardinput"]}
 {"id":"NimbleThingPtyLtd.NimbleText","v":"4.0.0.34617","n":"NimbleText"}
-{"id":"NimbusAgent.Nimbus","v":"7.32.2","n":"Nimbus","m":"nimbus","t":["ai","agent","cli","automation","gateway"]}
+{"id":"NimbusAgent.Nimbus","v":"7.33.0","n":"Nimbus","m":"nimbus","t":["ai","agent","cli","automation","gateway"]}
 {"id":"NimbusWeb.NimbusNote","v":"1.0.23","n":"Nimbus Note","m":"nimbusnote","t":["nimbus-note","nimbus-web"]}
 {"id":"NimLang.ChooseNim","v":"0.8.16","n":"ChooseNim"}
-{"id":"ningbainb.DeepSeekHarnessDesktop","v":"4.3.0","n":"DeepSeek Harness Desktop","t":["ai","智能体","大语言模型","large-language-model","llm","自主智能","大模型","deepseek","deepseek-harness","dsh"]}
+{"id":"ningbainb.DeepSeekHarnessDesktop","v":"5.0.0","n":"DeepSeek Harness Desktop","t":["ai","智能体","大语言模型","large-language-model","llm","自主智能","大模型","deepseek","deepseek-harness","dsh"]}
 {"id":"NinianLemain.ChaosEngineeringRs","v":"0.2.1","n":"chaos-engineering-rs","m":"chaos","t":["testing","fault-injection","chaos-engineering","resilience","slo"]}
 {"id":"Ninja-build.Ninja","v":"1.13.2","n":"ninja","m":"ninja"}
 {"id":"NinjaCheetah.NUSGet","v":"1.5.3","n":"NUSGet","t":["nintendowii","nintendoeshop","wiishopchannel","nintendodsistore","systemfiles","defaultapps","vwii","libwiipy","libtwlpy","nintendoupdateservers","systemchannels"]}
@@ -9803,7 +9804,7 @@
 {"id":"Nutstore.NutstoreLightApp","v":"2.0.3","n":"Nutstore LightApp","t":["markdown","editor","编辑器","diagram","graph","graphics","图形","图表","绘图","notes","docs","document","mind-map","mind-mapping","mindmap","outliner","大纲","思维导图","文档","笔记","脑图","design","设计","chart","draw","图示","nutstore","坚果云","坚果云轻应用"]}
 {"id":"nuttyartist.notes","v":"2.3.1","n":"Notes","t":["productivity","markdown","qt5","notes","cross-platform","gui","qt","local-first","qt6","note-taking","c-plus-plus","note-taking-app","note-managment","note-taker","personal-knowledge-base"]}
 {"id":"NuuMaan.Glowfetch","v":"0.1.0","n":"glowfetch","m":"glowfetch","t":["cli","tui","monitor","dashboard","neofetch","system-info"]}
-{"id":"NuvioMedia.NuvioDesktop","v":"0.1.26-alpha","n":"Nuvio Desktop"}
+{"id":"NuvioMedia.NuvioDesktop","v":"0.1.27-alpha","n":"Nuvio Desktop"}
 {"id":"NVAccess.NVDA","v":"2026.1.1","n":"NVDA","m":"nvda","t":["accessibility","screen-reader","blind"]}
 {"id":"NVAccess.NVDA.Beta","v":"2026.3beta1","n":"NVDA Beta","m":"nvda","t":["accessibility","screen-reader","blind"]}
 {"id":"NVAccess.NVDA.RC","v":"2026.1rc1","n":"NVDA RC","m":"nvda-rc","t":["accessibility","screen-reader","blind"]}
@@ -9831,7 +9832,7 @@
 {"id":"NymTech.NymVPNClient","v":"2026.10.0","n":"NymVPN","t":["rust","windows-app","cross-platform","networking","open-source","vpn","decentralized","wireguard","privacy-tools","android-app","amneziawg","censorship-resistance","decentralized-vpn","ios-app","mixnet","mobile-app"]}
 {"id":"nzbget.nzbget","v":"26.3","n":"NZBGet","t":["usenet","nzbget"]}
 {"id":"NZXT.CAM","v":"4.76.5","n":"NZXT CAM","m":"nzxtcam","t":["driver","monitor","dashboard","nzxt-cam","control-panel-tool","controlpaneltool","lucamusb.inf","ser2pl.inf","usbcam_generic.inf","ftdibus.inf","ftdiport.inf","lumanera","prolific","theimagingsourceeuropegmbh","linxtechnologiesinc"]}
-{"id":"o-murphy.ebalistyka","v":"0.1.21.212","n":"eBalistyka","t":["flutter","ballistic-calculator","ballistic-solver","bclibc","py-ballisticcalc"]}
+{"id":"o-murphy.ebalistyka","v":"0.1.22.214","n":"eBalistyka","t":["flutter","ballistic-calculator","ballistic-solver","bclibc","py-ballisticcalc"]}
 {"id":"o2sh.onefetch","v":"2.28.1","n":"onefetch","m":"onefetch","t":["rust","tool","cli","git","command-line","command-line-interface"]}
 {"id":"OakwoodCommons.kvx","v":"0.17.0","n":"kvx","m":"kvx","t":["cli","json","data","terminal","yaml"]}
 {"id":"OBD2FaultFinder.OBD2FaultFinder","v":"1.1.3","n":"OBD2 FaultFinder","m":"obd2faultfinder","t":["scanner","diagnostics","car","automotive","obd","obd2","obdii","automotriz","carro","diagnostico","escaner"]}
@@ -9847,7 +9848,7 @@
 {"id":"OBSProject.obs-amd-encoder","v":"2.6.0.0","n":"AMD Encoder for OBS Studio","m":"obs-amd-encoder","t":["video","obs","encoder"]}
 {"id":"OBSProject.OBSStudio","v":"32.2.2","n":"OBS Studio","m":"obs","t":["foss","recording","screen-recording","streaming","screen-capture","video-recording","live","live-streaming"]}
 {"id":"OBSProject.OBSStudio.Pre-release","v":"32.0.0-rc1","n":"OBS Studio Beta","m":"obs-beta","t":["foss","recording","streaming","screen-capture","video-recording","live"]}
-{"id":"obteknoloji.UToolbox","v":"0.0.5","n":"Ü Toolbox","t":["windows-11","tweaks","toolbox"]}
+{"id":"obteknoloji.UToolbox","v":"0.0.6","n":"Ü Toolbox","t":["windows-11","tweaks","toolbox"]}
 {"id":"OCaml.Alice","v":"0.5.0","n":"Alice"}
 {"id":"OCaml.opam","v":"2.6.0","n":"opam","m":"opam","t":["foss","open-source","package-manager","dependency-manager","ocaml"]}
 {"id":"OCBase.OCCT.Personal","v":"17.1.6.0","n":"OCCT"}
@@ -10010,7 +10011,7 @@
 {"id":"OpenAgentPlatform.Dive","v":"0.14.3","n":"Dive","t":["mcp","人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","chatgpt","claude","ollama"]}
 {"id":"OpenAI.Codex","v":"0.160.0","n":"Codex CLI","m":"codex","t":["ai","agent","llm","cli","openai"]}
 {"id":"OpenArena.OpenArena","v":"0.8.8","n":"OpenArena"}
-{"id":"OpenAudible.OpenAudible","v":"4.8.8","n":"OpenAudible","t":["audio","音频","book","audible","audiobook","图书","有声书"]}
+{"id":"OpenAudible.OpenAudible","v":"5.0","n":"OpenAudible","t":["audio","音频","book","audible","audiobook","图书","有声书"]}
 {"id":"OpenBao.OpenBao","v":"2.7.0","n":"OpenBao","m":"openbao","t":["security","encryption","vault","secrets","certificates","credentials","secrets-management","keys","openbao"]}
 {"id":"OpenBB-finance.OpenBBTerminal","v":"3.2.4","n":"OpenBB Terminal","t":["finance"]}
 {"id":"OpenBoxLab.RaiDrive","v":"2023.9.256","n":"RaiDrive","t":["backup","cloud","cloud-drive","download","drive","file","netdisk","sync","upload","上传","下载","云","云盘","同步","备份","文件","网盘","ftp","webdav","sftp","s3","mount","挂载","onedrive","google-drive","oss"]}
@@ -10122,7 +10123,7 @@
 {"id":"OpenSCAD.OpenSCAD.Nightly","v":"2025.09.07","n":"OpenSCAD Nightly","m":"openscad-nightly","t":["3d","cad","3d-printing","3d-graphics","openscad"]}
 {"id":"OpenScienceTools.PsychoPy","v":"2026.2.4","n":"PsychoPy","t":["研究","behavioral-research","experiment-builder","experiments","psychology","实验","心理学","neuroscience","神经科学"]}
 {"id":"OpenScopeProject.TrguiNG","v":"1.5.1","n":"TrguiNG","t":["tauri-app","torrents","mantine-ui","rust-application","transmission-daemon","typescript-react"]}
-{"id":"OpenScreen.OpenScreen","v":"1.13.0","n":"OpenScreen","m":"openscreen","t":["video-editor","screen-recorder","screen-recording","screencast"]}
+{"id":"OpenScreen.OpenScreen","v":"2.0.0","n":"OpenScreen","m":"openscreen","t":["video-editor","screen-recorder","screen-recording","screencast"]}
 {"id":"OpenSees.OpenSees","v":"3.8.0","n":"OpenSees"}
 {"id":"OpenSelena.OpenOmni","v":"1.4.1","n":"Open Omni","t":["cli","tui","yt-dlp","terminal","video-downloader","audio-downloader","photo-downloader"]}
 {"id":"OpenShopChannel.Downloader","v":"1.4.0","n":"Open Shop Channel Downloader","m":"oscdl","t":["python","qt","pyside6","pyside"]}
@@ -10281,7 +10282,7 @@
 {"id":"OwenMarshall.PerlPrimer","v":"1.1.21","n":"PerlPrimer","t":["bioinformatics","生物信息学","pcr"]}
 {"id":"OwenMcGirr.UsefulTopmost","v":"2026.1.0","n":"Useful Topmost","m":"useful-topmost","t":["utility","electron","codex","dashboard","widgets"]}
 {"id":"OwlbearRodeo.Kenku-FM","v":"1.4.3","n":"Kenku FM","t":["electron","discord","audio-sharing","tabletop-gaming"]}
-{"id":"OwlLabs.MeetingOwl","v":"4.8.2.170","n":"Meeting Owl"}
+{"id":"OwlLabs.MeetingOwl","v":"4.9.0.195","n":"Meeting Owl"}
 {"id":"OwlPlug.OwlPlug","v":"2.0.1","n":"OwlPlug","t":["java","javafx","manager","vst","lv2","audio-unit","audio-plugin","juce"]}
 {"id":"ownCloud.ownCloudDesktop","v":"6.0.3.18040","n":"ownCloud","t":["owncloud","owncloud-desktop-client"]}
 {"id":"ownCloud.ownCloudDesktop.InfiniteScale","v":"7.1.0.19041","n":"ownCloud Infinite Scale Desktop Client","t":["owncloud","ocis","infinite-scale"]}
@@ -10317,7 +10318,7 @@
 {"id":"Paessler.PRTGDesktop","v":"26.2.0","n":"PRTG Desktop","m":"prtgdesktop","t":["monitor","network","网络","monitoring","监控","prtg","prtgdesktop"]}
 {"id":"pagebrooks.maxdop","v":"0.1.2","n":"maxdop","m":"maxdop","t":["database","cli","sql","mssql","formatter","sql-server","t-sql","sqlserver","tsql"]}
 {"id":"paimonchan.paimon-mcp-fetch","v":"0.1.2","n":"paimon-mcp-fetch","t":["mcp","web","fetch"]}
-{"id":"PaloAltoNetworks.PrismaAccessBrowser","v":"154.10.5.93","n":"Prisma Access Browser","t":["浏览器","browser","chromium","web","webpage","网页","internet","互联网"]}
+{"id":"PaloAltoNetworks.PrismaAccessBrowser","v":"154.10.6.98","n":"Prisma Access Browser","t":["浏览器","browser","chromium","web","webpage","网页","internet","互联网"]}
 {"id":"Palsternakka.OutlookWindowHook","v":"1.0.0","n":"Outlook Window Hook"}
 {"id":"Paludour.Barcode2Win","v":"1.8.8595","n":"Barcode2Win"}
 {"id":"Paludour.Barcode2WinPro","v":"2.0.0","n":"Barcode2WinPro","t":["productivity","windows","scanner","qr-code","barcode"]}
@@ -10632,7 +10633,7 @@
 {"id":"Plex.PlexHTPC","v":"1.71.1","n":"Plex HTPC","m":"plex-htpc","t":["media-player","home-theater","mediaplayer","plex","plex-home-theater-pc","hometheaterpc","xpffff6nn1lzdq","home-theater-pc"]}
 {"id":"Plex.PlexMediaPlayer","v":"2.58.0","n":"Plex Media Player (Deprecated)","m":"plexmediaplayer","t":["video","cross-platform","media","audio","streaming","media-streamer","video-streamer","music-streamer"]}
 {"id":"Plex.PlexMediaServer","v":"1.43.4.10903","n":"Plex Media Server","m":"plexmediaserver","t":["video","media-server","cross-platform","media","audio","streaming","media-streamer","video-streamer","music-streamer","plex-media-server","xpfm11z0w10r7g"]}
-{"id":"PLFJY.ContextMenuMgrPlus","v":"1.7.6","n":"Context Menu Manager Plus","t":["windows","wpf","registry","注册表","shell","context-menu","Shell","Windows","右键菜单","上下文菜单","WPF","右鍵選單","內容選單","登錄檔"]}
+{"id":"PLFJY.ContextMenuMgrPlus","v":"1.7.7","n":"Context Menu Manager Plus","t":["windows","wpf","registry","注册表","shell","context-menu","Shell","Windows","右键菜单","上下文菜单","WPF","右鍵選單","內容選單","登錄檔"]}
 {"id":"PLFJY.ContextMenuMgrPlus.Beta","v":"1.7.7-beta.20260930001545","n":"Context Menu Manager Plus","t":["windows","wpf","registry","注册表","shell","context-menu","Shell","Windows","beta","prerelease","右键菜单","上下文菜单","WPF","右鍵選單","內容選單","登錄檔","Beta","预发布","預發布"]}
 {"id":"pljones.s3pe","v":"17-0520-1821","n":"s3pe","t":["thesims3","ts3","sims","sims3"]}
 {"id":"plogue.alterego","v":"v1.571","n":"Plogue AlterEgo","t":["music","music-production","midi","vst","vsti","singing-synthesis"]}
@@ -10754,7 +10755,7 @@
 {"id":"PranilShah.CreditCalculatorSetup","v":"1.0.0.0","n":"CreditCalculator Setup"}
 {"id":"PranshulSoni.OmniSearch","v":"1.0.0","n":"OmniSearch","m":"omnisearch","t":["clipboard","productivity","rust","windows","search","ocr","launcher"]}
 {"id":"PranshuParmar.witr","v":"0.3.3","n":"witr"}
-{"id":"prasenjeet-symon.ogcode","v":"0.44.1","n":"ogcode","m":"ogcode","t":["coding-assistant","ogcode"]}
+{"id":"prasenjeet-symon.ogcode","v":"0.44.4","n":"ogcode","m":"ogcode","t":["coding-assistant","ogcode"]}
 {"id":"pratham15541.disktracker","v":"2.1.1","n":"disktracker","t":["rust","windows","cli","disk-space","disk-usage","disk-analyzer","filesystem","sqlite","observability","devloper-tools","filesystem-monitor","incremental-indexing","memory-mapped-file","real-time-monitoring","snapshot-diff","system-programming"]}
 {"id":"prayag17.Blink.Alpha","v":"v1.0.0-alpha04","n":"Blink Alpha","m":"blink","t":["tauri","jellyfin","jellyfin-client"]}
 {"id":"PRC.ExcireFoto","v":"4.0.3","n":"Excire Foto 2025","t":["photos"]}
@@ -10784,7 +10785,7 @@
 {"id":"PreSonus.UniversalControl","v":"4.6.1.104762","n":"Universal Control"}
 {"id":"Pressly.Goose","v":"3.28.0","n":"Goose","m":"goose","t":["go","database","golang","sql","mysql","postgresql","postgres","sqlite","schema","migration","database-migrations","migrations"]}
 {"id":"PressReader.PressReader.Classic","v":"6.20.1118","n":"PressReader (Classic)","m":"pressreaderclassic","t":["company-targeting-app","companytargetingapp","press-reader-classic","pressreaderclassic","news-app","newsapp","digital-newspapers","digitalnewspapers"]}
-{"id":"PrestoSoft.ExamDiff","v":"1.9.4.2","n":"ExamDiff","t":["file","文件","folder","文件夹","compare","diff","merge","patch","合并","比较"]}
+{"id":"PrestoSoft.ExamDiff","v":"1.9.4.3","n":"ExamDiff","t":["file","文件","folder","文件夹","compare","diff","merge","patch","合并","比较"]}
 {"id":"PrestoSoft.ExamDiff.Pro","v":"16.0.1.23","n":"ExamDiff Pro","t":["file","文件","folder","文件夹","compare","diff","merge","patch","合并","比较"]}
 {"id":"Pretix.PretixSCAN","v":"1.23.0","n":"pretixSCAN"}
 {"id":"PrettyOakTree.EXIFmod","v":"1.9.1","n":"EXIFmod","m":"exifmod","t":["image","exif","metadata","photography"]}
@@ -10884,7 +10885,7 @@
 {"id":"Psyche.Kelivo","v":"1.3.0+79","n":"Kelivo","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","chatgpt","claude","deepseek","doubao","gemini","kimi","llama","mistral","qwen","豆包","通义千问","minimax"]}
 {"id":"PsyChonek.SqlPlanForDummies","v":"2.7.0","n":"SQL Plan For Dummies","t":["vue","database","tauri","visualization","performance","analysis","sql-server","execution-plan","d3js"]}
 {"id":"Psychotoxical.Psysonic","v":"1.55.0","n":"Psysonic","t":["player","music","audio","navidrome","subsonic"]}
-{"id":"Psynect.OmniMend","v":"2.0.9","n":"OmniMend","m":"omnimend","t":["windows","ai","security","system","diagnostics","troubleshooting","repair","maintenance","crash"]}
+{"id":"Psynect.OmniMend","v":"2.0.15","n":"OmniMend","m":"omnimend","t":["windows","ai","security","system","diagnostics","troubleshooting","repair","maintenance","crash"]}
 {"id":"PTC.CreoView.Express","v":"20.0.0.0","n":"PTC Creo View Express","t":["3d","模型","cad","model"]}
 {"id":"ptmrio.phrasevault","v":"3.0.0","n":"PhraseVault","m":"phrasevault","t":["clipboard","productivity","offline","text-expander","snippet-manager","email-template","code-snippet","source-available"]}
 {"id":"PTOMaster.PTOMaster","v":"1.0.6","n":"PTO Master"}
@@ -11046,7 +11047,7 @@
 {"id":"Quicksaver.LFSCloud","v":"0.2.7","n":"LFS Cloud","t":["git","git-lfs","lfs"]}
 {"id":"Quicksilva.conneQtToolbar.EMIS","v":"1.5.0.861","n":"conneQt Toolbar (EMIS Web)","t":["toolbar","healthcare","clinical","工具栏","临床","conneqt","emis","gp","全科医生"]}
 {"id":"Quicksilva.conneQtToolbar.TPP","v":"1.5.0.861","n":"conneQt Toolbar (TPP SystmOne)","t":["toolbar","healthcare","clinical","工具栏","临床","conneqt","gp","全科医生","systmone"]}
-{"id":"QuillNotes.Quill","v":"2.6.7","n":"Quill","t":["subtitle","translate","conference","meeting","会议","caption","字幕","translation","翻译","simultaneous-interpreting","translator","同传","同声传译","transcribe","转录"]}
+{"id":"QuillNotes.Quill","v":"2.8.1","n":"Quill","t":["subtitle","translate","conference","meeting","会议","caption","字幕","translation","翻译","simultaneous-interpreting","translator","同传","同声传译","transcribe","转录"]}
 {"id":"QuinGillespie.Fedra","v":"0.6.0","n":"Fedra","t":["mastodon","mastodon-client","无障碍","accessible","mastodonclient","Mastadon, client, accessible","Mastadon"]}
 {"id":"QuinGillespie.Paperback","v":"0.8.5","n":"Paperback"}
 {"id":"QuintonReeves.RedEclipse","v":"2.0.0","n":"Red Eclipse","m":"RedEclipse","t":["game","fps","shooter","redeclipse"]}
@@ -11136,7 +11137,7 @@
 {"id":"RandyRants.SharpKeys","v":"3.9.4000","n":"SharpKeys","m":"sharpkeys","t":["registry","remap"]}
 {"id":"RangS.Ferminal","v":"1.3.3","n":"Ferminal"}
 {"id":"RankFTW.RHI","v":"1.9.5","n":"ReShade HDR Installer"}
-{"id":"ransh2014.TRACE","v":"0.5.3","n":"TRACE","t":["python","telemetry","tkinter","racing","udp","ps4","data-visualization","ps5","gran-turismo","gran-turismo-7","gt7","salsa20","sim-racing"]}
+{"id":"ransh2014.TRACE","v":"0.7.0","n":"TRACE","t":["python","telemetry","tkinter","racing","udp","ps4","data-visualization","ps5","gran-turismo","gran-turismo-7","gt7","salsa20","sim-racing"]}
 {"id":"ransome1.sleek","v":"2.0.25","n":"sleek","m":"sleek","t":["cross-platform","todo"]}
 {"id":"RAOEUS.Tylex","v":"1.0.0","n":"Tylex","t":["utility","text","expansion"]}
 {"id":"RaoPics.RaoPics","v":"0.7.16","n":"Rao Pics","t":["image","图像","material","材料","media","music","audio","音频","picture","图片","asset","resource","素材","资源","音乐","媒体","lan","局域网","local-area-network"]}
@@ -11147,7 +11148,7 @@
 {"id":"RaspberryPiFoundation.RaspberryPiImager","v":"2.0.8","n":"Raspberry Pi Imager","m":"rpi-imager","t":["flash","sd","imager","raspberrypi"]}
 {"id":"RasterexSoftware.RxView","v":"21.0.0.470","n":"RxView"}
 {"id":"Ratta.SupernotePartner","v":"2.5.24+260","n":"Supernote Partner","t":["sync","同步","notes","笔记","note-taking","eink","e-ink","supernote","墨水屏"]}
-{"id":"Raudo.RaudoIPTV","v":"0.2.2","n":"Raudo IPTV","m":"raudo","t":["epg","iptv","iptv-player","m3u","player","media-player","xtream","xtream-codes"]}
+{"id":"Raudo.RaudoIPTV","v":"0.2.2","n":"Raudo IPTV","m":"raudo","t":["epg","iptv","iptv-player","m3u","player","media-player","xtream-codes","xtream"]}
 {"id":"RavenProject.RavenCore","v":"4.6.1","n":"Raven Core","m":"ravencore","t":["ravencoin","ravencore"]}
 {"id":"RavensburgerAG.tiptoiManager","v":"5.2.0","n":"tiptoi Manager"}
 {"id":"RaviBhushan.fenc","v":"3.0.0","n":"fenc","m":"fenc","t":["security","cli","encryption","aes","file-encryption"]}
@@ -11195,7 +11196,7 @@
 {"id":"RealVNC.VNCViewer","v":"7.15.1.18","n":"RealVNC Viewer","m":"vncviewer","t":["remote-desktop","vnc","remote","remote-control","remote-access","远程控制","远程桌面","远程连接","control","远程","远程访问","remotedesktop","home-office","远程办公","remoteaccess"]}
 {"id":"Rebex.RebexDrive","v":"0.9.1","n":"Rebex Drive"}
 {"id":"Reblexis.LookPilot","v":"1.9.17","n":"LookPilot"}
-{"id":"RebonAI.RebonDesktop","v":"1.8.9","n":"Rebon","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","大模型"]}
+{"id":"RebonAI.RebonDesktop","v":"1.9.0","n":"Rebon","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","大模型"]}
 {"id":"ReceitaFederaldoBrasil.EscrituraçãoDigitalECF","v":"12.2.7","n":"Escrituração Digital ECF"}
 {"id":"ReceitaFederaldoBrasil.EscrituraçãoDigitalEFD","v":"6.2.0","n":"Escrituração Digital EFD-Contribuições"}
 {"id":"ReceitaFederaldoBrasil.IRPF2023","v":"1.4","n":"IRPF 2023"}
@@ -11280,7 +11281,7 @@
 {"id":"Rem0o.FanControl","v":"281","n":"FanControl","t":["cpu","temperature","fan","fan-control","gpu","control","控制","温度","speed","速度","风扇","gpu-fans","fanspeeds","pwm","曲线","转速","风扇控制","cpu-fans","processor-fans","fanspeedcurves","fan-speed-curves","fan-rpm","fanmonitor","fanrotations","pccasefans","pc-case-fans","fancontrol","curve","curves"]}
 {"id":"reMarkable.reMarkableCompanionApp","v":"3.28.1","n":"reMarkable","t":["remarkable"]}
 {"id":"RemcoStoeten.Dora","v":"0.42.1","n":"Dora","t":["database","tauri","postgres","sqlite"]}
-{"id":"RemcoStoeten.Skriuw","v":"0.48.0","n":"Skriuw","m":"skriuw","t":["productivity","markdown","writing","notes","open-source","local-first","knowledge-base","notion-alternative","note-taking","journal","wikilinks","obsidian-alternative"]}
+{"id":"RemcoStoeten.Skriuw","v":"0.49.0","n":"Skriuw","m":"skriuw","t":["productivity","markdown","writing","notes","open-source","local-first","knowledge-base","notion-alternative","note-taking","journal","wikilinks","obsidian-alternative"]}
 {"id":"Remeha.PRO","v":"2026.9.90","n":"Remeha PRO"}
 {"id":"Remeha.ServiceTool","v":"7.4.22.0","n":"Recom (PCST)","m":"recom","t":["servicetool","pc-servicetool"]}
 {"id":"Remio.RemioClient","v":"3.1.0","n":"Remio Client","m":"remioclient","t":["webrtc","remote-desktop","remote-control","streaming","client","moonlight","native","winui3","screen-share","rdp-alternative"]}
@@ -11628,10 +11629,11 @@
 {"id":"Runebook.Tome","v":"0.13.0","n":"Tome","t":["mcp","人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm","chatgpt","gemini","ollama"]}
 {"id":"RuneLite.RuneLite","v":"2.7.5","n":"RuneLite","m":"runelite"}
 {"id":"runlet.runlet","v":"1.0.8","n":"Runlet"}
-{"id":"RunTheWall.Constly","v":"4.9.0","n":"Constly","m":"constly","t":["markdown","editor","writing","notes","privacy","offline","text-editor","md","mermaid","wysiwyg"]}
+{"id":"RunTheWall.Constly","v":"4.10.0","n":"Constly","m":"constly","t":["markdown","editor","writing","notes","privacy","offline","text-editor","md","mermaid","wysiwyg"]}
 {"id":"runxhq.runx","v":"0.9.1","n":"runx"}
 {"id":"Rupprath.AoMCounters","v":"1.0.0","n":"AoM Counters","m":"aom-counters","t":["game","overlay","rts","companion","age-of-mythology","aom"]}
 {"id":"Rupprath.ModelMeter","v":"1.3.0","n":"ModelMeter"}
+{"id":"rus.zip","v":"1.0.13","n":"rus-zip","t":["archiver","compression","zip","tar","zstd","zrus"]}
 {"id":"rushabhpasad.MDEditor","v":"1.1.0","n":"MD Editor","t":["markdown","editor","text-editor","preview"]}
 {"id":"RussellBanks.HashHash","v":"1.12.0","n":"HashHash","m":"hashhash","t":["hashing","hash"]}
 {"id":"RussellBanks.Komac","v":"2.16.0","n":"Komac","m":"komac","t":["rust","winget","winget-pkgs","winget-cli"]}
@@ -11644,7 +11646,7 @@
 {"id":"Rustlang.Rust.GNU.LLVM","v":"1.98.1","n":"Rust (GNU LLVM)","m":"rust-gnu-llvm","t":["cargo","llvm","rustc","rustdoc","gnu-toolchain","clippy","rustup","rust-lang-rust-gnu-llvm","rustlangrustgnullvm","gnutoolchain"]}
 {"id":"Rustlang.Rust.MSVC","v":"1.99.0","n":"Rust (MSVC)","m":"rust-msvc","t":["rust","windows","cargo","llvm","msvc","rustc","rustdoc","clippy","rustup"]}
 {"id":"Rustlang.Rustup","v":"1.29.1","n":"Rustup: the Rust toolchain installer","t":["rust","rustlang"]}
-{"id":"rustty.Rustty","v":"2.17.0","n":"Rustty","m":"rustty","t":["rust","tauri","ssh","ftp","terminal","rdp","sftp","shell","console","ftps"]}
+{"id":"rustty.Rustty","v":"2.17.1","n":"Rustty","m":"rustty","t":["rust","tauri","ssh","ftp","terminal","rdp","sftp","shell","console","ftps"]}
 {"id":"rvben.rumdl","v":"0.2.78","n":"rumdl","m":"rumdl","t":["markdown","documentation","rust","cli","static-analysis","formatter","linter","markdown-linter"]}
 {"id":"RWKSystems.TestPackage","v":"3.0.0","n":"TestPackage","t":["intune","sccm","testing","deployment","installer","packaging","repackaging","application-virtualization"]}
 {"id":"rwv.OnlineDOSGames","v":"8.2.0","n":"在线 DOS 游戏","t":["game","游戏","dos"]}
@@ -11970,7 +11972,7 @@
 {"id":"Seinra.lexicon-guard","v":"0.1.0","n":"lexicon-guard","m":"lexicon-guard"}
 {"id":"Seiraiyu.Keon","v":"0.1.66","n":"Keon CLI","m":"keon","t":["database","cli","developer-tools","serverless","postgresql","postgres"]}
 {"id":"Sejda.PDFDesktop","v":"7.9.11","n":"Sejda PDF Desktop","m":"sejda-pdf-desktop","t":["compress","压缩","pdf","convert","转换","merge","合并","crop","watermark","水印","裁剪","split","edit-password","拆分","编辑密码"]}
-{"id":"SejinChun.Imagine","v":"2.6.5","n":"Imagine","m":"Imagine","t":["image","图像","image-viewer","animation","动画","Viewer","Image","图像查看器"]}
+{"id":"SejinChun.Imagine","v":"2.7.1","n":"Imagine","m":"Imagine","t":["image","图像","image-viewer","animation","动画","Viewer","Image","图像查看器"]}
 {"id":"SelebrowProject.Selebrow","v":"1.6.1","n":"Selebrow","m":"selebrow","t":["browser","docker","automation","testing","selenium","kubernetes","gitlab-ci","playwright","webdriver","selenide","ui-tests"]}
 {"id":"Selur.Hybrid","v":"2026.03.21","n":"Hybrid","t":["video","视频","encode","media","audio","convert","转换","音频","filter","multimedia","多媒体","媒体","decode","滤镜","编码","解码","转码","过滤器","rip","压制","过滤"]}
 {"id":"SenseTime.ads-cli","v":"1.11.0","n":"ads-cli"}
@@ -12248,7 +12250,7 @@
 {"id":"skyjake.Lagrange","v":"1.20.9","n":"Lagrange","t":["gui","gemini","client","gemini-protocol","geminiprotocol","gemini-web-protocol","geminiwebprotocol"]}
 {"id":"Skyjos.Redfish","v":"1.2","n":"Redfish","t":["smb","samba","filesharing","fileshare","fileserver"]}
 {"id":"Skyline.BalatroModManager","v":"0.2.6","n":"Balatro Mod Manager","t":["rust","svelte","mod-manager","balatro","game-mods","modding-tools"]}
-{"id":"SkyLLC.UFFS","v":"0.6.43","n":"UFFS - Ultra Fast File Search","t":["rust","windows","cli","search","ntfs","file-search","mft"]}
+{"id":"SkyLLC.UFFS","v":"0.6.44","n":"UFFS - Ultra Fast File Search","t":["rust","windows","cli","search","ntfs","file-search","mft"]}
 {"id":"Skylot.jadx","v":"1.5.6","n":"jadx","t":["android","dex","java","decompiler"]}
 {"id":"skypjack.QSapecNG","v":"2.0.0","n":"QSapecNG - Qt-based GUI for SapecNG","t":["physics","electronics","circuit","物理","电子","电路"]}
 {"id":"Skyvex.SkyvexWebcamUploader","v":"1.0.0.0","n":"Skyvex Webcam Uploader","m":"skyvex-webcam-uploader","t":["skyvex-webcam-uploader"]}
@@ -12264,7 +12266,7 @@
 {"id":"SleepTimer.SleepTimer.Ultimate","v":"2.5.1","n":"SleepTimer Ultimate"}
 {"id":"SleipnirGroup.choreo","v":"2026.0.3","n":"Choreo"}
 {"id":"SleuthKit.Autopsy","v":"4.23.1","n":"Autopsy","m":"autopsy","t":["forensic","autopsy","sleuthkit"]}
-{"id":"Slide.Agent","v":"1.28.4","n":"Slide Agent"}
+{"id":"Slide.Agent","v":"1.30.0","n":"Slide Agent"}
 {"id":"Slidict.Wip","v":"2.6.1","n":"wip","m":"wip","t":["cli","wsl","containers","wslc"]}
 {"id":"Slido.Slido","v":"1.23.0.8116","n":"Slido for Windows","t":["powerpoint"]}
 {"id":"Slik.Subversion","v":"1.14.2001","n":"Slik Subversion"}
@@ -12308,7 +12310,7 @@
 {"id":"SMLNJ.SMLNJ.Legacy","v":"110.99.8","n":"Standard ML of New Jersey","t":["functional-programming","sml","standard-ml"]}
 {"id":"Smogon.PokemonShowdown","v":"0.3.1","n":"Pokemon Showdown","t":["videogame","games","turn-based","turnbased","rpg","pokemon","pokémon","showdown","vgc"]}
 {"id":"SmokeCloud.FdsPp","v":"0.3.0","n":"FdsPp"}
-{"id":"SmokeTurner.Vouch","v":"2026.10.1","n":"Vouch","m":"vouch","t":["cli","ssh","aws","fido2","webauthn","yubikey","kubernetes","oidc"]}
+{"id":"SmokeTurner.Vouch","v":"2026.10.2","n":"Vouch","m":"vouch","t":["cli","ssh","aws","fido2","webauthn","yubikey","kubernetes","oidc"]}
 {"id":"SMPlayer.SMPlayer","v":"26.8.29","n":"SMPlayer","m":"smplayer","t":["video","player","media","audio","dvd","youtube","cd","musicplayer","sound","multimedia","mp3","videoplayer","m3u8webstreams","9n80q5m0qxw6","opensubtitlescom"]}
 {"id":"SnailDOS.Fifo","v":"1.3.1","n":"Fifo"}
 {"id":"SnailDOS.SnailFM","v":"2.1.8","n":"SnailFM","t":["electron","music","radio"]}
@@ -12316,8 +12318,8 @@
 {"id":"SnailDOS.StreamBop","v":"1.6.1","n":"StreamBop"}
 {"id":"snakefoot.snaketail","v":"1.9.8.0","n":"SnakeTail","t":["monitor","text","log"]}
 {"id":"snapADDY.VisitReport","v":"4.6.2","n":"VisitReport"}
-{"id":"snapetech.iptvtunerr","v":"0.1.90","n":"IPTV Tunerr","m":"iptvtunerr","t":["iptv","jellyfin","emby","xmltv","live-tv","plex","hdhomerun"]}
-{"id":"snapetech.slskr","v":"0.2.42","n":"slskr","m":"slskr","t":["rust","webui","daemon","soulseek","slsk"]}
+{"id":"snapetech.iptvtunerr","v":"0.1.90","n":"IPTV Tunerr","m":"iptvtunerr","t":["iptv","jellyfin","live-tv","emby","xmltv","plex","hdhomerun"]}
+{"id":"snapetech.slskr","v":"0.2.47","n":"slskr","m":"slskr","t":["rust","webui","daemon","soulseek","slsk"]}
 {"id":"Snapmaker.Luban","v":"4.15.0","n":"Snapmaker Luban","m":"snapmakerluban","t":["3d","slicer","模型","3d-printing","model","3d打印","3d打印机","切片","3d-printer","maker"]}
 {"id":"Snapmaker.OrcaSlicer","v":"2.3.5","n":"Snapmaker Orca Slicer"}
 {"id":"SnapNet.SnapNet","v":"0.35.0.0","n":"Snap.Net"}
@@ -12375,7 +12377,7 @@
 {"id":"SoftMaker.FreeOffice.2024","v":"1.0.6170","n":"SoftMaker FreeOffice 2024"}
 {"id":"SoftMaker.FreePDF","v":"2025.407","n":"FreePDF 2025"}
 {"id":"SoftMaker.Office.2021","v":"21.0.5344","n":"SoftMaker Office 2021","t":["office","slides","documents","presentations","spreadsheets","planmaker","softmaker","softmaker-office","textmaker","worksheets"]}
-{"id":"SoftMaker.Office.2024","v":"24.0.6174","n":"SoftMaker Office 2024","t":["office","slides","documents","presentations","spreadsheets","planmaker","softmaker","softmaker-office","textmaker","worksheets"]}
+{"id":"SoftMaker.Office.2024","v":"24.0.6184","n":"SoftMaker Office 2024","t":["office","slides","documents","presentations","spreadsheets","planmaker","softmaker","softmaker-office","textmaker","worksheets"]}
 {"id":"SoftMaker.Office.NX","v":"24.0.6172","n":"SoftMaker Office NX","t":["office","slides","documents","presentations","spreadsheets","planmaker","softmaker","softmaker-office","textmaker","worksheets"]}
 {"id":"Softpcapps.MaximizeAlways","v":"1.4","n":"Maximize Always","t":["windows","desktop","window","maximize"]}
 {"id":"Softpcapps.MinimizetoTrayTool","v":"9.6","n":"Minimize to Tray Tool","t":["windows","desktop","tray","minimize","window","maximize"]}
@@ -12390,24 +12392,24 @@
 {"id":"SoftPerfect.SwitchPortMapper","v":"26.9","n":"SoftPerfect Switch Port Mapper","t":["network","网络","port","switch","交换机","端口"]}
 {"id":"SoftPerfect.WiFiGuard","v":"25.12","n":"SoftPerfect WiFi Guard","t":["security","安全","network","网络","wireless","wifi","无线","无线网"]}
 {"id":"SoftplanSistemas.WebSigner","v":"2.15.0.0","n":"Web Signer"}
-{"id":"Softplicity.CoolutilsConverter","v":"3.1.1.155","n":"Coolutils Converter","t":["Converter"]}
+{"id":"Softplicity.CoolutilsConverter","v":"3.1.1.156","n":"Coolutils Converter","t":["Converter"]}
 {"id":"Softplicity.CoolUtilsMailViewer","v":"7.1.9763.42349","n":"CoolUtils Mail Viewer","t":["Mail","Viewer"]}
 {"id":"Softplicity.CoolUtilsOutlookViewer","v":"4.2.0.85","n":"CoolUtils Outlook Viewer","t":["Outlook","Viewer","PST"]}
 {"id":"Softplicity.PDFCombine","v":"8.1.0.16","n":"PDF Combine","t":["PDF","Combiner"]}
-{"id":"Softplicity.PDFCombinePro","v":"5.1.0.208","n":"PDF Combine Pro","t":["PDF","Combine"]}
-{"id":"Softplicity.TotalAudioConverter","v":"6.1.0.319","n":"Total Audio Converter","t":["Converter","Audio"]}
-{"id":"Softplicity.TotalCSVConverter","v":"4.2.0.99","n":"Total CSV Converter","t":["Converter","CSV"]}
-{"id":"Softplicity.TotalExcelConverter","v":"7.1.0.169","n":"Total Excel Converter","t":["Excel","Converter"]}
+{"id":"Softplicity.PDFCombinePro","v":"5.1.0.211","n":"PDF Combine Pro","t":["PDF","Combine"]}
+{"id":"Softplicity.TotalAudioConverter","v":"6.1.0.320","n":"Total Audio Converter","t":["Converter","Audio"]}
+{"id":"Softplicity.TotalCSVConverter","v":"4.2.0.101","n":"Total CSV Converter","t":["Converter","CSV"]}
+{"id":"Softplicity.TotalExcelConverter","v":"7.1.0.171","n":"Total Excel Converter","t":["Excel","Converter"]}
 {"id":"Softplicity.TotalImageConverter","v":"8.5.0.356","n":"Total Image Converter","t":["Image","Converter"]}
-{"id":"Softplicity.TotalMailConverter","v":"6.2.0.241","n":"Total Mail Converter","t":["Mail","Outlook","Thunderbird","Converter"]}
-{"id":"Softplicity.TotalMailConverterPro","v":"11.1.0.399","n":"Total Mail Converter Pro","t":["Mail","Converter"]}
+{"id":"Softplicity.TotalMailConverter","v":"6.2.0.242","n":"Total Mail Converter","t":["Mail","Outlook","Thunderbird","Converter"]}
+{"id":"Softplicity.TotalMailConverterPro","v":"11.1.0.400","n":"Total Mail Converter Pro","t":["Mail","Converter"]}
 {"id":"Softplicity.TotalMovieConverter","v":"4.1.0.93","n":"Total Movie Converter","t":["Video","Converter","Movie"]}
-{"id":"Softplicity.TotalOutlookConverter","v":"5.1.0.199","n":"Total Outlook Converter","t":["Outlook","Converter"]}
-{"id":"Softplicity.TotalOutlookConverterPro","v":"5.1.1.331","n":"Total Outlook Converter Pro","t":["Outlook","Converter"]}
-{"id":"Softplicity.TotalPDFConverter","v":"6.5.0.209","n":"Total PDF Converter","t":["PDF","Converter"]}
-{"id":"Softplicity.TotalThunderbirdConverter","v":"5.1.0.48","n":"Total Thunderbird Converter","t":["Thunderbird","Converter"]}
-{"id":"Softplicity.TotalThunderbirdConverterPro","v":"5.1.9758.38511","n":"Total Thunderbird Converter Pro","t":["Thunderbird","Converter"]}
-{"id":"Softplicity.TotalXMLConverter","v":"3.2.0.152","n":"Total XML Converter","t":["XML","Converter"]}
+{"id":"Softplicity.TotalOutlookConverter","v":"5.1.0.200","n":"Total Outlook Converter","t":["Outlook","Converter"]}
+{"id":"Softplicity.TotalOutlookConverterPro","v":"5.1.1.332","n":"Total Outlook Converter Pro","t":["Outlook","Converter"]}
+{"id":"Softplicity.TotalPDFConverter","v":"6.5.0.213","n":"Total PDF Converter","t":["PDF","Converter"]}
+{"id":"Softplicity.TotalThunderbirdConverter","v":"5.1.0.49","n":"Total Thunderbird Converter","t":["Thunderbird","Converter"]}
+{"id":"Softplicity.TotalThunderbirdConverterPro","v":"5.1.9770.37420","n":"Total Thunderbird Converter Pro","t":["Thunderbird","Converter"]}
+{"id":"Softplicity.TotalXMLConverter","v":"3.2.0.153","n":"Total XML Converter","t":["XML","Converter"]}
 {"id":"SoftpointerInc.Tag&Rename","v":"3.9.15","n":"Tag&Rename"}
 {"id":"Softros.LogonExpert","v":"11.4","n":"LogonExpert","t":["Autologon","Automatic","Logon","Secured"]}
 {"id":"Softros.LogonExpert.Server","v":"25.10.9","n":"LogonExpert Server","t":["Server","Autologon","Credentials","LogonExpert"]}
@@ -12556,7 +12558,7 @@
 {"id":"SourceFoundry.HackFonts","v":"1.6.0","n":"Hack Fonts","m":"hackfonts","t":["font"]}
 {"id":"SourceGear.DiffMerge","v":"4.2.0.697","n":"SourceGear DiffMerge"}
 {"id":"sourcegit-scm.SourceGit","v":"2026.21","n":"SourceGit","t":["git","cross-platform","gui","git-gui"]}
-{"id":"Sourcegraph.Amp","v":"0.0.1790985688-g8b9519","n":"Amp CLI","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
+{"id":"Sourcegraph.Amp","v":"0.0.1791091069-gb9917f","n":"Amp CLI","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding"]}
 {"id":"SourMesen.Mesen","v":"0.9.9","n":"Mesen","t":["emulator","nes","famicom"]}
 {"id":"SourMesen.Mesen-S","v":"0.4.0","n":"Mesen-S","t":["emulator","snes","super-famicom"]}
 {"id":"SourMesen.Mesen2","v":"2.1.1","n":"Mesen 2","t":["emulator","nes","gba","gameboyadvance","gbc","gameboycolor","gameboy","segagamegear","segamastersystem","snes","turbografx16","wonderswan","pc-engine","wonderswancolor"]}
@@ -12589,7 +12591,7 @@
 {"id":"spdc35z9.MATRIG","v":"0.1.34","n":"MATRIG","t":["productivity","automation","macro","shortcuts","stream-deck"]}
 {"id":"Speakeasy.speakeasy","v":"1.800.1","n":"speakeasy","m":"speakeasy"}
 {"id":"SpecialK.SpecialK","v":"26.9.25","n":"Special K","m":"specialk","t":["reverse-engineering","逆向工程","hooking","injection","注入","game","gaming","游戏","hdr","mod","模组","framerate-fixer","game-modding","latency-analysis","帧率修复","延迟分析","游戏模组","钩子"]}
-{"id":"SpecLabs.Devspec","v":"0.2.0","n":"devspec","m":"devspec","t":["ai","workflow","cli","developer-tools","spec-driven-development"]}
+{"id":"SpecLabs.Devspec","v":"0.3.0","n":"devspec","m":"devspec","t":["ai","workflow","cli","developer-tools","spec-driven-development"]}
 {"id":"SpecScore.CLI","v":"0.53.1","n":"SpecScore","m":"SpecScore"}
 {"id":"SpectrumIntegrators.Sercat","v":"1.0.0","n":"sercat","m":"sercat","t":["cli","terminal","serial","rs232","serial-port","com-port","netcat"]}
 {"id":"SpectrumQT.XXMILauncher","v":"2.2.1","n":"XXMI Launcher","m":"xxmi-launcher","t":["xxmi","wwmi","zzmi","srmi","gimi","himi"]}
@@ -12668,7 +12670,7 @@
 {"id":"SST.opencode","v":"1.18.33","n":"opencode","t":["ai","develop","development","programming","开发","编程","代码","code","coding"]}
 {"id":"SST.OpenCodeDesktop","v":"1.18.34","n":"OpenCode","t":["ai","develop","development","programming","code","coding"]}
 {"id":"stabldev.torrra","v":"2.1.0","n":"torrra"}
-{"id":"StablyAI.Orca","v":"1.4.219","n":"Orca","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","multi-agent","agent-team","多智能体"]}
+{"id":"StablyAI.Orca","v":"1.4.220","n":"Orca","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","multi-agent","agent-team","多智能体"]}
 {"id":"Stacher.Stacher","v":"7.1.12","n":"Stacher is a modern front-end for the yt-dlp command line tool"}
 {"id":"Stacher.youtube-dl","v":"7.0.10","n":"Stacher"}
 {"id":"Stack-Cairn.LiveAgent","v":"1.3.7","n":"LiveAgent","t":["mcp","人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic","claude-code","codex"]}
@@ -12795,7 +12797,7 @@
 {"id":"Stipple.VoiceNote","v":"0.1.16","n":"VoiceNote","m":"voicenote","t":["privacy","offline","voice","speech-to-text","transcription","dictation","whisper","voice-typing","meeting-notes","on-device"]}
 {"id":"StirlingTools.StirlingPDF","v":"3.0.2","n":"Stirling-PDF","t":["docker","pdf","java","pdf-tools","pdf-editor","pdf-converter","pdf-merger","pdf-manipulation","pdf-ocr","pdf-web-apps","pdfmerger"]}
 {"id":"stn1slv.md-paste","v":"1.4.3","n":"md-paste","m":"md-paste"}
-{"id":"Stoat.Stoat","v":"1.4.2","n":"Stoat for Desktop","m":"stoat"}
+{"id":"Stoat.Stoat","v":"1.5.2","n":"Stoat for Desktop","m":"stoat"}
 {"id":"Stockfish.Stockfish","v":"19.0","n":"Stockfish","t":["chess","uci"]}
 {"id":"StontyTech.SteamPalforCommandPalette","v":"0.0.1.0","n":"SteamPal for Command Palette","m":"steampal","t":["windows-commandpalette-extension","steam","Search","CmdPal","PowerToys","Launcher","CommandPalette","Command-Palette","Steam"]}
 {"id":"Stoplight.Prism","v":"5.15.11","n":"Prism","t":["cli","hacktoberfest","openapi","api-testing","http-proxy","mocking","prism","swagger","mock-server","oas","openapi3","postman-collection"]}
@@ -13015,7 +13017,7 @@
 {"id":"t1m0thyj.WinDynamicDesktop","v":"5.7.0","n":"WinDynamicDesktop","m":"windynamicdesktop","t":["windows10","wallpaper","dynamic-desktop"]}
 {"id":"T3Tools.T3Code","v":"0.0.45","n":"T3 Code","m":"t3-code"}
 {"id":"t4t5.caldir","v":"0.13.0","n":"caldir","m":"caldir","t":["sync","cli","calendar","ics","caldav"]}
-{"id":"t8y2.DBX","v":"0.6.31","n":"DBX","t":["rust","vue","database","mongodb","tauri","gui","mysql","postgresql","duckdb","sqlite","sql-server","database-client","database-management","redis","clickhouse"]}
+{"id":"t8y2.DBX","v":"0.6.33","n":"DBX","t":["rust","vue","database","mongodb","tauri","gui","mysql","postgresql","duckdb","sqlite","sql-server","database-client","database-management","redis","clickhouse"]}
 {"id":"TabbyML.Tabby","v":"0.32.0","n":"Tabby","m":"tabby","t":["ai","developer-tools","ide","coding-assistant","llms","codegen","coding-language","developer-experience","gen-ai"]}
 {"id":"Tableau.Desktop","v":"24.3.965","n":"Tableau Desktop","m":"tableau-desktop","t":["可视化","visualization","analytics","data","数据","分析","data-analysis","reporting","仪表盘","数据分析","data-visualization","数据可视化","business-intelligence","dashboarding","商业智能","汇报"]}
 {"id":"Tableau.PrepBuilder","v":"24.3.41107","n":"Tableau Prep Builder","m":"tableau-prep","t":["analytics","data","data-transformation","数据","数据转换","分析","data-analysis","etl","data-preparation","数据分析","business-intelligence","商业智能","data-cleaning","数据清理","数据准备"]}
@@ -13253,7 +13255,7 @@
 {"id":"TeraTermProject.teraterm5","v":"5.6.2","n":"Tera Term 5","m":"teraterm5","t":["teraterm","teraterm5"]}
 {"id":"terkelg.ramme","v":"3.2.5","n":"Ramme","t":["electron","instagram"]}
 {"id":"Termalin.Termalin","v":"0.1.42","n":"Termalin","m":"termalin","t":["mcp","ssh","terminal","sftp","ssh-client","ai-agents"]}
-{"id":"Termaxa.Termaxa","v":"0.20.0","n":"Termaxa","m":"termaxa","t":["ai","security","cli","claude-code","agents"]}
+{"id":"Termaxa.Termaxa","v":"0.20.1","n":"Termaxa","m":"termaxa","t":["ai","security","cli","claude-code","agents"]}
 {"id":"Terminals.Terminals","v":"4.0.1.0","n":"Terminals","t":["ssh","server","服务器","rdp","vnc","remote","telnet","远程"]}
 {"id":"TerminalWorks.TSPrintClient","v":"3.2.4.34","n":"TSPrint Client","t":["printer","print","打印","打印机"]}
 {"id":"TerminalWorks.TSPrintServer","v":"3.2.4.34","n":"TSPrint Server","t":["printer","print","打印","打印机"]}
@@ -13550,7 +13552,7 @@
 {"id":"TimeStored.QStudio","v":"5.0.1.0","n":"QStudio"}
 {"id":"Timeular.EARLY","v":"6.9.5","n":"EARLY","t":["timer","计时器","tracker","time","时间","跟踪器"]}
 {"id":"timeware.BiostarAgent","v":"1.0.13","n":"timeware Biostar Agent"}
-{"id":"TIMi.TIMi","v":"2026.09.30","n":"TIMi","t":["可视化","visualization","analytics","data","数据","分析","data-analysis","reporting","仪表盘","数据分析","data-visualization","数据可视化","business-intelligence","dashboarding","商业智能","汇报"]}
+{"id":"TIMi.TIMi","v":"2026.10.03","n":"TIMi","t":["可视化","visualization","analytics","data","数据","分析","data-analysis","reporting","仪表盘","数据分析","data-visualization","数据可视化","business-intelligence","dashboarding","商业智能","汇报"]}
 {"id":"TimKicker.Podliner","v":"2.2.0","n":"Podliner","t":["tui","terminal","dotnet","rss","podcast","tui,podcasts","xplat"]}
 {"id":"timminator.VideOCR.CPU","v":"1.6.0","n":"VideOCR","t":["ocr","subtitles","machine-learning","deep-learning","hardsub"]}
 {"id":"timminator.VideOCR.GPU","v":"1.3.0","n":"VideOCR","t":["ocr","subtitles","machine-learning","deep-learning","hardsub"]}
@@ -13617,7 +13619,7 @@
 {"id":"token2.FIDO2Manager","v":"1.2.9","n":"FIDO2 Token Manager"}
 {"id":"tolgamorf.env2op-cli","v":"0.5.0","n":"env2op-cli","t":["cli","env","1password","secrets","dotenv","environment-variables"]}
 {"id":"Tom94.tev","v":"2.14.0","n":"tev","t":["linux","macos","raw","dng","dds","png","color","icc","avif","hdr","heic","jpeg-xl","exr","heif","cicp","jxl"]}
-{"id":"TomasBruckner.dbc","v":"0.36.0","n":"dbc","m":"dbc","t":["database","sql","postgresql","duckdb","sqlite","mssql","sql-server"]}
+{"id":"TomasBruckner.dbc","v":"0.38.1","n":"dbc","m":"dbc","t":["database","sql","postgresql","duckdb","sqlite","mssql","sql-server"]}
 {"id":"TomasRudh.WinSize4","v":"1.2.0.1","n":"WinSize4","t":["window-width","window-height","window-size","window-position","tomas-rudh","window-resizing"]}
 {"id":"tombi-toml.tombi","v":"1.6.0","n":"tombi","t":["cli","language-server","lsp","formatter","linter","toml","tombi","toml-linter"]}
 {"id":"TomboyNotes.tomboy-ng","v":"0.42","n":"tomboy-ng","t":["text-editor","lazarus","notetaking","textfiles","tomboy-notes-tomboy-ng","tomboynotestomboyng","notes-taking"]}
@@ -13802,7 +13804,7 @@
 {"id":"Tutanota.Tutanota","v":"361.260929.0","n":"Tuta Mail","m":"tutanota","t":["privacy","calendar","encryption","email","end-to-end-encryption","private","secure","email-client","tuta-mail"]}
 {"id":"TuxGuitar.TuxGuitar","v":"2.1.0","n":"TuxGuitar","t":["music","音乐","guitar","tablature","乐谱","五线谱","吉他","琴谱"]}
 {"id":"Tuyenvm.OpenKey","v":"2.0.5","n":"OpenKey","t":["macos","mac","unicode","c","cplusplus","objective-c","bogo","gotiengviet","tcvn3","telex","unikey","unikeyformac","vietkey","vni"]}
-{"id":"TVasilev.RainCleaner","v":"2.13.1","n":"Rain Cleaner","m":"raincleaner","t":["utility","security","clean","cleaner","ransomware","system","driver","optimizer","driver-updater","disk-cleanup","game-booster"]}
+{"id":"TVasilev.RainCleaner","v":"2.14.0","n":"Rain Cleaner","m":"raincleaner","t":["utility","security","clean","cleaner","ransomware","system","driver","optimizer","driver-updater","disk-cleanup","game-booster"]}
 {"id":"Tweag.Topiary","v":"0.8.0","n":"Tweag.Topiary","m":"topiary","t":["tree-sitter"]}
 {"id":"Tweaking.WindowsRepair","v":"4.14.0","n":"Tweaking.com - Windows Repair","m":"windows-repair"}
 {"id":"Tweaking4All.MiniWOL2","v":"2.1.3","n":"miniWOL"}
@@ -13875,7 +13877,7 @@
 {"id":"unhappychoice.gittype","v":"0.10.2","n":"GitType","m":"gittype","t":["cli","tui","git","code","terminal","developer","typing","practice"]}
 {"id":"unhchabo.FlacSquisher","v":"1.3.10","n":"FlacSquisher"}
 {"id":"Unibo.Alchemist","v":"43.1.5","n":"Alchemist"}
-{"id":"UniClipboard.UniClipboard","v":"1.0.1","n":"UniClipboard","t":["clipboard-manager","linux","macos","windows","cross-platform","p2p","local-first","e2ee","clipboard-sync","tauri-app","tools","tauri2","clipboardsync","efficientnet"]}
+{"id":"UniClipboard.UniClipboard","v":"1.1.0","n":"UniClipboard","t":["clipboard-manager","linux","macos","windows","cross-platform","p2p","local-first","e2ee","clipboard-sync","tauri-app","tools","tauri2","clipboardsync","efficientnet"]}
 {"id":"Uniconta.Uniconta","v":"95.0.017","n":"Uniconta","m":"uniconta","t":["finance","ERP"]}
 {"id":"UnicornSoft.UnicornHTTPS","v":"1.3.77.123","n":"유니콘 HTTPS","m":"unicorn-https"}
 {"id":"Unidata.NetCDF","v":"4.10.0","n":"NetCDF","m":"NetCDF"}
@@ -13893,7 +13895,7 @@
 {"id":"Unipro.UGENE","v":"53.1","n":"UGENE","m":"ugene","t":["workflow","qt5","cross-platform","science","cpp","pipeline","bioinformatics","dna","sequencing","msa","ngs","ugene"]}
 {"id":"Uniqkey.UniqkeyDesktop","v":"2.35.1","n":"Uniqkey Desktop App"}
 {"id":"UniRateAPI.UniRate","v":"0.1.0","n":"UniRate CLI","m":"unirate","t":["currency","finance","cli","conversion","command-line","forex","vat","currency-converter","exchange-rates","fx"]}
-{"id":"UniRound-Tec.HRack","v":"0.4.7","n":"HRack","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","multi-agent","agent-team","多智能体"]}
+{"id":"UniRound-Tec.HRack","v":"0.4.9","n":"HRack","t":["人工智能","ai","智能体","agent","programming","编程","大语言模型","聊天机器人","chatbot","large-language-model","llm","自主智能","agentic","代码","code","coding","multi-agent","agent-team","多智能体"]}
 {"id":"UnitaryLab.CLI","v":"0.1.0","n":"UnitaryLab CLI","m":"unitarylab","t":["- cli","- agent","- llm","- quantum","- quantum-computing","- quantum-algorithms","- quantum-simulation","- pde","- repl","- terminal"]}
 {"id":"Unity.CLI","v":"1.0.0.20012","n":"Unity CLI","m":"unity-cli","t":["cli","command-line","unity","unity3d"]}
 {"id":"Unity.TuanjieHub","v":"1.4.6","n":"Tuanjie Hub","t":["团结hub","团结引擎","tuanjie"]}
@@ -13942,7 +13944,7 @@
 {"id":"UrBackup.UrBackup.Server","v":"2.5.38","n":"UrBackup Server","t":["backup","备份"]}
 {"id":"Urin.moove","v":"0.4.7","n":"moove","m":"moove","t":["rust","cli","move","rename"]}
 {"id":"Urlscan.urlscan-cli","v":"2026.09.17","n":"urlscan-cli","m":"urlscan","t":["security","cli","urlscan"]}
-{"id":"urwithajit9.evnx","v":"0.7.0","n":"evnx","t":["security","cli","env","encryption","vault","secrets","dotenv","environment-variables"]}
+{"id":"urwithajit9.evnx","v":"0.8.0","n":"evnx","t":["security","cli","env","encryption","vault","secrets","dotenv","environment-variables"]}
 {"id":"usagirei.3DSThemeEditor","v":"1.0.12.1","n":"3DS Theme Editor","t":["3ds-theme-editor","background-images","system-themes","custom-themes","nintendo-3ds-home-menu","nintendo3dshomemenu","nintendo-2ds-home-menu","nintendo2dshomemenu","n3ds","n2ds","new-nintendo-3ds-home-menu","newnintendo3dshomemenu","new-nintendo-2ds-home-menu","newnintendo2dshomemenu"]}
 {"id":"UsamaEjaz.PeekWin","v":"0.5.11","n":"peekwin","t":["mcp","windows","cli","automation","screenshots","peekaboo"]}
 {"id":"USBTree.USBTree","v":"0.0.6","n":"USB Tree"}
@@ -14126,7 +14128,7 @@
 {"id":"VirusTotal.YARA","v":"4.5.5","n":"YARA"}
 {"id":"VirusTotal.YARA-X","v":"1.21.0","n":"YARA-X"}
 {"id":"Vishnuj-n.ForgeCLI","v":"1.0.1","n":"ForgeCLI","t":["productivity","windows","tool","cli","automation","code-generation","template-engine"]}
-{"id":"VisiGrid.VisiGrid","v":"0.43.0","n":"VisiGrid","t":["productivity","keyboard","excel","data","csv","spreadsheet"]}
+{"id":"VisiGrid.VisiGrid","v":"0.46.1","n":"VisiGrid","t":["productivity","keyboard","excel","data","csv","spreadsheet"]}
 {"id":"VisionAid.IvonaVoicePack.Danish","v":"2.6.2","n":"VisionAid Danish Ivona Voice Pack","t":["accessibility","voice","无障碍","辅助功能","声音"]}
 {"id":"VisionAid.IvonaVoicePack.Dutch","v":"2.6.2","n":"VisionAid Dutch Ivona Voice Pack","t":["accessibility","voice","无障碍","辅助功能","声音"]}
 {"id":"VisionAid.IvonaVoicePack.English.American","v":"2.6.2","n":"VisionAid American English Ivona Voice Pack","t":["accessibility","voice","无障碍","辅助功能","声音"]}
@@ -14183,7 +14185,7 @@
 {"id":"VisualSVNSoftwareLtd.VisualSVNRepositoryConfigurator","v":"5.0.3.0","n":"VisualSVN Repository Configurator"}
 {"id":"VisualSVNSoftwareLtd.VisualSVNServer","v":"5.0.3.0","n":"VisualSVN Server"}
 {"id":"viswajith275.envseal","v":"6.2.0","n":"envseal","m":"envseal","t":["rust","developer-tools","command-line-tool","encryption-decryption","enviornment-setup","envseal","hmac-sha256"]}
-{"id":"Vita3K.Vita3K","v":"0.2.1.4115","n":"Vita3K","m":"vita3k","t":["emulator","emulation","cpp","playstation-vita","playstationvita","ps-vita","psvita","v3k","vita","vita-3k"]}
+{"id":"Vita3K.Vita3K","v":"0.2.1.4118","n":"Vita3K","m":"vita3k","t":["emulator","emulation","cpp","playstation-vita","playstationvita","ps-vita","psvita","v3k","vita","vita-3k"]}
 {"id":"VitalijFedichev.NFSServer","v":"1.0.6.1","n":"NFS Server","t":["filesharing","nfs2","fileshare","networkfilesystem"]}
 {"id":"VitorPamplona.Amethyst","v":"1.14.0","n":"Amethyst","m":"amethyst","t":["decentralized","social-network","nostr","social"]}
 {"id":"vituperative.i2pchat","v":"0.2.37","n":"I2PChat","m":"i2pchat","t":["qt5","privacy","p2p","chat","i2p"]}
@@ -14231,7 +14233,7 @@
 {"id":"voidtools.voidImageViewer","v":"1.0.0.13","n":"void Image Viewer","m":"voidImageViewer","t":["viewer","image","photos"]}
 {"id":"VolkerFischer.Jamulus","v":"3.11.0","n":"Jamulus","t":["internet","audio","realtime","opus","jam-sessions","jamulus","low-latency-audio","online-jamming"]}
 {"id":"Volta.Volta","v":"2.0.2","n":"Volta","t":["develop","development","开发","javascript","nodejs","js","node","nvm","node.js","volta","Node","NodeJS","Node.js","JS","JavaScript","Volta"]}
-{"id":"Voltius.Voltius","v":"0.46.0","n":"Voltius","m":"voltius","t":["rust","sync","tauri","ssh","sysadmin","local-first","terminal","sftp","ssh-client","port-forwarding","teams","serial","plugins","crdt","homelab","credential-manager"]}
+{"id":"Voltius.Voltius","v":"0.47.0","n":"Voltius","m":"voltius","t":["rust","sync","tauri","ssh","sysadmin","local-first","terminal","sftp","ssh-client","port-forwarding","teams","serial","plugins","crdt","homelab","credential-manager"]}
 {"id":"VoltKraft.ImmichFolderWatch","v":"2.11.3","n":"Immich Folder Watch","m":"immich-folder-watch","t":["immich","immich-api"]}
 {"id":"Vonage.VonageBusiness","v":"2.30.0","n":"Vonage Business","t":["sip","softphone","telephone","telephony","电话"]}
 {"id":"VoodooSoft.DefenderUI","v":"2.05","n":"DefenderUI","t":["security","安全","antivirus","反病毒","杀毒","defender","microsoft-defender","windows-defender"]}
@@ -14937,7 +14939,7 @@
 {"id":"xiSage.ncmdump-net","v":"1.3.0","n":"ncmdump-net","m":"ncmdump","t":["NetEase","ncm"]}
 {"id":"xishang0128.Sparkle","v":"1.26.9","n":"Sparkle","t":["proxy","network","网络","代理","vpn","clash","clash-verge","clash-meta","mihomo"]}
 {"id":"XIU2.CloudflareSpeedTest","v":"2.3.5","n":"CloudflareSpeedTest","t":["go","golang","cloudflare","cdn","speedtest"]}
-{"id":"xiufengsun.TokenTracker","v":"1.1.10","n":"TokenTracker","t":["人工智能","ai","跟踪","usage","tracker","用量","tokens","cost","消费","花费","词元"]}
+{"id":"xiufengsun.TokenTracker","v":"1.1.11","n":"TokenTracker","t":["人工智能","ai","跟踪","usage","tracker","用量","tokens","cost","消费","花费","词元"]}
 {"id":"xjasonlyu.tun2socks","v":"v2.7.0","n":"tun2socks","m":"tun2socks","t":["go","proxy","shadowsocks","socks5","golang","wireguard","tor","udp","http-proxy","ssh-tunnel","tun2socks","gvisor","nat","socks4","tcpip-stack","tun-device"]}
 {"id":"XK72.Charles","v":"5.2.1.2","n":"Charles Proxy","m":"charles","t":["debug","调试","web","网页","proxy","monitor","network","网络","代理","request","response","响应","请求","capture","抓包","traffic","流量","debugging"]}
 {"id":"xkonglong.gongwen","v":"3.0.0.0","n":"公文排版助手","t":["助手","排版","公文","小恐龙","gongwen"]}
@@ -14953,7 +14955,7 @@
 {"id":"Xmind.Xmind.8","v":"3.7.9.201912052356","n":"XMind 8","t":["mind-map","mind-mapping","mindmap","思维导图","脑图"]}
 {"id":"Xming.Xming","v":"6.9.0.31","n":"Xming"}
 {"id":"XmirrorSecurity.OpenSCA-cli","v":"3.0.11","n":"OpenSCA-cli","t":["security","cyclonedx","static-analysis","vulnerabilities","sbom","spdx","supply-chain","cve","sca","software-supply-chain","漏洞","静态分析","license-compliance","组成成分分析","许可合规","软件供应链","软件供应链安全"]}
-{"id":"xmn.BetterTrumpet","v":"3.3.1","n":"BetterTrumpet","t":["windows","music","audio","volume","sound","mixer","eartrumpet","bettertrumpet"]}
+{"id":"xmn.BetterTrumpet","v":"3.4.0","n":"BetterTrumpet","t":["windows","music","audio","volume","sound","mixer","eartrumpet","bettertrumpet"]}
 {"id":"XMoto.XMoto","v":"0.6.3","n":"xmoto","m":"xmoto","t":["game","gaming","videogame","2d","platformer","motocross","trials"]}
 {"id":"XniperBuilds.Riplox","v":"1.7.0","n":"Riplox","m":"riplox","t":["video","downloader","playlist","ffmpeg","yt-dlp","open-source","free","youtube","video-downloader","tiktok","instagram","mp3"]}
 {"id":"XnSoft.XnConvert","v":"1.116.0.0","n":"XnConvert","m":"xnconvert","t":["image","图像","files","images","photo","conversion","convert","转换","picture","图片","照片","format","格式"]}
@@ -15059,7 +15061,7 @@
 {"id":"yeroo.agwinterm","v":"0.20.9","n":"agwinterm","m":"agwinterm","t":["ai","agent","claude","accessibility","terminal","console","conpty"]}
 {"id":"yetanotherchris.zolam","v":"2.0.10","n":"zolam"}
 {"id":"YetAnotherPomodoroApp.YAPA2","v":"2.0.190","n":"YAPA-2"}
-{"id":"yetone.Alma","v":"0.4.155","n":"Alma","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic"]}
+{"id":"yetone.Alma","v":"0.4.161","n":"Alma","t":["人工智能","ai","智能体","agent","大语言模型","large-language-model","llm","自主智能","agentic"]}
 {"id":"yetone.NextAITranslator","v":"0.6.43","n":"NextAI Translator","t":["translate","chatgpt","translation","openai","翻译","translator"]}
 {"id":"yetone.OpenAITranslator","v":"0.6.43","n":"OpenAI Translator","t":["translate","chatgpt","translation","openai","翻译","translator","chrome-extension","browser-extension","translator-app"]}
 {"id":"YggdrasilNetwork.Yggdrasil","v":"0.5.14","n":"Yggdrasil Network","t":["decentralized","mesh","ipv6","mesh-networks","e2e-encryption","routing-algorithm","routing-mesh","spanning-tree"]}
@@ -15178,7 +15180,7 @@
 {"id":"Zellij.Zellij","v":"0.45.1","n":"Zellij","m":"zellij","t":["terminal","workspace","multiplexer"]}
 {"id":"ZelloInc.Zello","v":"18.10.0","n":"Zello"}
 {"id":"zemoto.WhatAmIHearing","v":"4.0","n":"WhatAmIHearing","m":"WhatAmIHearing","t":["windows","application","portable","csharp","wpf","desktop-app","music","audio","recording","app","mvvm","xaml","shazam","music-identification","naudio","net6"]}
-{"id":"Zen-Team.Zen-Browser","v":"1.22.3b","n":"Zen Browser","m":"zen-browser","t":["browser","web","webpage","internet","webbrowser","web-browser","gecko","firefox","firefox-based","firefox-browser","arc","arc-browser","zen"]}
+{"id":"Zen-Team.Zen-Browser","v":"1.23b","n":"Zen Browser","m":"zen-browser","t":["browser","web","webpage","internet","webbrowser","web-browser","gecko","firefox","firefox-based","firefox-browser","arc","arc-browser","zen"]}
 {"id":"Zen-Team.Zen-Browser.Twilight","v":"1.24t","n":"Zen Browser - Twilight","m":"zen-browser-twilight","t":["browser","web","webpage","internet","web-browser","firefox","firefox-based","firefox-browser","arc","arc-browser","zen"]}
 {"id":"zenaconsult.zenasupport","v":"1.3.8","n":"ZenaSupport"}
 {"id":"Zenarmor.Zenarmor","v":"2.6.0","n":"Zenarmor","m":"zenarmor","t":["network-security-firewall-sse-sase-ztna"]}
@@ -15191,7 +15193,7 @@
 {"id":"Zentraedi.ZSPACE","v":"2.4.2023051208","n":"极空间","t":["nas","private-cloud","私有云","zspace","极空间"]}
 {"id":"Zenvara.Zen","v":"1.0.0","n":"Zenvara CLI","t":["mcp","cli","devops","deployment","zenvara"]}
 {"id":"ZeqMacaw.Crowbar","v":"00.74.00.00","n":"Crowbar"}
-{"id":"zer0ken.xmux","v":"0.11.2","n":"xmux"}
+{"id":"zer0ken.xmux","v":"0.11.5","n":"xmux"}
 {"id":"ZermeloSoftwareBV.ZermeloDesktop","v":"26.09.3","n":"Zermelo Desktop","m":"Zermelo","t":["desktop","zermelo"]}
 {"id":"ZeroBrane.Studio","v":"2.00","n":"Studio"}
 {"id":"ZeroC.IceServices","v":"3.8.3","n":"Ice Services","t":["rpc","ice","zeroc","icegrid","icestorm","glacier2"]}
@@ -15199,7 +15201,7 @@
 {"id":"ZeroInstall.ZeroInstall","v":"2.29.3","n":"Zero Install","m":"0install","t":["software","package-manager","installation","0install","zero-install"]}
 {"id":"ZeroNet.ZeroNet","v":"0.7.1","n":"ZeroNet","m":"zeronet","t":["web","python","bitcoin","bittorrent","torrent","p2p","anonymity","decentralized","tor","realtime","anticensorship","internet-freedom","zeronet"]}
 {"id":"ZeroTier.ZeroTierOne","v":"1.16.2","n":"ZeroTier One","m":"zerotierone","t":["network","网络","ethernet","vm","switch","intranet","network-switch","交换机","以太网","内网","内网穿透"]}
-{"id":"zerx-lab.FluxDown","v":"0.5.2","n":"FluxDown"}
+{"id":"zerx-lab.FluxDown","v":"0.5.3","n":"FluxDown"}
 {"id":"ZetaSoftwareGmbH.ZetaResourceEditor","v":"2.3.104.0","n":"Zeta Resource Editor","t":["csharp","translation","c-sharp","dotnet","language","visual-studio","resx-files"]}
 {"id":"Zettlr.Zettlr","v":"4.8.0","n":"Zettlr","t":["markdown","editor","编辑器","docs","document","文档","research","学术","academics","citation","cite","引用","研究","writer","markdow"]}
 {"id":"Zettlr.Zettlr.Beta","v":"3.0.0-beta.8","n":"Zettlr Beta","t":["editor","writer","markdow"]}
@@ -15242,7 +15244,7 @@
 {"id":"zizmor.zizmor","v":"1.30.1","n":"zizmor","t":["security","static-analysis","security-tools","github-actions"]}
 {"id":"zkSNACKs.WasabiWallet","v":"2.8.3","n":"Wasabi Wallet","t":["bitcoin","privacy","cross-platform","wallet","dotnet","tor","wasabi","coin","bitcoin-wallet","coinjoin","nbitcoin","wabisabi","wasabi-wallet"]}
 {"id":"ZMGID.Kivio","v":"3.0.1","n":"Kivio","t":["人工智能","ai","大语言模型","聊天机器人","chatbot","large-language-model","llm"]}
-{"id":"zn0wii.Satelite","v":"1.0.45","n":"Satelite","t":["proxy","network","网络","代理","vpn","clash","clash-verge","clash-meta","mihomo"]}
+{"id":"zn0wii.Satelite","v":"1.0.46","n":"Satelite","t":["proxy","network","网络","代理","vpn","clash","clash-verge","clash-meta","mihomo"]}
 {"id":"zoharbabin.web-researcher-mcp","v":"1.49.3","n":"web-researcher-mcp","m":"web-researcher-mcp"}
 {"id":"Zoho.Arattai","v":"1.0.9","n":"Arattai"}
 {"id":"Zoho.Cliq","v":"1.8.5","n":"Cliq","t":["文档","collaborate","collaboration","comunication","enterprise","office","team","企业","公司","办公","协作","协同","团队","沟通","business","communicate","working","工作","交流"]}
@@ -15252,7 +15254,7 @@
 {"id":"Zoho.MeetingRooms","v":"1.0.0","n":"Zoho Meeting Rooms","t":["collaborate","collaboration","conference","meeting","会议","协作","协同","chat","conferencing","video-conferencing","voice-conferencing","webinar","开会","研讨会","视频会议","聊天","语音会议"]}
 {"id":"Zoho.Notebook","v":"4.0.4","n":"Notebook","t":["editor","编辑器","writing","notes","article","docs","document","写作","文档","文稿","文章","笔记"]}
 {"id":"Zoho.SalesIQ","v":"2.1.2","n":"SalesIQ","t":["bussiness","collaborate","collaboration","comunication","crm","customer","customer-service","enterprise","企业","公司","协作","协同","商务","客户","客服","沟通"]}
-{"id":"Zoho.Ulaa","v":"154.0.8037.92","n":"Ulaa","t":["浏览器","browser","chromium","web","webpage","网页","internet","互联网","manifestv3","mv3"]}
+{"id":"Zoho.Ulaa","v":"154.0.8037.97","n":"Ulaa","t":["浏览器","browser","chromium","web","webpage","网页","internet","互联网","manifestv3","mv3"]}
 {"id":"Zoho.Voice","v":"4.5.0","n":"ZohoVoice-Desktop"}
 {"id":"Zoho.Writer","v":"4.0.4","n":"Writer","t":["editor","编辑器","docs","document","文档","collaborate","collaboration","office","办公","协作","协同","work","word","writer","文字"]}
 {"id":"Zoho.ZohoAssist","v":"2.8.6","n":"Zoho Assist","t":["conference","meeting","会议","conferencing","开会","remote-desktop","remote","remote-control","remote-access","remote-support","远程控制","远程桌面","远程连接","control","控制","远程","远程访问","远程办公","remote-assistance","远程协助","远程支持","web-conferencing","远程会议","远程开会"]}
