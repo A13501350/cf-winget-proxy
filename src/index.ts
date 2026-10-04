@@ -71,6 +71,111 @@ function rewriteInstallerUrl(url: string, mirror: string): string {
   return url;
 }
 
+// An installer manifest's root fields are the defaults for every installer that
+// file declares — not a winget-pkgs convention we chose to imitate, but what the
+// client itself does while parsing: `ManifestYamlPopulator.cpp:1282` starts every
+// installer with `ManifestInstaller installer = DefaultInstallerInfo;` (the root's
+// values) and lets the entry overwrite them, then re-applies the root's
+// NestedInstallerFiles / NestedInstallerType for archive installers (:1305-1316).
+// MediaArea.MediaInfo is the shape that proves we have to do the same: it declares
+// InstallerType, NestedInstallerType and NestedInstallerFiles at the ROOT and only
+// Architecture/InstallerUrl/InstallerSha256 per installer.
+//
+// The list below is the set of names legal in BOTH places, i.e. root ∩
+// definitions.Installer from https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+// plus `DesiredStateConfiguration`, which master's `GetInstallerFieldProcessInfo`
+// also treats as root-eligible. It is used twice: to fill each installer, and to
+// keep those keys out of DefaultLocale when the layout is `merged` (one document
+// serving as both locale and installer source).
+//
+// Leaving a root value behind is not cosmetic. winget rejects an archive installer
+// with no NestedInstallerFiles (ManifestValidation.cpp:444 → RequiredFieldMissing;
+// `IsArchiveType` is zip alone, ManifestCommon.cpp:974-977), and the client turns
+// any error into 0x8a150039 for the WHOLE source, not for that one package.
+const INSTALLER_DEFAULT_KEYS = [
+  "InstallerLocale",
+  "Platform",
+  "MinimumOSVersion",
+  "InstallerType",
+  "NestedInstallerType",
+  "NestedInstallerFiles",
+  "Scope",
+  "InstallModes",
+  "InstallerSwitches",
+  "InstallerSuccessCodes",
+  "ExpectedReturnCodes",
+  "UpgradeBehavior",
+  "Commands",
+  "Protocols",
+  "FileExtensions",
+  "Dependencies",
+  "PackageFamilyName",
+  "ProductCode",
+  "Capabilities",
+  "RestrictedCapabilities",
+  "Markets",
+  "InstallerAbortsTerminal",
+  "ReleaseDate",
+  "InstallLocationRequired",
+  "RequireExplicitUpgrade",
+  "DisplayInstallWarnings",
+  "UnsupportedOSArchitectures",
+  "UnsupportedArguments",
+  "AppsAndFeaturesEntries",
+  "ElevationRequirement",
+  "InstallationMetadata",
+  "DownloadCommandProhibited",
+  "RepairBehavior",
+  "ArchiveBinariesDependOnPath",
+  "Authentication",
+  "DesiredStateConfiguration",
+];
+
+// Keys above that winget copies into an installer only when that installer's own
+// type can carry them (ManifestYamlPopulator.cpp:1305-1329). Inheriting them
+// regardless is not a harmless superset: the validator treats the mismatch as an
+// ERROR — ManifestValidation.cpp:331 `InstallerTypeDoesNotSupportProductCode`, :336
+// `InstallerTypeDoesNotWriteAppsAndFeaturesEntry` — so a manifest winget accepts
+// from upstream would become a 0x8a150039 for the whole source through us.
+// PackageFamilyName is the one upstream downgrades to a warning (:326); it is
+// gated here too, so what we send matches what the official source sends.
+const TYPE_GATED_KEYS = new Set([
+  "NestedInstallerType",
+  "NestedInstallerFiles",
+  "ProductCode",
+  "AppsAndFeaturesEntries",
+  "PackageFamilyName",
+]);
+
+// ManifestCommon.cpp:883-925, as the enum-name strings the schema uses.
+const ARCHIVE_INSTALLER_TYPES = new Set(["zip"]);
+const INSTALLER_TYPES_USING_PACKAGE_FAMILY_NAME = new Set(["msix", "msstore"]);
+const INSTALLER_TYPES_USING_PRODUCT_CODE = new Set([
+  "exe",
+  "inno",
+  "msi",
+  "nullsoft",
+  "wix",
+  "burn",
+  "portable",
+]);
+const INSTALLER_TYPES_WRITING_ARP_ENTRY = INSTALLER_TYPES_USING_PRODUCT_CODE;
+
+// Keys that belong to the manifest document rather than to its installers or to
+// its locale. `Locales` and `DisplayWarnings` are not in the installer schema at
+// all — a merged document carries them because it is also the version/locale
+// document.
+const DOC_ONLY_KEYS = [
+  "PackageIdentifier",
+  "PackageVersion",
+  "Channel",
+  "ManifestType",
+  "ManifestVersion",
+  "Installers",
+  "Locales",
+  "DisplayWarnings",
+];
+
 // ─── Manifest file fetch ──────────────────────────────────────────────────────
 // Nothing in this Worker talks to api.github.com: package discovery comes from
 // the prebuilt index, and manifest bodies come from the two static hosts below.
@@ -599,9 +704,14 @@ async function handlePackageManifest(
 
   const versionPath = `${basePath}/${version}`;
 
+  // JSON_SCHEMA (YAML 1.2 core), not the default: the default resolves a plain
+  // `ReleaseDate: 2026-05-12` into a JS Date, which then serializes as
+  // "2026-05-12T00:00:00.000Z" — a different string than upstream, and a value
+  // outside the schema's `^\d{4}-\d{2}-\d{2}$` pattern. Booleans, numbers and
+  // nulls resolve identically here.
   const parseYaml = (body: string): any => {
     try {
-      return (jsyaml.load(body) as any) ?? {};
+      return (jsyaml.load(body, { schema: jsyaml.JSON_SCHEMA }) as any) ?? {};
     } catch {
       return {};
     }
@@ -694,22 +804,49 @@ async function handlePackageManifest(
     ? installerDoc.Installers
     : [];
 
-  // Package-level InstallerType / NestedInstallerType / Dependencies must be
-  // propagated to each installer. winget-pkgs stores these at the package level
-  // (root of the installer YAML), while each installer entry often omits them;
-  // winget's REST deserializer requires InstallerType on every installer and
-  // surfaces Dependencies (e.g. "依赖项") from the installer object.
+  // Package-level InstallerType / NestedInstallerType / NestedInstallerFiles /
+  // Dependencies / Commands / … must be propagated to each installer: winget-pkgs
+  // stores them at the root of the installer YAML while the individual entries
+  // often carry only Architecture + URL + hash. See INSTALLER_DEFAULT_KEYS for
+  // which keys and why, and TYPE_GATED_KEYS for the four the client only copies
+  // when the installer's own type asks for them. An installer's own value always
+  // wins, which is also what upstream's parser does.
+  const fillFromRoot = (out: any, key: string): void => {
+    if (out[key] !== undefined && out[key] !== null) return;
+    const shared = installerDoc[key];
+    if (shared !== undefined && shared !== null) out[key] = shared;
+  };
+
   const installers = rawInstallers.map((inst) => {
     const out: any = { ...inst };
-    if (!out.InstallerType && installerDoc.InstallerType) {
-      out.InstallerType = installerDoc.InstallerType;
+    for (const key of INSTALLER_DEFAULT_KEYS) {
+      if (!TYPE_GATED_KEYS.has(key)) fillFromRoot(out, key);
     }
-    if (!out.NestedInstallerType && installerDoc.NestedInstallerType) {
-      out.NestedInstallerType = installerDoc.NestedInstallerType;
+
+    const baseType = String(out.InstallerType ?? "").toLowerCase();
+    if (ARCHIVE_INSTALLER_TYPES.has(baseType)) {
+      fillFromRoot(out, "NestedInstallerType");
+      fillFromRoot(out, "NestedInstallerFiles");
     }
-    if (!out.Dependencies && installerDoc.Dependencies) {
-      out.Dependencies = installerDoc.Dependencies;
+
+    // What winget actually runs out of this file, which is what its type-specific
+    // rules are keyed on.
+    const effectiveType = (
+      ARCHIVE_INSTALLER_TYPES.has(baseType) ? String(out.NestedInstallerType ?? "") : baseType
+    ).toLowerCase();
+    if (INSTALLER_TYPES_WRITING_ARP_ENTRY.has(effectiveType)) {
+      fillFromRoot(out, "AppsAndFeaturesEntries");
     }
+    if (INSTALLER_TYPES_USING_PRODUCT_CODE.has(effectiveType)) {
+      fillFromRoot(out, "ProductCode");
+    }
+    const entriesUsePFN = (Array.isArray(out.AppsAndFeaturesEntries) ? out.AppsAndFeaturesEntries : []).some(
+      (entry: any) => INSTALLER_TYPES_USING_PACKAGE_FAMILY_NAME.has(String(entry?.InstallerType ?? "").toLowerCase())
+    );
+    if (INSTALLER_TYPES_USING_PACKAGE_FAMILY_NAME.has(effectiveType) || entriesUsePFN) {
+      fillFromRoot(out, "PackageFamilyName");
+    }
+
     if (out.InstallerUrl) {
       out.InstallerUrl = rewriteInstallerUrl(out.InstallerUrl, mirror);
     }
@@ -721,24 +858,11 @@ async function handlePackageManifest(
   // PackageUrl, Tags, ReleaseNotes, ReleaseNotesUrl, Documentations, Agreements,
   // Description, ...). The winget REST DefaultLocale schema accepts these as
   // optional members; only a hardcoded subset was mapped before, which is why
-  // `winget show` looked sparse next to the official source. Drop the keys that
-  // belong to the surrounding document rather than to its locale — including the
-  // installer keys, because a merged manifest doubles as the locale source.
-  const LOCALE_OMIT = new Set([
-    "PackageIdentifier",
-    "PackageVersion",
-    "ManifestType",
-    "ManifestVersion",
-    "Installers",
-    "InstallerLocale",
-    "Locales",
-    "DisplayWarnings",
-    "InstallerType",
-    "NestedInstallerType",
-    "Dependencies",
-    "MinimumOSVersion",
-    "ReleaseDate",
-  ]);
+  // `winget show` looked sparse next to the official source. Drop what belongs to
+  // the surrounding document or to the installers rather than to the locale — the
+  // installer keys because a merged manifest doubles as the locale source, and
+  // those are carried by each installer now instead.
+  const LOCALE_OMIT = new Set([...DOC_ONLY_KEYS, ...INSTALLER_DEFAULT_KEYS]);
   const defaultLocale: any = { PackageLocale: localeDoc.PackageLocale };
   for (const [k, v] of Object.entries(localeDoc)) {
     if (!LOCALE_OMIT.has(k)) defaultLocale[k] = v;

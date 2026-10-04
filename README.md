@@ -41,8 +41,9 @@ winget ──REST(JSON)──▶ Cloudflare Worker ──▶ index.json（本仓
 先取 `{id}.yaml`：它既告诉 Worker 这是三文件还是合并布局（`ManifestType: merged`
 时一个文件就是全部），也告诉 Worker **默认 locale 是哪一个**。第二步才并行取
 installer 与那份 locale，并把 locale 的字段整体透传进 REST 的 `DefaultLocale`
-（Moniker、Author、Tags、ReleaseNotes、Documentations…… 只有 `Installers`、
-`ManifestType` 这类外壳键丢掉），`InstallerUrl` 换成镜像地址，其余原样返回。
+（Moniker、Author、Tags、ReleaseNotes、Documentations…… 丢掉的只有文档外壳键
+`PackageIdentifier`/`PackageVersion`/`ManifestType`/`ManifestVersion`/`Installers`/
+`Locales` 和下面说的 installer 级键），`InstallerUrl` 换成镜像地址，其余原样返回。
 
 默认 locale 必须问 `{id}.yaml`，不能猜。曾经按「en-US 最常见」的顺序探文件名，
 结果是：`115.115Chrome`、`Alibaba.UC` 这类包**确实有** `{id}.locale.en-US.yaml`，
@@ -58,11 +59,37 @@ installer 与那份 locale，并把 locale 的字段整体透传进 REST 的 `De
 就抛 `APPINSTALLER_CLI_ERROR_RESTSOURCE_INVALID_DATA`，客户端看到的是
 `0x8a150039 REST 源返回的数据无效`，那是**整源**级别的报错，和源坏了无法区分。
 
-`InstallerType` / `NestedInstallerType` / `Dependencies` 是包级键，REST 要求每个
-安装器都带 `InstallerType`，所以 Worker 把包级的值补进每个安装器，但**不改写它**：
-上游写 `zip` + `portable`（zip 里装一个 portable exe，官方源显示
-`portable (zip)`），Worker 曾把它反转成 `portable` + `zip`，客户端于是把一个 `.zip`
-当成裸 exe 执行。反转已删除。
+安装器字段的来源不止一层。`winget-pkgs` 的 installer YAML **根上的字段就是这一整组
+安装器的默认值** —— 这不是我们模仿的约定，而是客户端自己的做法：
+`ManifestYamlPopulator.cpp:1282` 每个 installer 都从 `DefaultInstallerInfo`（根的值）
+起步，再让条目自己的值覆盖，archive 类型还要回填 `NestedInstallerFiles`/
+`NestedInstallerType`（:1305-1316）。Worker 以前只搬 `InstallerType`、
+`NestedInstallerType`、`Dependencies` 三个，于是
+`winget show -s winget-cn MediaArea.MediaInfo` 直接 `0x8a150039`：上游把
+`zip` + `portable` + `NestedInstallerFiles` 全写在根上，我们发出去的安装器只有
+`zip` + `portable` 而没有 `NestedInstallerFiles`，而 `IsArchiveType`（zip）的清单缺
+这个字段是 **error**（`ManifestValidation.cpp:444`）。现在按 schema 里
+「根和 installer 都合法」的那份字段名（`INSTALLER_DEFAULT_KEYS`）整体继承，
+installer 自己写过的不覆盖。
+
+继承必须带上 winget 的类型闸门，否则会把上游合法的清单变成非法：
+`ProductCode`、`AppsAndFeaturesEntries` 只会复制给需要它们的类型
+（`exe/inno/msi/nullsoft/wix/burn/portable`），`PackageFamilyName` 只给
+`msix/msstore`，`NestedInstaller*` 只给 `zip`。硬复制的代价写在
+`ManifestValidation.cpp:331`/`:336` —— 那两条是 error，不是 warning。
+（`PackageFamilyName` 在 :326 只是 warning，这里照样按上游 gate，保持和官方源发同一份数据。）
+
+同一批键现在也不会漏进 `DefaultLocale`（`merged` 布局下 installer 文档就是 locale
+文档）。顺带 `Commands`、`ReleaseDate` 这些上游写在根上的值也不再被丢掉。
+`ReleaseDate` 还牵出一个解析层的问题：js-yaml 的默认 schema 会把
+`ReleaseDate: 2026-05-12` 解析成 JS `Date`，序列化出来就是
+`2026-05-12T00:00:00.000Z`，和上游不是同一个字符串，也不符合 schema 的日期格式；
+`parseYaml` 因此改用 `JSON_SCHEMA`（YAML 1.2 core：bool / 数字 / null 的解析结果不变，
+只有时间戳保留为字符串）。
+
+`InstallerType` 本身**不改写**：上游写 `zip` + `portable`（zip 里装一个 portable exe，
+官方源显示 `portable (zip)`），Worker 曾把它反转成 `portable` + `zip`，客户端于是把一个
+`.zip` 当成裸 exe 执行。反转已删除。
 
 ### REST 端点
 
@@ -186,7 +213,7 @@ Cloudflare 的日志里那批 `Exceeded CPU Limit` 就是这么来的（本机�
 
 现在的做法是把小写形式**一次算好、按 isolate 复用**：
 
-- `ensureSearchable()`（`src/index.ts:225`）在**本 isolate 第一次关键词搜索**时给每行
+- `ensureSearchable()`（`src/index.ts:330`）在**本 isolate 第一次关键词搜索**时给每行
   建出小写字段表，之后所有查询直接比较，不再分配。它故意不挂在索引解析上 ——
   `packageManifests` 和精确 id 命中根本不读这些字段。
 - `keywordSearch` 的排序 tie-break 从 `localeCompare` 换成码位比较：ICU _collation_在

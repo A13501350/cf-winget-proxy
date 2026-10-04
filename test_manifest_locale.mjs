@@ -2,8 +2,10 @@
 // fixtures, so no request leaves the process. Covers the shapes that broke
 // `winget show -s winget-cn 2dust.v2rayN` (a default locale that is not en-US, and
 // a package-level `InstallerType: zip` that the Worker used to invert), the
-// version manifest that says which locale to read, and the fail-close behaviour
-// that replaced serving an incomplete manifest.
+// `MediaArea.MediaInfo` shape that broke it with 0x8a150039 (installer fields
+// declared only at the manifest root), the version manifest that says which locale
+// to read, and the fail-close behaviour that replaced serving an incomplete
+// manifest.
 //   CI: node test_manifest_locale.mjs
 import assert from "node:assert";
 import worker from "./.build-test/worker.mjs";
@@ -17,6 +19,7 @@ const INDEX_LINES = [
   { id: "Gone.Nowhere", v: "1.0.0", n: "Gone Nowhere" },
   { id: "Broken.Cdn", v: "1.0.0", n: "Broken Cdn" },
   { id: "Fallback.Raw", v: "2.0.0", n: "Fallback Raw" },
+  { id: "Rootlevel.Nested", v: "26.05", n: "Root Level Nested", m: "nested" },
 ];
 const INDEX_BODY = INDEX_LINES.map((e) => JSON.stringify(e)).join("\n");
 
@@ -122,6 +125,8 @@ ManifestVersion: 1.12.0
 `;
 
 // Single-file layout: the locale fields live in the one and only manifest.
+// `Commands` is an installer field sitting in the same document, so this also
+// pins which side of the split it belongs to.
 const MERGED_YAML = `
 PackageIdentifier: Merged.Format
 PackageVersion: 9.9.9
@@ -132,10 +137,70 @@ License: MIT
 ShortDescription: A merged manifest
 Moniker: merged
 InstallerType: exe
+Commands:
+- format
 Installers:
 - Architecture: x64
   InstallerUrl: https://github.com/merged/format/releases/download/9.9.9/format.exe
 ManifestType: merged
+ManifestVersion: 1.12.0
+`;
+
+// The real MediaArea.MediaInfo 26.05 installer manifest, reduced to the fields
+// that matter, plus the root-declared type-specific fields that winget only
+// copies into installers whose type asks for them. Everything is declared at the
+// ROOT and repeated by nothing: an installer entry is Architecture + URL + hash.
+// Serving this as-is used to send zip+portable with no NestedInstallerFiles, which
+// winget validates as an error (ManifestValidation.cpp:444) and reports as
+// 0x8a150039 for the entire source.
+const ROOTLEVEL_INSTALLER = `
+PackageIdentifier: Rootlevel.Nested
+PackageVersion: "26.05"
+InstallerType: zip
+NestedInstallerType: portable
+NestedInstallerFiles:
+- RelativeFilePath: MediaInfo.exe
+  PortableCommandAlias: MediaInfo
+Commands:
+- MediaInfo
+ReleaseDate: 2026-05-12
+ProductCode: "{7E1A0000-0000-0000-0000-000000000001}"
+PackageFamilyName: MediaAreaMediaInfo-123
+AppsAndFeaturesEntries:
+- DisplayName: MediaInfo CLI
+Dependencies:
+  WindowsFeatures:
+  - IIS-WebServerRole
+Installers:
+- Architecture: x86
+  InstallerUrl: https://mediaarea.net/download/binary/mediainfo/26.05/MediaInfo_CLI_26.05_Windows_i386.zip
+  InstallerSha256: A686129FCF2A0F8D03C93FDB6325C94E6DE7B8D5A1E5BDF40BC899A94D7E785A
+- Architecture: x64
+  InstallerUrl: https://mediaarea.net/download/binary/mediainfo/26.05/MediaInfo_CLI_26.05_Windows_x64.zip
+  InstallerSha256: F7F80620CE6D14F4995F0DE6F98E3EF18AD29496DB01899571152EE3311229F9
+  NestedInstallerFiles:
+  - RelativeFilePath: x64/MediaInfo.exe
+- InstallerType: msix
+  Architecture: x64
+  InstallerUrl: https://mediaarea.net/download/binary/mediainfo/26.05/MediaInfo_CLI_26.05.msix
+  InstallerSha256: 0000000000000000000000000000000000000000000000000000000000000000
+ManifestType: installer
+ManifestVersion: 1.12.0
+`;
+
+const ROOTLEVEL_LOCALE = `
+PackageIdentifier: Rootlevel.Nested
+PackageVersion: "26.05"
+PackageLocale: en-US
+Publisher: MediaArea.net
+PackageName: MediaInfo-CLI
+License: BSD-2-Clause
+ShortDescription: Displays technical and tag data for video and audio files
+Moniker: mediainfo
+Tags:
+- audio
+- media
+ManifestType: defaultLocale
 ManifestVersion: 1.12.0
 `;
 
@@ -170,6 +235,10 @@ const FILES = new Map([
   [`${B}/m/MissingLocale/Example/1.2.3/MissingLocale.Example.installer.yaml`,
     SIMPLE_INSTALLER("MissingLocale.Example", "1.2.3", "msi", "https://github.com/example/example/releases/download/1.2.3/example.msi")],
   [`${B}/m/Merged/Format/9.9.9/Merged.Format.yaml`, MERGED_YAML],
+  [`${B}/r/Rootlevel/Nested/26.05/Rootlevel.Nested.yaml`,
+    VERSION_MANIFEST("Rootlevel.Nested", "26.05", "en-US")],
+  [`${B}/r/Rootlevel/Nested/26.05/Rootlevel.Nested.installer.yaml`, ROOTLEVEL_INSTALLER],
+  [`${B}/r/Rootlevel/Nested/26.05/Rootlevel.Nested.locale.en-US.yaml`, ROOTLEVEL_LOCALE],
   [`${B}/e/Empty/License/1.0.0/Empty.License.yaml`, VERSION_MANIFEST("Empty.License", "1.0.0", "en-US")],
   [`${B}/e/Empty/License/1.0.0/Empty.License.installer.yaml`,
     SIMPLE_INSTALLER("Empty.License", "1.0.0", "exe", "https://github.com/empty/license/releases/download/1.0.0/license.exe")],
@@ -293,9 +362,11 @@ const manifest = async (id) => {
   assert.equal(v.DefaultLocale.PackageName, "Merged Format", "merged doc did not become DefaultLocale");
   assert.equal(v.DefaultLocale.PackageLocale, "en-US");
   assert.equal(v.Installers[0].InstallerType, "exe");
+  assert.deepEqual(v.Installers[0].Commands, ["format"], "root Commands were not inherited");
   assert.equal(v.DefaultLocale.InstallerType, undefined, "installer config leaked into DefaultLocale");
+  assert.equal(v.DefaultLocale.Commands, undefined, "installer Commands leaked into DefaultLocale");
   assert.equal(manifestFiles().length, 1, "merged layout fetched more than one file");
-  console.log("✅ merged manifest layout: one file, locale read inline");
+  console.log("✅ merged manifest layout: one file, locale read inline, installer keys kept out of it");
 }
 
 // ── 5. default locale file present but incomplete ─────────────────────────────
@@ -334,6 +405,67 @@ const manifest = async (id) => {
   assert.equal(status, 200, `expected the fallback host to serve it, got ${status}`);
   assert.equal(data(json).DefaultLocale.PackageName, "Fallback Raw");
   console.log("✅ package only on raw.githubusercontent: served via the fallback");
+}
+
+// ── 10. installer fields declared only at the manifest root ───────────────────
+{
+  const { status, json } = await manifest("Rootlevel.Nested");
+  assert.equal(status, 200, `root-only installer fields returned ${status} ${JSON.stringify(json)}`);
+  const v = data(json);
+  const installers = v.Installers;
+  assert.equal(installers.length, 3);
+
+  // The one that says nothing: it inherits the whole root block. Without
+  // NestedInstallerFiles winget fails the manifest for the archive installer and
+  // the client reports the SOURCE as invalid, so this is not a display nicety.
+  const inherited = installers[0];
+  assert.equal(inherited.InstallerType, "zip");
+  assert.equal(inherited.NestedInstallerType, "portable");
+  assert.deepEqual(
+    inherited.NestedInstallerFiles,
+    [{ RelativeFilePath: "MediaInfo.exe", PortableCommandAlias: "MediaInfo" }],
+    "root NestedInstallerFiles were dropped"
+  );
+  assert.deepEqual(inherited.Commands, ["MediaInfo"], "root Commands were dropped");
+  assert.deepEqual(inherited.Dependencies, { WindowsFeatures: ["IIS-WebServerRole"] }, "root Dependencies were dropped");
+  assert.equal(inherited.ReleaseDate, "2026-05-12", "root ReleaseDate was dropped");
+  // zip+portable does write an ARP entry and does use a ProductCode, so both
+  // come along; it is not an msix, so PackageFamilyName must not (that one is a
+  // warning upstream — the two above are errors).
+  assert.deepEqual(inherited.AppsAndFeaturesEntries, [{ DisplayName: "MediaInfo CLI" }], "root AppsAndFeaturesEntries were dropped");
+  assert.equal(inherited.ProductCode, "{7E1A0000-0000-0000-0000-000000000001}", "root ProductCode was dropped");
+  assert.equal(inherited.PackageFamilyName, undefined, "PackageFamilyName was copied to a portable installer");
+
+  // The one that overrides: its own value must survive the inheritance.
+  assert.deepEqual(
+    installers[1].NestedInstallerFiles,
+    [{ RelativeFilePath: "x64/MediaInfo.exe" }],
+    "an installer's own NestedInstallerFiles were overwritten by the root's"
+  );
+
+  // msix is none of those types: no nested archive fields, no ProductCode, no ARP
+  // entry — and PackageFamilyName, which it does use. Copying the root's anyway is
+  // how a manifest upstream accepts would become an invalid one through us.
+  const msix = installers[2];
+  assert.equal(msix.InstallerType, "msix");
+  assert.equal(msix.NestedInstallerType, undefined, "NestedInstallerType was copied to an msix installer");
+  assert.equal(msix.NestedInstallerFiles, undefined, "NestedInstallerFiles were copied to an msix installer");
+  assert.equal(msix.ProductCode, undefined, "ProductCode was copied to an msix installer");
+  assert.equal(msix.AppsAndFeaturesEntries, undefined, "AppsAndFeaturesEntries were copied to an msix installer");
+  assert.equal(msix.PackageFamilyName, "MediaAreaMediaInfo-123", "root PackageFamilyName was dropped for an msix installer");
+  assert.deepEqual(msix.Commands, ["MediaInfo"], "root Commands were dropped for an msix installer");
+
+  // A non-GitHub installer URL stays untouched, mirror or not.
+  assert.ok(
+    inherited.InstallerUrl.startsWith("https://mediaarea.net/"),
+    `vendor URL was rewritten: ${inherited.InstallerUrl}`
+  );
+  // None of this belongs in the locale object.
+  for (const key of ["NestedInstallerFiles", "Commands", "Dependencies", "ReleaseDate", "InstallerType", "ProductCode", "AppsAndFeaturesEntries"]) {
+    assert.equal(v.DefaultLocale[key], undefined, `${key} leaked into DefaultLocale`);
+  }
+  assert.equal(v.DefaultLocale.PackageName, "MediaInfo-CLI");
+  console.log("✅ root installer fields inherited per type; gated fields left off types that reject them");
 }
 
 assert.ok(!seen.some((u) => u.includes("api.github.com")), "a manifest path reached the GitHub API");
