@@ -8415,7 +8415,7 @@
 {"id":"Microsoft.RemoteHelp","v":"5.2.1040.0","n":"Remote help","t":["enterprise","intune","remote","remote-control","microsoft","support","remote-assistance","help","assistance","remote-help"]}
 {"id":"Microsoft.ReportBuilder","v":"15.1.30001.02","n":"Microsoft Report Builder"}
 {"id":"Microsoft.RMSClient","v":"1.0.5406.9","n":"Active Directory Rights Management Services Client 2.1","t":["activedirectory","azureinformationprotection","azure-information-protection","adrms","on-premises","rightsmanagementserviceclient"]}
-{"id":"Microsoft.SafetyScanner","v":"1.461.61.0","n":"Microsoft Safety Scanner","t":["microsoft-safety-scanner","windows-security","microsoft-defender-antivirus","msert"]}
+{"id":"Microsoft.SafetyScanner","v":"1.461.74.0","n":"Microsoft Safety Scanner","t":["microsoft-safety-scanner","windows-security","microsoft-defender-antivirus","msert"]}
 {"id":"Microsoft.SaRACmd","v":"17.01.3954.000","n":"Microsoft Support and Recovery Assistant Command Line","m":"SaRAcmd.exe","t":["teams","outlook","Outlook","Office","microsoft365","microsoftoffice","onenote","Microsoft365","Teams","microsoftsupportandrecoveryassistant","support-and-recovery-assistant"]}
 {"id":"Microsoft.SBOMTool","v":"4.1.5","n":"SBOM Tool","t":["sbom","sbom-generator"]}
 {"id":"Microsoft.ScoutAgent","v":"0.23.578","n":"Microsoft Scout","m":"scout","t":["artificialintelligence","artificial-intelligence","microsoft-scout-agent","microsoftscoutagent"]}
